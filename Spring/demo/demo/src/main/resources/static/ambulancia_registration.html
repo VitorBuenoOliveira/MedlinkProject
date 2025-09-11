@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cadastro de Ambulâncias - Sistema de Transporte</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <nav>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/client_management.html">Clientes</a>
+        <a href="/motorista_registration.html">Motoristas</a>
+        <a href="/ambulancia_registration.html">Ambulâncias</a>
+        <a href="/hospital_registration.html">Hospitais</a>
+        <a href="/usuario_registration.html">Usuários</a>
+        <a href="/scheduling.html">Agendamento</a>
+        <a href="/reports.html">Relatórios</a>
+    </nav>
+
+    <h1>Cadastro de Ambulâncias</h1>
+
+    <h2>Adicionar Ambulância</h2>
+    <form id="formAmbulancia">
+        <label for="placa">Placa:</label><br>
+        <input type="text" id="placa" name="placa" required><br><br>
+        
+        <label for="modelo">Modelo:</label><br>
+        <input type="text" id="modelo" name="modelo" required><br><br>
+        
+        <label for="capacidade">Capacidade:</label><br>
+        <input type="number" id="capacidade" name="capacidade" required><br><br>
+        
+        <label for="status">Status:</label><br>
+        <select id="status" name="status" required>
+            <option value="disponivel">Disponível</option>
+            <option value="em_uso">Em Uso</option>
+            <option value="manutencao">Manutenção</option>
+        </select><br><br>
+        
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Lista de Ambulâncias</h2>
+    <table id="tabelaAmbulancias">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Placa</th>
+                <th>Modelo</th>
+                <th>Capacidade</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function carregarAmbulancias() {
+            try {
+                const res = await fetch('/ambulancias');
+                const ambulancias = await res.json();
+                const tbody = document.querySelector("#tabelaAmbulancias tbody");
+                tbody.innerHTML = "";
+                ambulancias.forEach(a => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${a.id}</td>
+                            <td>${a.placa}</td>
+                            <td>${a.modelo}</td>
+                            <td>${a.capacidade}</td>
+                            <td>${a.status}</td>
+                            <td>
+                                <button onclick="editarAmbulancia(${a.id})">Editar</button>
+                                <button onclick="excluirAmbulancia(${a.id})">Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar ambulâncias:', error);
+            }
+        }
+
+        document.getElementById("formAmbulancia").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const data = {};
+            form.forEach((value, key) => data[key] = value);
+            
+            try {
+                await fetch('/ambulancias', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                e.target.reset();
+                carregarAmbulancias();
+            } catch (error) {
+                console.error('Erro ao cadastrar ambulância:', error);
+            }
+        });
+
+        async function excluirAmbulancia(id) {
+            if (confirm('Tem certeza que deseja excluir esta ambulância?')) {
+                try {
+                    await fetch('/ambulancias/' + id, { method: 'DELETE' });
+                    carregarAmbulancias();
+                } catch (error) {
+                    console.error('Erro ao excluir ambulância:', error);
+                }
+            }
+        }
+
+        function editarAmbulancia(id) {
+            alert('Funcionalidade de edição a ser implementada');
+        }
+
+        carregarAmbulancias();
+    </script>
+</body>
+</html>

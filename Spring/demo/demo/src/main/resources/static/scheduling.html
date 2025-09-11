@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Agendamento - Sistema de Transporte</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav { background-color: #f0f0f0; padding: 10px; margin-bottom: 20px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #333; }
+        nav a:hover { text-decoration: underline; }
+        .agenda-item { border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .status-pending { background-color: #fff3cd; }
+        .status-confirmed { background-color: #d1ecf1; }
+        .status-completed { background-color: #d4edda; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/client_management.html">Clientes</a>
+        <a href="/motorista_registration.html">Motoristas</a>
+        <a href="/ambulancia_registration.html">Ambulâncias</a>
+        <a href="/hospital_registration.html">Hospitais</a>
+        <a href="/usuario_registration.html">Usuários</a>
+        <a href="/scheduling.html">Agendamento</a>
+        <a href="/reports.html">Relatórios</a>
+    </nav>
+
+    <h1>Agendamento de Transportes</h1>
+
+    <button onclick="gerarAgenda()">Gerar Agenda do Dia</button>
+    <button onclick="carregarAgenda()">Carregar Agenda</button>
+
+    <h2>Agenda do Dia</h2>
+    <div id="agendaContainer">
+        <!-- Agenda items will be loaded here -->
+    </div>
+
+    <script>
+        async function carregarAgenda() {
+            try {
+                // For now, load clients as agenda items
+                const res = await fetch('/clientes');
+                const clientes = await res.json();
+                const container = document.getElementById('agendaContainer');
+                container.innerHTML = "";
+                
+                if (clientes.length === 0) {
+                    container.innerHTML = "<p>Nenhum transporte agendado para hoje.</p>";
+                    return;
+                }
+
+                clientes.forEach(c => {
+                    const statusClass = c.atendido ? 'status-completed' : 'status-pending';
+                    container.innerHTML += `
+                        <div class="agenda-item ${statusClass}">
+                            <h3>${c.nome}</h3>
+                            <p><strong>Destino:</strong> ${c.destino}</p>
+                            <p><strong>Telefone:</strong> ${c.telefone}</p>
+                            <p><strong>Status:</strong> ${c.atendido ? 'Atendido' : 'Pendente'}</p>
+                            ${!c.atendido ? `<button onclick="marcarComoAtendido(${c.id})">Marcar como Atendido</button>` : ''}
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar agenda:', error);
+                document.getElementById('agendaContainer').innerHTML = "<p>Erro ao carregar agenda.</p>";
+            }
+        }
+
+        async function marcarComoAtendido(id) {
+            try {
+                await fetch('/clientes/' + id + '/atender', { method: 'PUT' });
+                carregarAgenda();
+            } catch (error) {
+                console.error('Erro ao marcar como atendido:', error);
+            }
+        }
+
+        function gerarAgenda() {
+            alert('Funcionalidade de geração automática de agenda a ser implementada no backend.');
+        }
+
+        // Load agenda on page load
+        carregarAgenda();
+    </script>
+</body>
+</html>

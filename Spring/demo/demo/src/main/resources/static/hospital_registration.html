@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cadastro de Hospitais - Sistema de Transporte</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <nav>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/client_management.html">Clientes</a>
+        <a href="/motorista_registration.html">Motoristas</a>
+        <a href="/ambulancia_registration.html">Ambulâncias</a>
+        <a href="/hospital_registration.html">Hospitais</a>
+        <a href="/usuario_registration.html">Usuários</a>
+        <a href="/scheduling.html">Agendamento</a>
+        <a href="/reports.html">Relatórios</a>
+    </nav>
+
+    <h1>Cadastro de Hospitais</h1>
+
+    <h2>Adicionar Hospital</h2>
+    <form id="formHospital">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+        
+        <label for="endereco">Endereço:</label><br>
+        <input type="text" id="endereco" name="endereco" required><br><br>
+        
+        <label for="especialidades">Especialidades:</label><br>
+        <input type="text" id="especialidades" name="especialidades" required><br><br>
+        
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Lista de Hospitais</h2>
+    <table id="tabelaHospitais">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Especialidades</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function carregarHospitais() {
+            try {
+                const res = await fetch('/hospitais');
+                const hospitais = await res.json();
+                const tbody = document.querySelector("#tabelaHospitais tbody");
+                tbody.innerHTML = "";
+                hospitais.forEach(h => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${h.id}</td>
+                            <td>${h.nome}</td>
+                            <td>${h.endereco}</td>
+                            <td>${h.especialidades}</td>
+                            <td>
+                                <button onclick="editarHospital(${h.id})">Editar</button>
+                                <button onclick="excluirHospital(${h.id})">Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar hospitais:', error);
+            }
+        }
+
+        document.getElementById("formHospital").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const data = {};
+            form.forEach((value, key) => data[key] = value);
+            
+            try {
+                await fetch('/hospitais', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                e.target.reset();
+                carregarHospitais();
+            } catch (error) {
+                console.error('Erro ao cadastrar hospital:', error);
+            }
+        });
+
+        async function excluirHospital(id) {
+            if (confirm('Tem certeza que deseja excluir este hospital?')) {
+                try {
+                    await fetch('/hospitais/' + id, { method: 'DELETE' });
+                    carregarHospitais();
+                } catch (error) {
+                    console.error('Erro ao excluir hospital:', error);
+                }
+            }
+        }
+
+        function editarHospital(id) {
+            alert('Funcionalidade de edição a ser implementada');
+        }
+
+        carregarHospitais();
+    </script>
+</body>
+</html>
