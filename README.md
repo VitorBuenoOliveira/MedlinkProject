@@ -47,3 +47,50 @@ Facilitar a tomada de decisão com dados e relatórios
 
 👉 Em resumo:
 O sistema é como um “Uber de ambulâncias”, mas focado no transporte de pacientes para hospitais e clínicas, trazendo organização, eficiência e segurança.
+
+
+🚑 Patient Transportation System – Simplified Overview
+
+Imagine a system that helps organize patient transportation in ambulances. It works like a control center, where you can:
+
+Register patients and their information (name, address, treatment, companion, etc.)
+
+Manage ambulances (license plate, model, capacity, location, and assigned driver)
+
+Control drivers and hospitals
+
+Monitor everything on an online dashboard
+
+🛠️ What does the system do?
+
+Registers and organizes patients, drivers, ambulances, and hospitals
+
+Schedules transport (who is going, where, and when)
+
+Provides maps with ambulance locations (to know where they are in real time)
+
+Generates reports and statistics (number of patients served, number of users, etc.)
+
+Includes secure login (users must authenticate to access the system)
+
+👨‍💻 Who can use it?
+
+Administrators → manage the entire system
+
+Agents → register patients and organize transports
+
+Drivers → view their assigned ambulances and routes
+
+🎯 What is it for?
+
+This project is an MVP (Minimum Viable Product) of a system that could be used by city governments, hospitals, or clinics to:
+
+Ensure patients arrive on time for treatments
+
+Avoid scheduling and driver assignment issues
+
+Monitor ambulance usage with transparency
+
+Support decision-making through data and reports
+
+👉 In short: The system works like an “Uber for ambulances”, but focused on patient transportation to hospitals and clinics, bringing organization, efficiency, and security.
