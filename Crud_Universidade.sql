@@ -1,8 +1,3 @@
-TRABALHO FEITO por 
-Vitor Bueno Dos Santos Parra De Oliveira RA:173923
-Mateus Alves Nunes RA:201980
-
-
 -- ======================================
 -- CRIAÇÃO DO BANCO
 -- ======================================
@@ -146,3 +141,4 @@ DELETE FROM alunos WHERE id_aluno = 10;
 
 -- Remover um curso (isso também remove as associações automaticamente)
 DELETE FROM cursos WHERE id_curso = 4;
+
