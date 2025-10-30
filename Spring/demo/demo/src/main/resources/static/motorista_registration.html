@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <title>Cadastro de Motoristas - Sistema de Transporte</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <nav>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/client_management.html">Clientes</a>
+        <a href="/motorista_registration.html">Motoristas</a>
+        <a href="/ambulancia_registration.html">Ambulâncias</a>
+        <a href="/hospital_registration.html">Hospitais</a>
+        <a href="/usuario_registration.html">Usuários</a>
+        <a href="/scheduling.html">Agendamento</a>
+        <a href="/reports.html">Relatórios</a>
+    </nav>
+
+    <h1>Cadastro de Motoristas</h1>
+
+    <h2>Adicionar Motorista</h2>
+    <form id="formMotorista">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+        
+        <label for="carteiraHabilitacao">Carteira de Habilitação:</label><br>
+        <input type="text" id="carteiraHabilitacao" name="carteiraHabilitacao" required><br><br>
+        
+        <label for="telefone">Telefone:</label><br>
+        <input type="text" id="telefone" name="telefone" required><br><br>
+        
+        <label for="regiaoAtuacao">Região de Atuação:</label><br>
+        <input type="text" id="regiaoAtuacao" name="regiaoAtuacao" required><br><br>
+        
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Lista de Motoristas</h2>
+    <table id="tabelaMotoristas">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Carteira</th>
+                <th>Telefone</th>
+                <th>Região</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function carregarMotoristas() {
+            try {
+                const res = await fetch('/motoristas');
+                const motoristas = await res.json();
+                const tbody = document.querySelector("#tabelaMotoristas tbody");
+                tbody.innerHTML = "";
+                motoristas.forEach(m => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${m.id}</td>
+                            <td>${m.nome}</td>
+                            <td>${m.carteiraHabilitacao}</td>
+                            <td>${m.telefone}</td>
+                            <td>${m.regiaoAtuacao}</td>
+                            <td>
+                                <button onclick="editarMotorista(${m.id})">Editar</button>
+                                <button onclick="excluirMotorista(${m.id})">Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar motoristas:', error);
+            }
+        }
+
+        document.getElementById("formMotorista").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const data = {};
+            form.forEach((value, key) => data[key] = value);
+            
+            try {
+                await fetch('/motoristas', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                e.target.reset();
+                carregarMotoristas();
+            } catch (error) {
+                console.error('Erro ao cadastrar motorista:', error);
+            }
+        });
+
+        async function excluirMotorista(id) {
+            if (confirm('Tem certeza que deseja excluir este motorista?')) {
+                try {
+                    await fetch('/motoristas/' + id, { method: 'DELETE' });
+                    carregarMotoristas();
+                } catch (error) {
+                    console.error('Erro ao excluir motorista:', error);
+                }
+            }
+        }
+
+        function editarMotorista(id) {
+            // Simple edit: could be improved with a modal or inline editing
+            alert('Funcionalidade de edição a ser implementada');
+        }
+
+        carregarMotoristas();
+    </script>
+</body>
+</html>

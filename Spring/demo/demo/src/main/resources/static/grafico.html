@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Gráfico de Usuários</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<h1>Usuários cadastrados</h1>
+<canvas id="meuGrafico" width="400" height="200"></canvas>
+
+<script>
+    fetch('/usuarios') // endpoint que retorna todos os usuários
+        .then(response => response.json())
+        .then(data => {
+            const labels = data.map(u => u.nome);
+            const values = data.map(u => 1); // cada usuário conta como 1
+
+            new Chart(document.getElementById('meuGrafico'), {
+                type: 'bar', // pode trocar para 'pie' se quiser pizza
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Quantidade de Usuários',
+                        data: values,
+                        backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(255, 99, 132, 0.6)']
+                    }]
+                }
+            });
+        });
+</script>
+</body>
+</html>

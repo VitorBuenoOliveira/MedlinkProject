@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Sistema de Transporte de Pacientes</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <nav>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/client_management.html">Clientes</a>
+        <a href="/motorista_registration.html">Motoristas</a>
+        <a href="/ambulancia_registration.html">Ambulâncias</a>
+        <a href="/hospital_registration.html">Hospitais</a>
+        <a href="/usuario_registration.html">Usuários</a>
+        <a href="/scheduling.html">Agendamento</a>
+        <a href="/reports.html">Relatórios</a>
+        <a href="/geolocation.html">Geolocalização</a>
+    </nav>
+
+    <h1>Dashboard - Sistema de Transporte de Pacientes 🚑</h1>
+
+    <div class="dashboard-grid">
+        <div class="card">
+            <h3>Clientes</h3>
+            <p>Gerenciar solicitações de transporte</p>
+            <a href="/client_management.html">Acessar</a>
+        </div>
+        <div class="card">
+            <h3>Motoristas</h3>
+            <p>Cadastrar e gerenciar motoristas</p>
+            <a href="/motorista_registration.html">Acessar</a>
+        </div>
+        <div class="card">
+            <h3>Ambulâncias</h3>
+            <p>Gerenciar frota de veículos</p>
+            <a href="/ambulancia_registration.html">Acessar</a>
+        </div>
+        <div class="card">
+            <h3>Hospitais</h3>
+            <p>Cadastrar destinos</p>
+            <a href="/hospital_registration.html">Acessar</a>
+        </div>
+        <div class="card">
+            <h3>Usuários</h3>
+            <p>Gerenciar usuários do sistema</p>
+            <a href="/usuario_registration.html">Acessar</a>
+        </div>
+        <div class="card">
+            <h3>Agendamento</h3>
+            <p>Gerar e visualizar agendas</p>
+            <a href="/scheduling.html">Acessar</a>
+        </div>
+        <div class="card">
+            <h3>Relatórios</h3>
+            <p>Estatísticas e relatórios</p>
+            <a href="/reports.html">Acessar</a>
+        </div>
+        <div class="card">
+            <h3>Geolocalização</h3>
+            <p>Visualizar localização das ambulâncias</p>
+            <a href="/geolocation.html">Acessar</a>
+        </div>
+    </div>
+
+    <h2>Indicadores Rápidos</h2>
+    <div id="indicators">
+        <!-- Indicators will be loaded here -->
+    </div>
+
+    <script>
+        async function loadIndicators() {
+            try {
+                const [clientesRes, motoristasRes, ambulanciasRes] = await Promise.all([
+                    fetch('/clientes'),
+                    fetch('/motoristas'),
+                    fetch('/ambulancias')
+                ]);
+                const clientes = await clientesRes.json();
+                const motoristas = await motoristasRes.json();
+                const ambulancias = await ambulanciasRes.json();
+
+                const indicatorsDiv = document.getElementById('indicators');
+                indicatorsDiv.innerHTML = `
+                    <p><strong>Total de Clientes:</strong> ${clientes.length}</p>
+                    <p><strong>Total de Motoristas:</strong> ${motoristas.length}</p>
+                    <p><strong>Total de Ambulâncias:</strong> ${ambulancias.length}</p>
+                `;
+            } catch (error) {
+                console.error('Erro ao carregar indicadores:', error);
+            }
+        }
+
+        loadIndicators();
+    </script>
+</body>
+</html>

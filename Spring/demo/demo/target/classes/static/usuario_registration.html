@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuários - Sistema de Transporte</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        nav { background-color: #f0f0f0; padding: 10px; margin-bottom: 20px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #333; }
+        nav a:hover { text-decoration: underline; }
+        form { margin-bottom: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/dashboard.html">Dashboard</a>
+        <a href="/client_management.html">Clientes</a>
+        <a href="/motorista_registration.html">Motoristas</a>
+        <a href="/ambulancia_registration.html">Ambulâncias</a>
+        <a href="/hospital_registration.html">Hospitais</a>
+        <a href="/usuario_registration.html">Usuários</a>
+        <a href="/scheduling.html">Agendamento</a>
+        <a href="/reports.html">Relatórios</a>
+    </nav>
+
+    <h1>Cadastro de Usuários</h1>
+
+    <h2>Adicionar Usuário</h2>
+    <form id="formUsuario">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="senha">Senha:</label><br>
+        <input type="password" id="senha" name="senha" required><br><br>
+        
+        <label for="role">Função:</label><br>
+        <select id="role" name="role" required>
+            <option value="Agente">Agente</option>
+            <option value="Admin">Admin</option>
+            <option value="Motorista">Motorista</option>
+        </select><br><br>
+        
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <h2>Lista de Usuários</h2>
+    <table id="tabelaUsuarios">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Função</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        async function carregarUsuarios() {
+            try {
+                const res = await fetch('/usuarios');
+                const usuarios = await res.json();
+                const tbody = document.querySelector("#tabelaUsuarios tbody");
+                tbody.innerHTML = "";
+                usuarios.forEach(u => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${u.id}</td>
+                            <td>${u.nome}</td>
+                            <td>${u.email}</td>
+                            <td>${u.role}</td>
+                            <td>
+                                <button onclick="editarUsuario(${u.id})">Editar</button>
+                                <button onclick="excluirUsuario(${u.id})">Excluir</button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Erro ao carregar usuários:', error);
+            }
+        }
+
+        document.getElementById("formUsuario").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const form = new FormData(e.target);
+            const data = {};
+            form.forEach((value, key) => data[key] = value);
+            
+            try {
+                await fetch('/usuarios', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+                e.target.reset();
+                carregarUsuarios();
+            } catch (error) {
+                console.error('Erro ao cadastrar usuário:', error);
+            }
+        });
+
+        async function excluirUsuario(id) {
+            if (confirm('Tem certeza que deseja excluir este usuário?')) {
+                try {
+                    await fetch('/usuarios/' + id, { method: 'DELETE' });
+                    carregarUsuarios();
+                } catch (error) {
+                    console.error('Erro ao excluir usuário:', error);
+                }
+            }
+        }
+
+        function editarUsuario(id) {
+            alert('Funcionalidade de edição a ser implementada');
+        }
+
+        carregarUsuarios();
+    </script>
+</body>
+</html>
