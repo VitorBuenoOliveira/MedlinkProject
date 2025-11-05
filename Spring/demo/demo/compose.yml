@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ambulancia_user
+      POSTGRES_PASSWORD: 1234567
+      POSTGRES_DB: ambulancia
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+
+  pgadmin:
+    image: dpage/pgadmin4:8.9
+    container_name: pgadmin
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+
+  pgweb:
+    image: sosedoff/pgweb
+    container_name: pgweb
+    restart: always
+    environment:
+      - DATABASE_URL=postgres://ambulancia_user:1234567@postgres:5432/ambulancia?sslmode=disable
+    ports:
+      - "8082:8081"
+    depends_on:
+      - postgres
+
+      
+volumes:
+  postgres_data:
