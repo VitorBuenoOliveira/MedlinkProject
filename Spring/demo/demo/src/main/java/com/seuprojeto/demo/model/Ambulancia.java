@@ -19,6 +19,7 @@ public class Ambulancia {
     private Integer capacidade;
     private String status; // disponivel, em_uso, manutencao
 
+    
     @Column(name = "motorista_id")
     private Long motoristaId;
 

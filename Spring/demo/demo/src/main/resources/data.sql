@@ -1,6 +1,12 @@
 -- Default users for testing
 -- Passwords are encoded with BCrypt (all passwords are '123456')
 
+DELETE FROM usuario;
+DELETE FROM hospital;
+DELETE FROM ambulancia;
+DELETE FROM motorista;
+DELETE FROM cliente;
+
 INSERT INTO usuario (nome, email, senha, role) VALUES
 ('Admin User', 'admin@test.com', '$2a$10$8K3ds.9Xp/6Hk5qoVSkTqeS0NSuEpfFkJ8mBh9Yz1U2ZrJDcR1QyO', 'ADMIN'),
 ('Agente User', 'agente@test.com', '$2a$10$8K3ds.9Xp/6Hk5qoVSkTqeS0NSuEpfFkJ8mBh9Yz1U2ZrJDcR1QyO', 'AGENTE'),
