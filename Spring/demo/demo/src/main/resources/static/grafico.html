@@ -1,33 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gráfico de Usuários</title>
+    <link rel="stylesheet" href="styles.css" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<h1>Usuários cadastrados</h1>
-<canvas id="meuGrafico" width="400" height="200"></canvas>
+    <nav>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
+        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
+        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
+        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
+        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
+        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
+        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
+    </nav>
 
-<script>
-    fetch('/usuarios') // endpoint que retorna todos os usuários
-        .then(response => response.json())
-        .then(data => {
-            const labels = data.map(u => u.nome);
-            const values = data.map(u => 1); // cada usuário conta como 1
+    <div class="container">
+        <h1>Usuários Cadastrados 👥</h1>
+        <div class="chart-container">
+            <canvas id="meuGrafico" width="400" height="200"></canvas>
+        </div>
+    </div>
 
-            new Chart(document.getElementById('meuGrafico'), {
-                type: 'bar', // pode trocar para 'pie' se quiser pizza
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Quantidade de Usuários',
-                        data: values,
-                        backgroundColor: ['rgba(54, 162, 235, 0.6)', 'rgba(255, 99, 132, 0.6)']
-                    }]
-                }
+    <script>
+        fetch('/usuarios') // endpoint que retorna todos os usuários
+            .then(response => response.json())
+            .then(data => {
+                const labels = data.map(u => u.nome);
+                const values = data.map(u => 1); // cada usuário conta como 1
+
+                new Chart(document.getElementById('meuGrafico'), {
+                    type: 'bar', // pode trocar para 'pie' se quiser pizza
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Quantidade de Usuários',
+                            data: values,
+                            backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                            borderColor: 'rgba(102, 126, 234, 1)',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: true,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    font: { size: 14, family: "'Poppins', sans-serif" }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar usuários:', error);
+                document.querySelector('.chart-container').innerHTML = 
+                    '<p style="text-align: center; color: #e53e3e;"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar gráfico de usuários</p>';
             });
-        });
-</script>
+    </script>
 </body>
 </html>

@@ -2,46 +2,41 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Associar Motorista à Ambulância</title>
     <link rel="stylesheet" href="styles.css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        select, button {
-            margin-top: 5px;
-            padding: 8px;
-            width: 300px;
-            max-width: 100%;
-        }
-        .message {
-            margin-top: 15px;
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
-    <h1>Associar Motorista à Ambulância</h1>
-    <form id="associationForm">
-        <label for="ambulanciaSelect">Selecione a Ambulância:</label>
-        <select id="ambulanciaSelect" required>
-            <option value="">Carregando ambulâncias...</option>
-        </select>
+    <nav>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
+        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
+        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
+        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
+        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
+        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
+        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
+    </nav>
 
-        <label for="motoristaSelect">Selecione o Motorista:</label>
-        <select id="motoristaSelect" required>
-            <option value="">Carregando motoristas...</option>
-        </select>
+    <div class="container">
+        <h1>Associar Motorista à Ambulância 🚑</h1>
+        
+        <form id="associationForm">
+            <label for="ambulanciaSelect"><i class="fas fa-ambulance"></i> Selecione a Ambulância:</label>
+            <select id="ambulanciaSelect" required>
+                <option value=""><i class="fas fa-spinner fa-spin"></i> Carregando ambulâncias...</option>
+            </select>
 
-        <button type="submit">Associar</button>
-    </form>
-    <div class="message" id="message"></div>
+            <label for="motoristaSelect"><i class="fas fa-user-tie"></i> Selecione o Motorista:</label>
+            <select id="motoristaSelect" required>
+                <option value=""><i class="fas fa-spinner fa-spin"></i> Carregando motoristas...</option>
+            </select>
+
+            <button type="submit"><i class="fas fa-link"></i> Associar</button>
+        </form>
+        <div id="message" style="margin-top: 20px; text-align: center;"></div>
+    </div>
 
     <script>
         async function fetchAmbulancias() {
@@ -53,7 +48,7 @@
                 ambulancias.forEach(a => {
                     const option = document.createElement('option');
                     option.value = a.id;
-                    option.textContent = `${a.placa} - ${a.modelo || ''}`;
+                    option.textContent = `🚑 ${a.placa} - ${a.modelo || ''}`;
                     select.appendChild(option);
                 });
             } catch (error) {
@@ -71,7 +66,7 @@
                 motoristas.forEach(m => {
                     const option = document.createElement('option');
                     option.value = m.id;
-                    option.textContent = `${m.nome} - ${m.telefone || ''}`;
+                    option.textContent = `👤 ${m.nome} - ${m.telefone || ''}`;
                     select.appendChild(option);
                 });
             } catch (error) {
@@ -87,8 +82,7 @@
             const messageDiv = document.getElementById('message');
 
             if (!ambulanciaId || !motoristaId) {
-                messageDiv.textContent = 'Por favor, selecione ambos ambulância e motorista.';
-                messageDiv.style.color = 'red';
+                messageDiv.innerHTML = '<span style="color: #e53e3e;"><i class="fas fa-exclamation-triangle"></i> Por favor, selecione ambos ambulância e motorista.</span>';
                 return;
             }
 
@@ -102,16 +96,14 @@
                 });
 
                 if (response.ok) {
-                    messageDiv.textContent = 'Motorista associado com sucesso!';
-                    messageDiv.style.color = 'green';
+                    messageDiv.innerHTML = '<span style="color: #28a745;"><i class="fas fa-check-circle"></i> Motorista associado com sucesso!</span>';
+                    messageDiv.className = 'message-success';
                 } else {
                     const errorData = await response.json();
-                    messageDiv.textContent = `Erro: ${errorData.message || 'Falha ao associar motorista.'}`;
-                    messageDiv.style.color = 'red';
+                    messageDiv.innerHTML = `<span style="color: #e53e3e;"><i class="fas fa-times-circle"></i> Erro: ${errorData.message || 'Falha ao associar motorista.'}</span>`;
                 }
             } catch (error) {
-                messageDiv.textContent = 'Erro ao associar motorista.';
-                messageDiv.style.color = 'red';
+                messageDiv.innerHTML = '<span style="color: #e53e3e;"><i class="fas fa-times-circle"></i> Erro ao associar motorista.</span>';
                 console.error('Erro:', error);
             }
         }

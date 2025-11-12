@@ -2,62 +2,83 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de Ambulâncias Próximas</title>
     <link rel="stylesheet" href="styles.css" />
     <style>
         #map {
             height: 600px;
             width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
         .ambulance-card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px 0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .ambulance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
         }
         .ambulance-card h3 {
             margin-top: 0;
-            color: #d32f2f;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 1.3rem;
         }
         .status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: bold;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: inline-block;
         }
-        .status.disponivel { background: #4caf50; color: white; }
-        .status.em-transito { background: #ff9800; color: white; }
-        .status.ocupada { background: #f44336; color: white; }
-        .status.em-manutencao { background: #9e9e9e; color: white; }
+        .status.disponivel { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #155724; }
+        .status.em-transito { background: linear-gradient(135deg, #ffd89b 0%, #ffb347 100%); color: #7c3e00; }
+        .status.ocupada { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #721c24; }
+        .status.em-manutencao { background: linear-gradient(135deg, #a8caba 0%, #5d4e6d 100%); color: white; }
         #ambulance-list {
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
             margin-top: 20px;
+            padding: 10px;
         }
     </style>
 </head>
 <body>
     <nav>
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
-        <a href="/geolocation.html">Geolocalização</a>
-        <a href="/map.html">Mapa Próximo</a>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
+        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
+        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
+        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
+        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
+        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
+        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
+        <a href="/geolocation.html"><i class="fas fa-map-marker-alt"></i> Geolocalização</a>
+        <a href="/map.html"><i class="fas fa-map"></i> Mapa Próximo</a>
     </nav>
 
-    <h1>Mapa de Ambulâncias Próximas 🚑</h1>
+    <div class="container">
+        <h1>Mapa de Ambulâncias Próximas 🚑</h1>
 
-    <div id="map"></div>
+        <div id="map"></div>
 
-    <div id="ambulance-list">
-        <h2>Ambulâncias Próximas</h2>
-        <!-- Lista será preenchida dinamicamente -->
+        <div id="ambulance-list">
+            <h2><i class="fas fa-ambulance"></i> Ambulâncias Próximas</h2>
+            <!-- Lista será preenchida dinamicamente -->
+        </div>
     </div>
 
     <script>
@@ -173,21 +194,21 @@
 
         function updateAmbulanceList() {
             const listContainer = document.getElementById('ambulance-list');
-            listContainer.innerHTML = '<h2>Ambulâncias Próximas</h2>';
+            listContainer.innerHTML = '<h2><i class="fas fa-ambulance"></i> Ambulâncias Próximas</h2>';
 
             ambulancias.forEach(ambulancia => {
                 const card = document.createElement('div');
                 card.className = 'ambulance-card';
 
                 const motoristaInfo = ambulancia.motoristaNome ?
-                    `<p><strong>Motorista:</strong> ${ambulancia.motoristaNome} - ${ambulancia.motoristaTelefone || 'N/A'}</p>` :
-                    '<p><strong>Motorista:</strong> Não atribuído</p>';
+                    `<p><i class="fas fa-user-tie"></i> <strong>Motorista:</strong> ${ambulancia.motoristaNome} - ${ambulancia.motoristaTelefone || 'N/A'}</p>` :
+                    '<p><i class="fas fa-user-slash"></i> <strong>Motorista:</strong> Não atribuído</p>';
 
                 card.innerHTML = `
-                    <h3>${ambulancia.placa}</h3>
-                    <p><strong>Modelo:</strong> ${ambulancia.modelo || 'N/A'}</p>
-                    <p><strong>Capacidade:</strong> ${ambulancia.capacidade || 'N/A'} pessoas</p>
-                    <p><strong>Status:</strong> <span class="status ${ambulancia.status.toLowerCase().replace(' ', '-')}">${ambulancia.status}</span></p>
+                    <h3><i class="fas fa-ambulance"></i> ${ambulancia.placa}</h3>
+                    <p><i class="fas fa-car"></i> <strong>Modelo:</strong> ${ambulancia.modelo || 'N/A'}</p>
+                    <p><i class="fas fa-users"></i> <strong>Capacidade:</strong> ${ambulancia.capacidade || 'N/A'} pessoas</p>
+                    <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> <span class="status ${ambulancia.status.toLowerCase().replace(' ', '-')}">${ambulancia.status}</span></p>
                     ${motoristaInfo}
                 `;
 

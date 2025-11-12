@@ -2,38 +2,68 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agendamento - Sistema de Transporte</title>
+    <link rel="stylesheet" href="styles.css" />
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        nav { background-color: #f0f0f0; padding: 10px; margin-bottom: 20px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #333; }
-        nav a:hover { text-decoration: underline; }
-        .agenda-item { border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 5px; }
-        .status-pending { background-color: #fff3cd; }
-        .status-confirmed { background-color: #d1ecf1; }
-        .status-completed { background-color: #d4edda; }
+        .agenda-item {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .agenda-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.3);
+        }
+        .status-pending {
+            background: linear-gradient(135deg, rgba(255, 216, 155, 0.3) 0%, rgba(255, 179, 71, 0.3) 100%);
+            border-left: 4px solid #ffb347;
+        }
+        .status-confirmed {
+            background: linear-gradient(135deg, rgba(132, 250, 176, 0.3) 0%, rgba(143, 211, 244, 0.3) 100%);
+            border-left: 4px solid #8fd3f4;
+        }
+        .status-completed {
+            background: linear-gradient(135deg, rgba(132, 250, 176, 0.3) 0%, rgba(143, 211, 244, 0.3) 100%);
+            border-left: 4px solid #84fab0;
+        }
+        .action-buttons {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
     <nav>
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
+        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
+        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
+        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
+        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
+        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
+        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
     </nav>
 
-    <h1>Agendamento de Transportes</h1>
+    <div class="container">
+        <h1>Agendamento de Transportes 📅</h1>
 
-    <button onclick="gerarAgenda()">Gerar Agenda do Dia</button>
-    <button onclick="carregarAgenda()">Carregar Agenda</button>
+        <div class="action-buttons" style="margin-bottom: 20px;">
+            <button onclick="gerarAgenda()"><i class="fas fa-calendar-plus"></i> Gerar Agenda do Dia</button>
+            <button onclick="carregarAgenda()"><i class="fas fa-sync"></i> Atualizar Agenda</button>
+        </div>
 
-    <h2>Agenda do Dia</h2>
-    <div id="agendaContainer">
-        <!-- Agenda items will be loaded here -->
+        <h2><i class="fas fa-clipboard-list"></i> Agenda do Dia</h2>
+        <div id="agendaContainer">
+            <p style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Carregando agenda...</p>
+        </div>
     </div>
 
     <script>
@@ -46,25 +76,27 @@
                 container.innerHTML = "";
                 
                 if (clientes.length === 0) {
-                    container.innerHTML = "<p>Nenhum transporte agendado para hoje.</p>";
+                    container.innerHTML = "<p style='text-align: center;'><i class='fas fa-inbox'></i> Nenhum transporte agendado para hoje.</p>";
                     return;
                 }
 
                 clientes.forEach(c => {
                     const statusClass = c.atendido ? 'status-completed' : 'status-pending';
+                    const statusIcon = c.atendido ? 'fas fa-check-circle' : 'fas fa-clock';
                     container.innerHTML += `
                         <div class="agenda-item ${statusClass}">
-                            <h3>${c.nome}</h3>
-                            <p><strong>Destino:</strong> ${c.destino}</p>
-                            <p><strong>Telefone:</strong> ${c.telefone}</p>
-                            <p><strong>Status:</strong> ${c.atendido ? 'Atendido' : 'Pendente'}</p>
-                            ${!c.atendido ? `<button onclick="marcarComoAtendido(${c.id})">Marcar como Atendido</button>` : ''}
+                            <h3><i class="fas fa-user"></i> ${c.nome}</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> <strong>Destino:</strong> ${c.destino}</p>
+                            <p><i class="fas fa-phone"></i> <strong>Telefone:</strong> ${c.telefone}</p>
+                            <p><i class="${statusIcon}"></i> <strong>Status:</strong> ${c.atendido ? 'Atendido' : 'Pendente'}</p>
+                            ${!c.atendido ? `<button onclick="marcarComoAtendido(${c.id})"><i class="fas fa-check"></i> Marcar como Atendido</button>` : ''}
                         </div>
                     `;
                 });
             } catch (error) {
                 console.error('Erro ao carregar agenda:', error);
-                document.getElementById('agendaContainer').innerHTML = "<p>Erro ao carregar agenda.</p>";
+                document.getElementById('agendaContainer').innerHTML = 
+                    "<p style='text-align: center; color: #e53e3e;'><i class='fas fa-exclamation-triangle'></i> Erro ao carregar agenda.</p>";
             }
         }
 
@@ -74,6 +106,7 @@
                 carregarAgenda();
             } catch (error) {
                 console.error('Erro ao marcar como atendido:', error);
+                alert('Erro ao marcar como atendido');
             }
         }
 
