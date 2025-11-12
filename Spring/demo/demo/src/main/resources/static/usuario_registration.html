@@ -2,66 +2,68 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuários - Sistema de Transporte</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        nav { background-color: #f0f0f0; padding: 10px; margin-bottom: 20px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #333; }
-        nav a:hover { text-decoration: underline; }
-        form { margin-bottom: 20px; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <nav>
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
+        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
+        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
+        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
+        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
+        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
+        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
     </nav>
 
-    <h1>Cadastro de Usuários</h1>
+    <div class="container">
+        <h1>Cadastro de Usuários 👤</h1>
 
-    <h2>Adicionar Usuário</h2>
-    <form id="formUsuario">
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
+        <h2><i class="fas fa-user-plus"></i> Adicionar Usuário</h2>
+        <form id="formUsuario">
+            <label for="nome"><i class="fas fa-user"></i> Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder="Nome completo" required>
+            
+            <label for="email"><i class="fas fa-envelope"></i> Email:</label>
+            <input type="email" id="email" name="email" placeholder="usuario@email.com" required>
+            
+            <label for="senha"><i class="fas fa-lock"></i> Senha:</label>
+            <input type="password" id="senha" name="senha" placeholder="Senha segura" required>
         
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-        
-        <label for="senha">Senha:</label><br>
-        <input type="password" id="senha" name="senha" required><br><br>
-        
-        <label for="role">Função:</label><br>
-        <select id="role" name="role" required>
-            <option value="Agente">Agente</option>
-            <option value="Admin">Admin</option>
-            <option value="Motorista">Motorista</option>
-        </select><br><br>
-        
-        <button type="submit">Cadastrar</button>
-    </form>
+            
+            <label for="role"><i class="fas fa-user-tag"></i> Função:</label>
+            <select id="role" name="role" required>
+                <option value="Agente">👤 Agente</option>
+                <option value="Admin">👑 Admin</option>
+                <option value="Motorista">🚗 Motorista</option>
+            </select>
+            
+            <button type="submit"><i class="fas fa-save"></i> Cadastrar</button>
+        </form>
 
-    <h2>Lista de Usuários</h2>
-    <table id="tabelaUsuarios">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Função</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+        <h2><i class="fas fa-list"></i> Lista de Usuários</h2>
+        <table id="tabelaUsuarios">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th><i class="fas fa-user"></i> Nome</th>
+                    <th><i class="fas fa-envelope"></i> Email</th>
+                    <th><i class="fas fa-user-tag"></i> Função</th>
+                    <th><i class="fas fa-cog"></i> Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 20px;">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando usuários...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <script>
         async function carregarUsuarios() {

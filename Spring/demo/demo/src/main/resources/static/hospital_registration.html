@@ -2,51 +2,60 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Hospitais - Sistema de Transporte</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <nav>
         <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
+        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
+        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
+        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
+        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
+        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
+        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
+        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
     </nav>
 
-    <h1>Cadastro de Hospitais</h1>
+    <div class="container">
+        <h1>Cadastro de Hospitais 🏥</h1>
 
-    <h2>Adicionar Hospital</h2>
-    <form id="formHospital">
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
-        
-        <label for="endereco">Endereço:</label><br>
-        <input type="text" id="endereco" name="endereco" required><br><br>
-        
-        <label for="especialidades">Especialidades:</label><br>
-        <input type="text" id="especialidades" name="especialidades" required><br><br>
-        
-        <button type="submit">Cadastrar</button>
-    </form>
+        <h2><i class="fas fa-plus-circle"></i> Adicionar Hospital</h2>
+        <form id="formHospital">
+            <label for="nome"><i class="fas fa-hospital"></i> Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder="Nome do hospital" required>
+            
+            <label for="endereco"><i class="fas fa-map-marker-alt"></i> Endereço:</label>
+            <input type="text" id="endereco" name="endereco" placeholder="Endereço completo" required>
+            
+            <label for="especialidades"><i class="fas fa-heartbeat"></i> Especialidades:</label>
+            <input type="text" id="especialidades" name="especialidades" placeholder="Especialidades médicas" required>
+            
+            <button type="submit"><i class="fas fa-save"></i> Cadastrar</button>
+        </form>
 
-    <h2>Lista de Hospitais</h2>
-    <table id="tabelaHospitais">
-        <thead>
-            <tr>
+        <h2><i class="fas fa-list"></i> Lista de Hospitais</h2>
+        <table id="tabelaHospitais">
+            <thead>
+                <tr>
                 <th>ID</th>
-                <th>Nome</th>
-                <th>Endereço</th>
-                <th>Especialidades</th>
-                <th>Ações</th>
+                <th><i class="fas fa-hospital"></i> Nome</th>
+                <th><i class="fas fa-map-marker-alt"></i> Endereço</th>
+                <th><i class="fas fa-heartbeat"></i> Especialidades</th>
+                <th><i class="fas fa-cog"></i> Ações</th>
             </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 20px;">
+                    <i class="fas fa-spinner fa-spin"></i> Carregando hospitais...
+                </td>
+            </tr>
+        </tbody>
     </table>
+    </div>
 
     <script>
         async function carregarHospitais() {

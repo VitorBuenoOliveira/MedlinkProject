@@ -2,55 +2,64 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Motoristas - Sistema de Transporte</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
     <nav>
         <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
+        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
+        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
+        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
+        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
+        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
+        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
+        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
     </nav>
 
-    <h1>Cadastro de Motoristas</h1>
+    <div class="container">
+        <h1>Cadastro de Motoristas 🚗</h1>
 
-    <h2>Adicionar Motorista</h2>
-    <form id="formMotorista">
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
-        
-        <label for="carteiraHabilitacao">Carteira de Habilitação:</label><br>
-        <input type="text" id="carteiraHabilitacao" name="carteiraHabilitacao" required><br><br>
-        
-        <label for="telefone">Telefone:</label><br>
-        <input type="text" id="telefone" name="telefone" required><br><br>
-        
-        <label for="regiaoAtuacao">Região de Atuação:</label><br>
-        <input type="text" id="regiaoAtuacao" name="regiaoAtuacao" required><br><br>
-        
-        <button type="submit">Cadastrar</button>
-    </form>
+        <h2><i class="fas fa-user-plus"></i> Adicionar Motorista</h2>
+        <form id="formMotorista">
+            <label for="nome"><i class="fas fa-user"></i> Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder="Nome completo do motorista" required>
+            
+            <label for="carteiraHabilitacao"><i class="fas fa-id-card"></i> Carteira de Habilitação:</label>
+            <input type="text" id="carteiraHabilitacao" name="carteiraHabilitacao" placeholder="Número da CNH" required>
+            
+            <label for="telefone"><i class="fas fa-phone"></i> Telefone:</label>
+            <input type="text" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+            
+            <label for="regiaoAtuacao"><i class="fas fa-map-marked-alt"></i> Região de Atuação:</label>
+            <input type="text" id="regiaoAtuacao" name="regiaoAtuacao" placeholder="Região de trabalho" required>
+            
+            <button type="submit"><i class="fas fa-save"></i> Cadastrar</button>
+        </form>
 
-    <h2>Lista de Motoristas</h2>
-    <table id="tabelaMotoristas">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Carteira</th>
-                <th>Telefone</th>
-                <th>Região</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+        <h2><i class="fas fa-list"></i> Lista de Motoristas</h2>
+        <table id="tabelaMotoristas">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th><i class="fas fa-user"></i> Nome</th>
+                    <th><i class="fas fa-id-card"></i> Carteira</th>
+                    <th><i class="fas fa-phone"></i> Telefone</th>
+                    <th><i class="fas fa-map-marker-alt"></i> Região</th>
+                    <th><i class="fas fa-cog"></i> Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 20px;">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando motoristas...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <script>
         async function carregarMotoristas() {
@@ -59,6 +68,12 @@
                 const motoristas = await res.json();
                 const tbody = document.querySelector("#tabelaMotoristas tbody");
                 tbody.innerHTML = "";
+                
+                if (motoristas.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 20px;">Nenhum motorista cadastrado</td></tr>';
+                    return;
+                }
+                
                 motoristas.forEach(m => {
                     tbody.innerHTML += `
                         <tr>
@@ -68,14 +83,17 @@
                             <td>${m.telefone}</td>
                             <td>${m.regiaoAtuacao}</td>
                             <td>
-                                <button onclick="editarMotorista(${m.id})">Editar</button>
-                                <button onclick="excluirMotorista(${m.id})">Excluir</button>
+                                <button onclick="editarMotorista(${m.id})"><i class="fas fa-edit"></i> Editar</button>
+                                <button onclick="excluirMotorista(${m.id})" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"><i class="fas fa-trash"></i> Excluir</button>
                             </td>
                         </tr>
                     `;
                 });
             } catch (error) {
                 console.error('Erro ao carregar motoristas:', error);
+                document.querySelector("#tabelaMotoristas tbody").innerHTML = 
+                    '<tr><td colspan="6" style="text-align: center; padding: 20px; color: #e53e3e;"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar motoristas</td></tr>';
+            }
             }
         }
 
