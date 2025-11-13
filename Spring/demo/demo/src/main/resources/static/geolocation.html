@@ -2,31 +2,39 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geolocalização - Ambulâncias</title>
     <link rel="stylesheet" href="styles.css" />
     <style>
         #map {
             height: 600px;
             width: 100%;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <nav>
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
-        <a href="/geolocation.html">Geolocalização</a>
+        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
+        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
+        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
+        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
+        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
+        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
+        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
+        <a href="/geolocation.html"><i class="fas fa-map-marker-alt"></i> Geolocalização</a>
     </nav>
 
-    <h1>Geolocalização das Ambulâncias 🚑</h1>
+    <div class="container">
+        <h1>Geolocalização das Ambulâncias 🚑</h1>
 
-    <div id="map"></div>
+        <div id="map"></div>
+    </div>
 
     <script>
         // Dados fictícios de ambulâncias para exibição no mapa
