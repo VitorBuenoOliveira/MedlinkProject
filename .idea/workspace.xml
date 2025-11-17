@@ -5,76 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="121e8e5d-44d1-4025-9a23-2084c4200661" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/MedlinkProject.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/.idea/Spring.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/.idea/compiler.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/.idea/jarRepositories.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/.vscode/settings.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/SETUP_DATABASE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/TESTING_GUIDE.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/TODO.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/DemoApplication.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/config/SecurityConfig.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controller/UsuarioController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/AmbulanciaController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/AuthController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/ClienteController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/HospitalController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/MotoristaController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/filter/JwtAuthenticationFilter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Ambulancia.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/AmbulanciaMotoristaDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Cliente.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Hospital.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Motorista.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Usuario.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/AmbulanciaRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/ClienteRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/HospitalRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/MotoristaRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/UsuarioRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/service/UserDetailsServiceImpl.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/util/JwtUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/application.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/data.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/fix_duplicate_users.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/schema.sql" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/ambulancia_management.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/ambulancia_motorista.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/ambulancia_registration.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/client_management.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/dashboard.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/geolocation.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/grafico.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/hospital_registration.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/login.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/map.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/motorista_registration.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/reports.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/scheduling.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/styles.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/usuario_registration.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/test/java/com/seuprojeto/demo/DemoApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Spring/insert_test_user.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,12 +28,95 @@
     "Application.DemoApplication.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "Vitor-Feature",
+    "git-widget-placeholder": "copilot/improve-visual-design",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Vitor/Desktop/Spring",
     "settings.editor.selected.configurable": "reference.settings.project.maven.importing"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="MedlinkProject" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="MedlinkProject" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="MedlinkProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="MedlinkProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <module name="MedlinkProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <module name="MedlinkProject" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
