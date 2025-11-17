@@ -1,19 +1,14 @@
 // Sidebar HTML Generator and Functions
 function createSidebar(activePage = '') {
     return `
-    <!-- Mobile Toggle Button -->
-    <button class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-    </button>
-    
     <!-- Sidebar Overlay for Mobile -->
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
     
     <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar collapsed" id="sidebar">
         <!-- Sidebar Header -->
         <div class="sidebar-header">
-            <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
+            <i class="fas fa-hospital" style="font-size: 2rem; color: #667eea;"></i>
             <h3>MediLink</h3>
         </div>
         
@@ -139,6 +134,14 @@ window.addEventListener('DOMContentLoaded', () => {
             link.classList.remove('active');
         }
     });
+    
+    // Initialize sidebar as collapsed on desktop
+    const sidebar = document.getElementById('sidebar');
+    const body = document.body;
+    if (window.innerWidth > 768 && sidebar) {
+        sidebar.classList.add('collapsed');
+        body.classList.add('sidebar-collapsed');
+    }
     
     // Handle window resize
     window.addEventListener('resize', () => {

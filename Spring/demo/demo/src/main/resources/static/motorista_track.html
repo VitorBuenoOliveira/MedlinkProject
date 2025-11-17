@@ -157,21 +157,26 @@
         .action-buttons {
             display: flex;
             gap: 10px;
+            justify-content: space-between;
         }
 
         .action-buttons button {
             flex: 1;
-            padding: 14px;
+            padding: 15px 20px;
             border: none;
             border-radius: 12px;
             font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-size: 0.95rem;
+            gap: 10px;
+        }
+        
+        .action-buttons button i {
+            font-size: 1.1rem;
         }
 
         .btn-navigate {
@@ -190,8 +195,8 @@
         }
 
         .action-buttons button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
         }
 
         .bottom-stats {
