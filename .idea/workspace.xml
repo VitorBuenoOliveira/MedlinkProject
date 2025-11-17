@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="121e8e5d-44d1-4025-9a23-2084c4200661" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/MedlinkProject.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/.idea/Spring.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/.idea/uiDesigner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/.vscode/settings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/SETUP_DATABASE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/TESTING_GUIDE.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/TODO.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/DemoApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/config/SecurityConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controller/UsuarioController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/AmbulanciaController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/ClienteController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/HospitalController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/controllers/MotoristaController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/filter/JwtAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Ambulancia.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/AmbulanciaMotoristaDTO.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Cliente.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Hospital.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Motorista.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/model/Usuario.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/AmbulanciaRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/ClienteRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/HospitalRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/MotoristaRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/repository/UsuarioRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/service/UserDetailsServiceImpl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/java/com/seuprojeto/demo/util/JwtUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/data.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/fix_duplicate_users.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/schema.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/ambulancia_management.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/ambulancia_motorista.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/ambulancia_registration.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/client_management.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/geolocation.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/grafico.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/hospital_registration.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/login.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/map.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/motorista_registration.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/reports.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/scheduling.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/main/resources/static/usuario_registration.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/demo/demo/src/test/java/com/seuprojeto/demo/DemoApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spring/insert_test_user.sql" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="32YjGR2xooBfleGHG9QFSqF1Syj" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.DemoApplication.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "Vitor-Feature",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Vitor/Desktop/Spring",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.importing"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="121e8e5d-44d1-4025-9a23-2084c4200661" name="Changes" comment="" />
+      <created>1757604305702</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1757604305702</updated>
+    </task>
+    <servers />
+  </component>
+</project>
