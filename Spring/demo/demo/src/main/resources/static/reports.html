@@ -5,20 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Relatórios - Sistema de Transporte</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <nav>
-        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
-        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
-        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
-        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
-        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
-        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
-        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
-        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
-    </nav>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+    
 
     <div class="container">
         <h1>Relatórios e Estatísticas 📊</h1>
@@ -136,6 +156,30 @@
         }
 
         loadStats();
+    </script>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('reports');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // Apply accessibility settings
+        const highContrast = localStorage.getItem('highContrast') === 'true';
+        const largeText = localStorage.getItem('largeText') === 'true';
+        
+        if (highContrast) {
+            document.body.classList.add('high-contrast');
+        }
+        if (largeText) {
+            document.body.classList.add('large-text');
+        }
     </script>
 </body>
 </html>

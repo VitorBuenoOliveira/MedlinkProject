@@ -5,70 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mapa de Ambulâncias Próximas</title>
     <link rel="stylesheet" href="styles.css" />
-    <style>
-        #map {
-            height: 600px;
-            width: 100%;
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-        .ambulance-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 15px 0;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
-        .ambulance-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.3);
-        }
-        .ambulance-card h3 {
-            margin-top: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 1.3rem;
-        }
-        .status {
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            display: inline-block;
-        }
-        .status.disponivel { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); color: #155724; }
-        .status.em-transito { background: linear-gradient(135deg, #ffd89b 0%, #ffb347 100%); color: #7c3e00; }
-        .status.ocupada { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #721c24; }
-        .status.em-manutencao { background: linear-gradient(135deg, #a8caba 0%, #5d4e6d 100%); color: white; }
-        #ambulance-list {
-            max-height: 500px;
-            overflow-y: auto;
-            margin-top: 20px;
-            padding: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-    <nav>
-        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
-        <a href="/dashboard.html"><i class="fas fa-home"></i> Dashboard</a>
-        <a href="/client_management.html"><i class="fas fa-users"></i> Clientes</a>
-        <a href="/motorista_registration.html"><i class="fas fa-user-tie"></i> Motoristas</a>
-        <a href="/ambulancia_registration.html"><i class="fas fa-ambulance"></i> Ambulâncias</a>
-        <a href="/hospital_registration.html"><i class="fas fa-hospital"></i> Hospitais</a>
-        <a href="/usuario_registration.html"><i class="fas fa-user-plus"></i> Usuários</a>
-        <a href="/scheduling.html"><i class="fas fa-calendar-alt"></i> Agendamento</a>
-        <a href="/reports.html"><i class="fas fa-chart-bar"></i> Relatórios</a>
-        <a href="/geolocation.html"><i class="fas fa-map-marker-alt"></i> Geolocalização</a>
-        <a href="/map.html"><i class="fas fa-map"></i> Mapa Próximo</a>
-    </nav>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+    
 
     <div class="container">
         <h1>Mapa de Ambulâncias Próximas 🚑</h1>
@@ -220,5 +190,29 @@
         getUserLocation();
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIz6iI0blYnCpoGhjstXvYbxdVdyHRWpo&callback=getUserLocation"></script>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('map');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // Apply accessibility settings
+        const highContrast = localStorage.getItem('highContrast') === 'true';
+        const largeText = localStorage.getItem('largeText') === 'true';
+        
+        if (highContrast) {
+            document.body.classList.add('high-contrast');
+        }
+        if (largeText) {
+            document.body.classList.add('large-text');
+        }
+    </script>
 </body>
 </html>

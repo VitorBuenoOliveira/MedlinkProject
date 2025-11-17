@@ -5,128 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configurações - MediLink</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="has-sidebar">
-    <!-- Mobile Toggle Button -->
-    <button class="sidebar-toggle" onclick="toggleSidebar()">
-        <i class="fas fa-bars"></i>
-    </button>
-    
-    <!-- Sidebar Overlay for Mobile -->
-    <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
-    
-    <!-- Sidebar -->
-    <aside class="sidebar" id="sidebar">
-        <!-- Sidebar Header -->
-        <div class="sidebar-header">
-            <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
-            <h3>MediLink System</h3>
-        </div>
-        
-        <!-- User Profile -->
-        <div class="user-profile">
-            <div class="user-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="user-info">
-                <h4>Admin User</h4>
-                <p>admin@medilink.com</p>
-            </div>
-        </div>
-        
-        <!-- Navigation Menu -->
-        <nav class="sidebar-nav">
-            <div class="nav-section">
-                <div class="nav-section-title">Menu Principal</div>
-                <a href="/dashboard.html">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="/client_management.html">
-                    <i class="fas fa-users"></i>
-                    <span>Clientes</span>
-                </a>
-                <a href="/motorista_registration.html">
-                    <i class="fas fa-user-tie"></i>
-                    <span>Motoristas</span>
-                </a>
-                <a href="/ambulancia_registration.html">
-                    <i class="fas fa-ambulance"></i>
-                    <span>Ambulâncias</span>
-                </a>
-                <a href="/hospital_registration.html">
-                    <i class="fas fa-hospital"></i>
-                    <span>Hospitais</span>
-                </a>
-                <a href="/usuario_registration.html">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Usuários</span>
-                </a>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">Operações</div>
-                <a href="/scheduling.html">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Agendamento</span>
-                </a>
-                <a href="/cliente_track.html">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <span>Rastreamento Cliente</span>
-                </a>
-                <a href="/motorista_track.html">
-                    <i class="fas fa-route"></i>
-                    <span>Painel Motorista</span>
-                </a>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">Mapas & Análises</div>
-                <a href="/geolocation.html">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Geolocalização</span>
-                </a>
-                <a href="/map.html">
-                    <i class="fas fa-map"></i>
-                    <span>Mapa Próximo</span>
-                </a>
-                <a href="/reports.html">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Relatórios</span>
-                </a>
-                <a href="/grafico.html">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Gráficos</span>
-                </a>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">Sistema</div>
-                <a href="/ambulancia_management.html">
-                    <i class="fas fa-cogs"></i>
-                    <span>Gestão Ambulâncias</span>
-                </a>
-                <a href="/ambulancia_motorista.html">
-                    <i class="fas fa-link"></i>
-                    <span>Vincular Motorista</span>
-                </a>
-                <a href="/settings.html" class="active">
-                    <i class="fas fa-sliders-h"></i>
-                    <span>Configurações</span>
-                </a>
-            </div>
-        </nav>
-        
-        <!-- Sidebar Footer -->
-        <div class="sidebar-footer">
-            <a href="/login.html">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Sair</span>
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
             </a>
         </div>
-    </aside>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div class="container">
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+<div class="container">
         <h1><i class="fas fa-sliders-h"></i> Configurações do Sistema</h1>
         
         <div class="settings-grid">
@@ -374,6 +285,13 @@
             }
         `;
         document.head.appendChild(style);
+    </script>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('settings');
     </script>
 </body>
 </html>

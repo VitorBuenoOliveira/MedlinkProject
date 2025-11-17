@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Sistema de Transporte de Pacientes</title>
+    <title>Home - MediLink System</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -38,9 +38,21 @@
     <!-- Main Content -->
     <main class="main-content">
         <div class="container">
-            <h1><i class="fas fa-tachometer-alt"></i> Dashboard - Sistema de Transporte de Pacientes</h1>
+            <div class="welcome-header">
+                <h1><i class="fas fa-hospital"></i> Bem-vindo ao MediLink System</h1>
+                <p class="welcome-subtitle">Sistema de Transporte de Pacientes</p>
+            </div>
 
             <div class="dashboard-grid">
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3>Dashboard</h3>
+                    <p>Visão geral e indicadores do sistema</p>
+                    <a href="/dashboard.html" class="card-btn">Acessar</a>
+                </div>
+
                 <div class="card hover-card">
                     <div class="card-icon">
                         <i class="fas fa-users"></i>
@@ -49,6 +61,7 @@
                     <p>Gerenciar solicitações de transporte</p>
                     <a href="/client_management.html" class="card-btn">Acessar</a>
                 </div>
+
                 <div class="card hover-card">
                     <div class="card-icon">
                         <i class="fas fa-user-tie"></i>
@@ -57,6 +70,7 @@
                     <p>Cadastrar e gerenciar motoristas</p>
                     <a href="/motorista_registration.html" class="card-btn">Acessar</a>
                 </div>
+
                 <div class="card hover-card">
                     <div class="card-icon">
                         <i class="fas fa-ambulance"></i>
@@ -65,6 +79,7 @@
                     <p>Gerenciar frota de veículos</p>
                     <a href="/ambulancia_registration.html" class="card-btn">Acessar</a>
                 </div>
+
                 <div class="card hover-card">
                     <div class="card-icon">
                         <i class="fas fa-hospital"></i>
@@ -73,6 +88,7 @@
                     <p>Cadastrar destinos</p>
                     <a href="/hospital_registration.html" class="card-btn">Acessar</a>
                 </div>
+
                 <div class="card hover-card">
                     <div class="card-icon">
                         <i class="fas fa-user-plus"></i>
@@ -81,6 +97,7 @@
                     <p>Gerenciar usuários do sistema</p>
                     <a href="/usuario_registration.html" class="card-btn">Acessar</a>
                 </div>
+
                 <div class="card hover-card">
                     <div class="card-icon">
                         <i class="fas fa-calendar-alt"></i>
@@ -89,22 +106,7 @@
                     <p>Gerar e visualizar agendas</p>
                     <a href="/scheduling.html" class="card-btn">Acessar</a>
                 </div>
-                <div class="card hover-card">
-                    <div class="card-icon">
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                    <h3>Relatórios</h3>
-                    <p>Estatísticas e relatórios</p>
-                    <a href="/reports.html" class="card-btn">Acessar</a>
-                </div>
-                <div class="card hover-card">
-                    <div class="card-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <h3>Geolocalização</h3>
-                    <p>Visualizar localização das ambulâncias</p>
-                    <a href="/geolocation.html" class="card-btn">Acessar</a>
-                </div>
+
                 <div class="card hover-card">
                     <div class="card-icon">
                         <i class="fas fa-map-marked-alt"></i>
@@ -113,6 +115,7 @@
                     <p>Acompanhar ambulância chegando</p>
                     <a href="/cliente_track.html" class="card-btn">Acessar</a>
                 </div>
+
                 <div class="card hover-card">
                     <div class="card-icon">
                         <i class="fas fa-route"></i>
@@ -121,11 +124,33 @@
                     <p>Navegação e rota do motorista</p>
                     <a href="/motorista_track.html" class="card-btn">Acessar</a>
                 </div>
-            </div>
 
-            <h2><i class="fas fa-chart-line"></i> Indicadores Rápidos</h2>
-            <div id="indicators" class="indicators-container">
-                <p><i class="fas fa-spinner fa-spin"></i> Carregando...</p>
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Geolocalização</h3>
+                    <p>Visualizar localização das ambulâncias</p>
+                    <a href="/geolocation.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Relatórios</h3>
+                    <p>Estatísticas e relatórios</p>
+                    <a href="/reports.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Gráficos</h3>
+                    <p>Visualizações de dados</p>
+                    <a href="/grafico.html" class="card-btn">Acessar</a>
+                </div>
             </div>
         </div>
     </main>
@@ -133,7 +158,7 @@
     <script src="sidebar.js"></script>
     <script>
         // Inject sidebar
-        document.getElementById('sidebar-container').innerHTML = createSidebar('dashboard');
+        document.getElementById('sidebar-container').innerHTML = createSidebar('home');
         
         // Apply saved theme
         const theme = localStorage.getItem('theme') || 'light';
@@ -151,52 +176,6 @@
         if (largeText) {
             document.body.classList.add('large-text');
         }
-        
-        // Load indicators
-        async function loadIndicators() {
-            try {
-                const [clientesRes, motoristasRes, ambulanciasRes] = await Promise.all([
-                    fetch('/clientes'),
-                    fetch('/motoristas'),
-                    fetch('/ambulancias')
-                ]);
-                const clientes = await clientesRes.json();
-                const motoristas = await motoristasRes.json();
-                const ambulancias = await ambulanciasRes.json();
-
-                const indicatorsDiv = document.getElementById('indicators');
-                indicatorsDiv.innerHTML = `
-                    <div class="indicator-card">
-                        <i class="fas fa-users"></i>
-                        <div>
-                            <strong>Total de Clientes</strong>
-                            <span class="indicator-value">${clientes.length}</span>
-                        </div>
-                    </div>
-                    <div class="indicator-card">
-                        <i class="fas fa-user-tie"></i>
-                        <div>
-                            <strong>Total de Motoristas</strong>
-                            <span class="indicator-value">${motoristas.length}</span>
-                        </div>
-                    </div>
-                    <div class="indicator-card">
-                        <i class="fas fa-ambulance"></i>
-                        <div>
-                            <strong>Total de Ambulâncias</strong>
-                            <span class="indicator-value">${ambulancias.length}</span>
-                        </div>
-                    </div>
-                `;
-            } catch (error) {
-                console.error('Erro ao carregar indicadores:', error);
-                document.getElementById('indicators').innerHTML = `
-                    <p style="color: #e53e3e;"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar indicadores</p>
-                `;
-            }
-        }
-
-        loadIndicators();
     </script>
 </body>
 </html>

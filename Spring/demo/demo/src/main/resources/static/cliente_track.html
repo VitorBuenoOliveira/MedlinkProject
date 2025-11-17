@@ -429,8 +429,36 @@
             );
         }
     </script>
+    <!-- 
+        IMPORTANTE: Para usar o Google Maps, você precisa de uma chave de API válida.
+        Obtenha sua chave em: https://console.cloud.google.com/google/maps-apis/
+        Substitua 'YOUR_GOOGLE_MAPS_API_KEY' abaixo pela sua chave.
+    -->
     <script async defer 
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIz6iI0blYnCpoGhjstXvYbxdVdyHRWpo&libraries=geometry&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=geometry&callback=initMap"
+        onerror="handleMapError()">
+    </script>
+    <script>
+        function handleMapError() {
+            const mapDiv = document.getElementById('map');
+            mapDiv.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; text-align: center;">
+                    <i class="fas fa-map-marked-alt" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                    <h2 style="color: white; margin-bottom: 15px;">Google Maps API Key Necessária</h2>
+                    <p style="max-width: 500px; line-height: 1.6;">
+                        Para rastrear a ambulância em tempo real, você precisa adicionar uma chave válida do Google Maps API.
+                    </p>
+                    <p style="max-width: 500px; line-height: 1.6;">
+                        1. Acesse: <a href="https://console.cloud.google.com/google/maps-apis/" target="_blank" style="color: #FFD700; text-decoration: underline;">Google Cloud Console</a><br>
+                        2. Crie um projeto e ative Maps JavaScript API<br>
+                        3. Substitua 'YOUR_GOOGLE_MAPS_API_KEY' no código por sua chave
+                    </p>
+                    <div style="background: rgba(255,255,255,0.2); padding: 20px; border-radius: 10px; margin-top: 20px;">
+                        <p style="margin: 0;"><strong>Simulação:</strong> Esta é uma demonstração do rastreamento</p>
+                    </div>
+                </div>
+            `;
+        }
     </script>
 </body>
 </html>

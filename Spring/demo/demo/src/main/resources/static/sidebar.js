@@ -14,26 +14,21 @@ function createSidebar(activePage = '') {
         <!-- Sidebar Header -->
         <div class="sidebar-header">
             <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
-            <h3>MediLink System</h3>
-        </div>
-        
-        <!-- User Profile -->
-        <div class="user-profile">
-            <div class="user-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="user-info">
-                <h4>Admin User</h4>
-                <p>admin@medilink.com</p>
-            </div>
+            <h3>MediLink</h3>
         </div>
         
         <!-- Navigation Menu -->
         <nav class="sidebar-nav">
+            <!-- Home Link -->
+            <a href="/home.html" ${activePage === 'home' ? 'class="active"' : ''}>
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            
             <div class="nav-section">
-                <div class="nav-section-title">Menu Principal</div>
+                <div class="nav-section-title">Páginas</div>
                 <a href="/dashboard.html" ${activePage === 'dashboard' ? 'class="active"' : ''}>
-                    <i class="fas fa-home"></i>
+                    <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
                 <a href="/client_management.html" ${activePage === 'client_management' ? 'class="active"' : ''}>
@@ -56,10 +51,6 @@ function createSidebar(activePage = '') {
                     <i class="fas fa-user-plus"></i>
                     <span>Usuários</span>
                 </a>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">Operações</div>
                 <a href="/scheduling.html" ${activePage === 'scheduling' ? 'class="active"' : ''}>
                     <i class="fas fa-calendar-alt"></i>
                     <span>Agendamento</span>
@@ -72,10 +63,6 @@ function createSidebar(activePage = '') {
                     <i class="fas fa-route"></i>
                     <span>Painel Motorista</span>
                 </a>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">Mapas & Análises</div>
                 <a href="/geolocation.html" ${activePage === 'geolocation' ? 'class="active"' : ''}>
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Geolocalização</span>
@@ -92,10 +79,6 @@ function createSidebar(activePage = '') {
                     <i class="fas fa-chart-line"></i>
                     <span>Gráficos</span>
                 </a>
-            </div>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">Gerenciamento</div>
                 <a href="/ambulancia_management.html" ${activePage === 'ambulancia_management' ? 'class="active"' : ''}>
                     <i class="fas fa-cogs"></i>
                     <span>Gestão Ambulâncias</span>
@@ -109,6 +92,14 @@ function createSidebar(activePage = '') {
         
         <!-- Sidebar Footer -->
         <div class="sidebar-footer">
+            <a href="/settings.html" ${activePage === 'settings' ? 'class="active"' : ''}>
+                <i class="fas fa-cog"></i>
+                <span>Configurações</span>
+            </a>
+            <a href="/about.html" ${activePage === 'about' ? 'class="active"' : ''}>
+                <i class="fas fa-info-circle"></i>
+                <span>Sobre</span>
+            </a>
             <a href="/login.html">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Sair</span>
