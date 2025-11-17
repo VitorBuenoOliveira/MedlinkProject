@@ -118,37 +118,52 @@ function createSidebar(activePage = '') {
     `;
 }
 
-// Sidebar toggle for mobile
+// Sidebar toggle for mobile and desktop collapse
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
+    const body = document.body;
     const overlay = document.querySelector('.sidebar-overlay');
-    if (sidebar && overlay) {
+    
+    // Mobile behavior
+    if (window.innerWidth <= 768) {
         sidebar.classList.toggle('active');
-        overlay.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
+    } 
+    // Desktop collapse behavior
+    else {
+        sidebar.classList.toggle('collapsed');
+        body.classList.toggle('sidebar-collapsed');
     }
 }
 
-// Initialize sidebar
-function initializeSidebar(activePage = '') {
-    // Add has-sidebar class to body
-    document.body.classList.add('has-sidebar');
+// Set active menu item based on current page
+window.addEventListener('DOMContentLoaded', () => {
+    const currentPage = window.location.pathname;
+    const menuLinks = document.querySelectorAll('.sidebar-nav a');
     
-    // Insert sidebar at the beginning of body
-    document.body.insertAdjacentHTML('afterbegin', createSidebar(activePage));
+    menuLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
     
-    // If no active page specified, auto-detect from URL
-    if (!activePage) {
-        const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
-        const menuLinks = document.querySelectorAll('.sidebar-nav a');
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        const sidebar = document.getElementById('sidebar');
+        const body = document.body;
         
-        menuLinks.forEach(link => {
-            const href = link.getAttribute('href');
-            if (href && href.includes(currentPage)) {
-                link.classList.add('active');
-            }
-        });
-    }
-}
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove('active');
+            const overlay = document.querySelector('.sidebar-overlay');
+            if (overlay) overlay.classList.remove('active');
+        } else {
+            sidebar.classList.remove('collapsed');
+            body.classList.remove('sidebar-collapsed');
+        }
+    });
+});
 
 // Export functions for use in pages
 if (typeof module !== 'undefined' && module.exports) {
