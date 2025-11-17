@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Motorista - Navegação</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .driver-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .top-bar h1 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: white;
+            text-shadow: none;
+            -webkit-text-fill-color: white;
+        }
+
+        .ambulance-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        #map {
+            flex: 1;
+            width: 100%;
+        }
+
+        .call-panel {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 999;
+            max-width: 400px;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .call-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .patient-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        .call-details h2 {
+            margin: 0 0 5px 0;
+            color: #2d3748;
+            font-size: 1.3rem;
+        }
+
+        .call-details p {
+            margin: 0;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .info-item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .info-item .label {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-bottom: 5px;
+        }
+
+        .info-item .value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .route-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .route-info .big-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .route-info .small-text {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons button {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .btn-navigate {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #155724;
+        }
+
+        .btn-arrived {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-cancel {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #721c24;
+        }
+
+        .action-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .bottom-stats {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card .icon {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card .label {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .toggle-panel {
+            position: absolute;
+            top: 90px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .toggle-panel:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="driver-container">
+        <div class="top-bar">
+            <h1><i class="fas fa-route"></i> Navegação Ativa</h1>
+            <div class="ambulance-badge" id="ambulancePlate">
+                <i class="fas fa-ambulance"></i> ABC-1234
+            </div>
+        </div>
+
+        <div id="map"></div>
+
+        <div class="toggle-panel" onclick="toggleCallPanel()" title="Mostrar/Ocultar Detalhes do Chamado">
+            <i class="fas fa-info-circle"></i>
+        </div>
+
+        <div class="call-panel" id="callPanel">
+            <div class="call-header">
+                <div class="patient-icon">👤</div>
+                <div class="call-details">
+                    <h2 id="patientName">Maria Santos</h2>
+                    <p><i class="fas fa-phone"></i> <span id="patientPhone">(11) 98888-8888</span></p>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label"><i class="fas fa-map-marker-alt"></i> Origem</div>
+                    <div class="value" id="origin">Rua A, 123</div>
+                </div>
+                <div class="info-item">
+                    <div class="label"><i class="fas fa-hospital"></i> Destino</div>
+                    <div class="value" id="destination">Hospital B</div>
+                </div>
+                <div class="info-item">
+                    <div class="label"><i class="fas fa-heartbeat"></i> Prioridade</div>
+                    <div class="value" id="priority">Alta</div>
+                </div>
+                <div class="info-item">
+                    <div class="label"><i class="fas fa-notes-medical"></i> Tipo</div>
+                    <div class="value" id="callType">Emergência</div>
+                </div>
+            </div>
+
+            <div class="route-info">
+                <div class="small-text"><i class="fas fa-clock"></i> Tempo até o Paciente</div>
+                <div class="big-text" id="etaToPatient">5 min</div>
+                <div class="small-text"><i class="fas fa-route"></i> <span id="distanceToPatient">2.3 km</span></div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-navigate" onclick="startNavigation()">
+                    <i class="fas fa-directions"></i> Navegar
+                </button>
+                <button class="btn-arrived" onclick="markArrived()">
+                    <i class="fas fa-check"></i> Cheguei
+                </button>
+            </div>
+
+            <div class="action-buttons" style="margin-top: 10px;">
+                <button class="btn-cancel" onclick="callPatient()">
+                    <i class="fas fa-phone"></i> Ligar Paciente
+                </button>
+            </div>
+        </div>
+
+        <div class="bottom-stats">
+            <div class="stat-card">
+                <div class="icon">🚑</div>
+                <div class="number" id="passengers">0</div>
+                <div class="label">Passageiros</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">📍</div>
+                <div class="number" id="speed">0</div>
+                <div class="label">km/h</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">⏱️</div>
+                <div class="number" id="totalTime">00:05</div>
+                <div class="label">Em Rota</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let map;
+        let ambulanceMarker;
+        let patientMarker;
+        let hospitalMarker;
+        let directionsService;
+        let directionsRenderer;
+        let isPanelVisible = true;
+        
+        // Posições
+        let ambulanceLocation = { lat: -23.5555, lng: -46.6383 }; // Posição da ambulância
+        let patientLocation = { lat: -23.5505, lng: -46.6333 }; // Local do paciente
+        let hospitalLocation = { lat: -23.5455, lng: -46.6283 }; // Hospital destino
+        
+        let currentPhase = 'TO_PATIENT'; // TO_PATIENT ou TO_HOSPITAL
+        let startTime = Date.now();
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: ambulanceLocation,
+                styles: [
+                    {
+                        "featureType": "all",
+                        "elementType": "geometry",
+                        "stylers": [{"color": "#f5f5f5"}]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "geometry",
+                        "stylers": [{"color": "#ffffff"}]
+                    }
+                ],
+                zoomControl: true,
+                mapTypeControl: false,
+                streetViewControl: false,
+                fullscreenControl: true
+            });
+
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                map: map,
+                suppressMarkers: true,
+                polylineOptions: {
+                    strokeColor: '#667eea',
+                    strokeWeight: 6,
+                    strokeOpacity: 0.8
+                }
+            });
+
+            // Marcador da ambulância (você/motorista)
+            ambulanceMarker = new google.maps.Marker({
+                position: ambulanceLocation,
+                map: map,
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                        <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+                            <circle cx="30" cy="30" r="28" fill="#667eea" stroke="white" stroke-width="3"/>
+                            <text x="30" y="40" font-size="35" text-anchor="middle" fill="white">🚑</text>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(60, 60),
+                    anchor: new google.maps.Point(30, 30)
+                },
+                title: 'Sua Ambulância',
+                zIndex: 1000
+            });
+
+            // Marcador do paciente
+            patientMarker = new google.maps.Marker({
+                position: patientLocation,
+                map: map,
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+                            <circle cx="25" cy="25" r="24" fill="#fa709a" stroke="white" stroke-width="2"/>
+                            <text x="25" y="35" font-size="30" text-anchor="middle" fill="white">👤</text>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(50, 50),
+                    anchor: new google.maps.Point(25, 25)
+                },
+                title: 'Paciente',
+                animation: google.maps.Animation.BOUNCE
+            });
+
+            // Marcador do hospital
+            hospitalMarker = new google.maps.Marker({
+                position: hospitalLocation,
+                map: map,
+                icon: {
+                    url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+                            <circle cx="25" cy="25" r="24" fill="#84fab0" stroke="white" stroke-width="2"/>
+                            <text x="25" y="35" font-size="30" text-anchor="middle" fill="white">🏥</text>
+                        </svg>
+                    `),
+                    scaledSize: new google.maps.Size(50, 50),
+                    anchor: new google.maps.Point(25, 25)
+                },
+                title: 'Hospital Destino'
+            });
+
+            calculateRoute();
+            startTimer();
+            
+            // Simula movimento e atualização de velocidade
+            setInterval(updateAmbulancePosition, 2000);
+            setInterval(updateSpeed, 1000);
+        }
+
+        function calculateRoute() {
+            const destination = currentPhase === 'TO_PATIENT' ? patientLocation : hospitalLocation;
+            
+            const request = {
+                origin: ambulanceLocation,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+
+            directionsService.route(request, (result, status) => {
+                if (status === google.maps.DirectionsStatus.OK) {
+                    directionsRenderer.setDirections(result);
+                    
+                    const leg = result.routes[0].legs[0];
+                    document.getElementById('etaToPatient').textContent = leg.duration.text;
+                    document.getElementById('distanceToPatient').textContent = leg.distance.text;
+                }
+            });
+        }
+
+        function updateAmbulancePosition() {
+            const destination = currentPhase === 'TO_PATIENT' ? patientLocation : hospitalLocation;
+            
+            // Simula movimento em direção ao destino
+            const latDiff = (destination.lat - ambulanceLocation.lat) * 0.15;
+            const lngDiff = (destination.lng - ambulanceLocation.lng) * 0.15;
+            
+            ambulanceLocation.lat += latDiff;
+            ambulanceLocation.lng += lngDiff;
+            
+            ambulanceMarker.setPosition(ambulanceLocation);
+            map.setCenter(ambulanceLocation);
+            calculateRoute();
+            
+            // Verifica se chegou ao paciente
+            if (currentPhase === 'TO_PATIENT') {
+                const distance = google.maps.geometry.spherical.computeDistanceBetween(
+                    new google.maps.LatLng(ambulanceLocation),
+                    new google.maps.LatLng(patientLocation)
+                );
+                
+                if (distance < 50) {
+                    patientMarker.setAnimation(null);
+                    alert('Você chegou ao local do paciente!');
+                }
+            }
+        }
+
+        function updateSpeed() {
+            // Simula velocidade aleatória entre 30-60 km/h
+            const speed = Math.floor(Math.random() * 31) + 30;
+            document.getElementById('speed').textContent = speed;
+        }
+
+        function startTimer() {
+            setInterval(() => {
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+                document.getElementById('totalTime').textContent = 
+                    `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function toggleCallPanel() {
+            const panel = document.getElementById('callPanel');
+            isPanelVisible = !isPanelVisible;
+            panel.style.display = isPanelVisible ? 'block' : 'none';
+        }
+
+        function startNavigation() {
+            // Abre Google Maps para navegação externa
+            const destination = currentPhase === 'TO_PATIENT' ? patientLocation : hospitalLocation;
+            const url = `https://www.google.com/maps/dir/?api=1&destination=${destination.lat},${destination.lng}`;
+            window.open(url, '_blank');
+        }
+
+        function markArrived() {
+            if (currentPhase === 'TO_PATIENT') {
+                if (confirm('Confirmar chegada ao paciente? Próximo destino será o hospital.')) {
+                    currentPhase = 'TO_HOSPITAL';
+                    patientMarker.setAnimation(null);
+                    document.getElementById('passengers').textContent = '1';
+                    document.querySelector('.route-info .small-text').innerHTML = '<i class="fas fa-hospital"></i> Tempo até o Hospital';
+                    calculateRoute();
+                }
+            } else {
+                if (confirm('Confirmar chegada ao hospital?')) {
+                    alert('Transporte concluído com sucesso!');
+                    document.getElementById('passengers').textContent = '0';
+                }
+            }
+        }
+
+        function callPatient() {
+            const phone = document.getElementById('patientPhone').textContent;
+            window.location.href = `tel:${phone}`;
+        }
+
+        // Tenta obter localização real da ambulância
+        if (navigator.geolocation) {
+            navigator.geolocation.watchPosition(
+                (position) => {
+                    ambulanceLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    if (ambulanceMarker) {
+                        ambulanceMarker.setPosition(ambulanceLocation);
+                        map.setCenter(ambulanceLocation);
+                        calculateRoute();
+                    }
+                },
+                (error) => {
+                    console.log('Erro ao obter localização:', error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    maximumAge: 0,
+                    timeout: 5000
+                }
+            );
+        }
+    </script>
+    <script async defer 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIz6iI0blYnCpoGhjstXvYbxdVdyHRWpo&libraries=geometry&callback=initMap">
+    </script>
+</body>
+</html>
