@@ -70,10 +70,6 @@ function createSidebar(activePage = '') {
                     <i class="fas fa-chart-bar"></i>
                     <span>Relatórios</span>
                 </a>
-                <a href="/grafico.html" ${activePage === 'grafico' ? 'class="active"' : ''}>
-                    <i class="fas fa-chart-line"></i>
-                    <span>Gráficos</span>
-                </a>
                 <a href="/ambulancia_management.html" ${activePage === 'ambulancia_management' ? 'class="active"' : ''}>
                     <i class="fas fa-cogs"></i>
                     <span>Gestão Ambulâncias</span>
