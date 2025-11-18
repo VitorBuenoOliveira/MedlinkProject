@@ -1,11 +1,15 @@
 -- Default users for testing
 -- Passwords are encoded with BCrypt (all passwords are '123456')
 
-DELETE FROM usuario;
-DELETE FROM hospital;
+-- Delete in correct order to avoid foreign key constraint violations
+DELETE FROM auditoria_normas;
+DELETE FROM conformidade;
+DELETE FROM equipamento;
+DELETE FROM cliente;
 DELETE FROM ambulancia;
 DELETE FROM motorista;
-DELETE FROM cliente;
+DELETE FROM hospital;
+DELETE FROM usuario;
 
 INSERT INTO usuario (nome, email, senha, role) VALUES
 ('Admin User', 'admin@test.com', '$2a$10$8K3ds.9Xp/6Hk5qoVSkTqeS0NSuEpfFkJ8mBh9Yz1U2ZrJDcR1QyO', 'ADMIN'),
@@ -63,7 +67,7 @@ INSERT INTO equipamento (tipo, modelo, numero_serie, data_aquisicao, status, amb
 ('Desfibrilador', 'Philips HeartStart', 'DEF123456', '2023-01-15', 'ativo', 1, NULL),
 ('Maca', 'Ferno 35-A', 'MAC789012', '2022-06-20', 'ativo', 1, NULL),
 ('Ventilador', 'Dräger Oxylog', 'VEN345678', '2023-03-10', 'ativo', NULL, 1),
-('Monitor Cardíaco', 'Philips IntelliVue', 'MON901234', '2022-11-05', 'manutencao', NULL, 1);
+('Monitor Cardíaco', 'Philips IntelliVue', 'MON901234', '2022-11-05', 'manutencao', NULL, 2);
 
 -- Verificações de conformidade (exemplo)
 INSERT INTO conformidade (entidade_tipo, entidade_id, requisito_id, status, data_verificacao, observacoes, verificado_por) VALUES
