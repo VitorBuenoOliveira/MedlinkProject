@@ -47,128 +47,57 @@
     </div>
 
     <script>
-        // Posição do usuário (simulada - pode ser substituída por geolocalização real)
-        let userPosition = { lat: -23.5505, lng: -46.6333 };
+        // Posição do usuário (simulada)
+        const userPosition = { lat: -23.5505, lng: -46.6333 };
         
-        // Variável para armazenar ambulâncias do banco de dados
-        let ambulancias = [];
-        
-        // Função para calcular distância entre dois pontos (Haversine)
-        function calcularDistancia(lat1, lon1, lat2, lon2) {
-            const R = 6371; // Raio da Terra em km
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon/2) * Math.sin(dLon/2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-            return R * c; // Distância em km
-        }
-        
-        // Função para estimar tempo baseado na distância
-        function estimarTempo(distanciaKm) {
-            // Assumindo velocidade média de 40 km/h em área urbana
-            const minutos = Math.round((distanciaKm / 40) * 60);
-            return minutos < 1 ? 1 : minutos; // Mínimo 1 minuto
-        }
-        
-        // Função para carregar ambulâncias do banco de dados
-        async function carregarAmbulanciasDoBanco() {
-            try {
-                const response = await fetch('/ambulancias/combined');
-                if (!response.ok) {
-                    throw new Error('Erro ao carregar ambulâncias');
-                }
-                
-                const ambulanciasDB = await response.json();
-                
-                // Filtrar apenas ambulâncias com latitude/longitude definidas
-                ambulancias = ambulanciasDB
-                    .filter(amb => amb.latitude && amb.longitude)
-                    .map(amb => {
-                        const distanciaKm = calcularDistancia(
-                            userPosition.lat, userPosition.lng,
-                            amb.latitude, amb.longitude
-                        );
-                        const tempoMin = estimarTempo(distanciaKm);
-                        
-                        return {
-                            id: amb.id,
-                            placa: amb.placa,
-                            latitude: amb.latitude,
-                            longitude: amb.longitude,
-                            status: amb.status || 'Disponível',
-                            motorista: amb.motoristaNome || 'Não atribuído',
-                            telefone: amb.motoristaTelefone || '',
-                            modelo: amb.modelo,
-                            capacidade: amb.capacidade,
-                            distancia: distanciaKm.toFixed(1) + ' km',
-                            tempo: tempoMin + ' min'
-                        };
-                    })
-                    // Ordenar por distância (mais próximas primeiro)
-                    .sort((a, b) => parseFloat(a.distancia) - parseFloat(b.distancia));
-                
-                console.log('Ambulâncias carregadas do banco:', ambulancias);
-                
-                // Se não há ambulâncias no banco, usar simulação
-                if (ambulancias.length === 0) {
-                    console.warn('Nenhuma ambulância encontrada no banco. Usando simulação.');
-                    usarAmbulanciasFicticias();
-                } else {
-                    // Reinicializar mapa com dados reais
-                    if (typeof initMap === 'function') {
-                        initMap();
-                    }
-                }
-            } catch (error) {
-                console.error('Erro ao carregar ambulâncias:', error);
-                console.warn('Usando ambulâncias fictícias devido ao erro.');
-                usarAmbulanciasFicticias();
+        // Dados fictícios de ambulâncias próximas para simulação
+        const ambulancias = [
+            { 
+                placa: 'ABC-1234', 
+                latitude: -23.5510, 
+                longitude: -46.6338, 
+                status: 'Disponível',
+                motorista: 'João Silva',
+                distancia: '0.8 km',
+                tempo: '3 min'
+            },
+            { 
+                placa: 'DEF-5678', 
+                latitude: -23.5515, 
+                longitude: -46.6343, 
+                status: 'Disponível',
+                motorista: 'Maria Santos',
+                distancia: '1.2 km',
+                tempo: '5 min'
+            },
+            { 
+                placa: 'GHI-9012', 
+                latitude: -23.5502, 
+                longitude: -46.6328, 
+                status: 'Disponível',
+                motorista: 'Carlos Oliveira',
+                distancia: '0.5 km',
+                tempo: '2 min'
+            },
+            { 
+                placa: 'JKL-3456', 
+                latitude: -23.5520, 
+                longitude: -46.6348, 
+                status: 'Em trânsito',
+                motorista: 'Ana Costa',
+                distancia: '1.5 km',
+                tempo: '6 min'
+            },
+            { 
+                placa: 'MNO-7890', 
+                latitude: -23.5498, 
+                longitude: -46.6320, 
+                status: 'Disponível',
+                motorista: 'Pedro Souza',
+                distancia: '0.9 km',
+                tempo: '4 min'
             }
-        }
-        
-        // Função fallback com ambulâncias fictícias
-        function usarAmbulanciasFicticias() {
-            ambulancias = [
-                { 
-                    placa: 'ABC-1234', 
-                    latitude: -23.5510, 
-                    longitude: -46.6338, 
-                    status: 'Disponível',
-                    motorista: 'João Silva',
-                    telefone: '(11) 98765-4321',
-                    modelo: 'Mercedes Sprinter',
-                    capacidade: 4,
-                    distancia: '0.8 km',
-                    tempo: '3 min'
-                },
-                { 
-                    placa: 'DEF-5678', 
-                    latitude: -23.5515, 
-                    longitude: -46.6343, 
-                    status: 'Disponível',
-                    motorista: 'Maria Santos',
-                    telefone: '(11) 98765-4322',
-                    modelo: 'Fiat Ducato',
-                    capacidade: 3,
-                    distancia: '1.2 km',
-                    tempo: '5 min'
-                },
-                { 
-                    placa: 'GHI-9012', 
-                    latitude: -23.5502, 
-                    longitude: -46.6328, 
-                    status: 'Disponível',
-                    motorista: 'Carlos Oliveira',
-                    telefone: '(11) 98765-4323',
-                    modelo: 'Mercedes Sprinter',
-                    capacidade: 6,
-                    distancia: '0.5 km',
-                    tempo: '2 min'
-                }
-            ];
-        }
+        ];
 
         function initMap() {
             const map = new google.maps.Map(document.getElementById('map'), {
@@ -268,12 +197,10 @@
             }
         }
 
-        // Carregar ambulâncias do banco ao iniciar
-        document.addEventListener('DOMContentLoaded', () => {
-            carregarAmbulanciasDoBanco();
-        });
+        // Inicializa o mapa
+        initMap();
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIz6iI0blYnCpoGhjstXvYbxdVdyHRWpo&callback=carregarAmbulanciasDoBanco"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIz6iI0blYnCpoGhjstXvYbxdVdyHRWpo&callback=initMap"></script>
     </main>
 
     <script src="sidebar.js"></script>
