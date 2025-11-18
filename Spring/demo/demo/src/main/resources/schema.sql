@@ -67,10 +67,10 @@ CREATE TABLE IF NOT EXISTS cliente (
 );
 
 -- Indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_cliente_data_nascimento ON cliente(data_nascimento);
-CREATE INDEX IF NOT EXISTS idx_cliente_atendido ON cliente(atendido);
-CREATE INDEX IF NOT EXISTS idx_motorista_regiao_atuacao ON motorista(regiao_atuacao);
-CREATE INDEX IF NOT EXISTS idx_ambulancia_status ON ambulancia(status);
+    CREATE INDEX IF NOT EXISTS idx_cliente_data_nascimento ON cliente(data_nascimento);
+    CREATE INDEX IF NOT EXISTS idx_cliente_atendido ON cliente(atendido);
+    CREATE INDEX IF NOT EXISTS idx_motorista_regiao_atuacao ON motorista(regiao_atuacao);
+    CREATE INDEX IF NOT EXISTS idx_ambulancia_status ON ambulancia(status);
 
 -- ======================================
 -- NOVAS TABELAS PARA NORMAS E SEGURANÇA
