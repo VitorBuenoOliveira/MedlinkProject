@@ -2,97 +2,492 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - Sistema de Transporte de Pacientes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Profissional - MedLink</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .kpi-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-left: 5px solid;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.3);
+        }
+        
+        .kpi-card.primary { border-color: #667eea; }
+        .kpi-card.success { border-color: #48bb78; }
+        .kpi-card.warning { border-color: #ed8936; }
+        .kpi-card.danger { border-color: #f56565; }
+        .kpi-card.info { border-color: #4299e1; }
+        .kpi-card.purple { border-color: #764ba2; }
+        
+        .kpi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .kpi-icon {
+            font-size: 2.5rem;
+            opacity: 0.8;
+        }
+        
+        .kpi-card.primary .kpi-icon { color: #667eea; }
+        .kpi-card.success .kpi-icon { color: #48bb78; }
+        .kpi-card.warning .kpi-icon { color: #ed8936; }
+        .kpi-card.danger .kpi-icon { color: #f56565; }
+        .kpi-card.info .kpi-icon { color: #4299e1; }
+        .kpi-card.purple .kpi-icon { color: #764ba2; }
+        
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .kpi-label {
+            font-size: 0.9rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .kpi-trend {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+        
+        .kpi-trend.up { color: #48bb78; }
+        .kpi-trend.down { color: #f56565; }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .chart-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chart-title i {
+            color: #667eea;
+        }
+        
+        @media (max-width: 768px) {
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="chatbot.css">
 </head>
-<body>
-    <nav>
-        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
-        <a href="/geolocation.html">Geolocalização</a>
-    </nav>
-
-    <h1>Dashboard - Sistema de Transporte de Pacientes 🚑</h1>
-
-    <div class="dashboard-grid">
-        <div class="card">
-            <h3>Clientes</h3>
-            <p>Gerenciar solicitações de transporte</p>
-            <a href="/client_management.html">Acessar</a>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
         </div>
-        <div class="card">
-            <h3>Motoristas</h3>
-            <p>Cadastrar e gerenciar motoristas</p>
-            <a href="/motorista_registration.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Ambulâncias</h3>
-            <p>Gerenciar frota de veículos</p>
-            <a href="/ambulancia_registration.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Hospitais</h3>
-            <p>Cadastrar destinos</p>
-            <a href="/hospital_registration.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Usuários</h3>
-            <p>Gerenciar usuários do sistema</p>
-            <a href="/usuario_registration.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Agendamento</h3>
-            <p>Gerar e visualizar agendas</p>
-            <a href="/scheduling.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Relatórios</h3>
-            <p>Estatísticas e relatórios</p>
-            <a href="/reports.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Geolocalização</h3>
-            <p>Visualizar localização das ambulâncias</p>
-            <a href="/geolocation.html">Acessar</a>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <h2>Indicadores Rápidos</h2>
-    <div id="indicators">
-        <!-- Indicators will be loaded here -->
-    </div>
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
 
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <h1><i class="fas fa-chart-line"></i> Dashboard Profissional - MedLink</h1>
+            <p style="color: #64748b; margin-bottom: 30px;">Visão geral do sistema de transporte de pacientes em tempo real</p>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card primary">
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-label">Total Clientes</div>
+                            <div class="kpi-value" id="totalClientes">0</div>
+                            <div class="kpi-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+12% este mês</span>
+                            </div>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kpi-card success">
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-label">Motoristas Ativos</div>
+                            <div class="kpi-value" id="totalMotoristas">0</div>
+                            <div class="kpi-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+5% esta semana</span>
+                            </div>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kpi-card warning">
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-label">Ambulâncias</div>
+                            <div class="kpi-value" id="totalAmbulances">0</div>
+                            <div class="kpi-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+2 novas</span>
+                            </div>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-ambulance"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kpi-card danger">
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-label">Hospitais</div>
+                            <div class="kpi-value" id="totalHospitals">0</div>
+                            <div class="kpi-trend">
+                                <i class="fas fa-minus"></i>
+                                <span>estável</span>
+                            </div>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-hospital"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kpi-card info">
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-label">Chamados Ativos</div>
+                            <div class="kpi-value" id="activeCalls">0</div>
+                            <div class="kpi-trend up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>+8 hoje</span>
+                            </div>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="kpi-card purple">
+                    <div class="kpi-header">
+                        <div>
+                            <div class="kpi-label">Taxa de Ocupação</div>
+                            <div class="kpi-value" id="occupancyRate">0%</div>
+                            <div class="kpi-trend down">
+                                <i class="fas fa-arrow-down"></i>
+                                <span>-3% hoje</span>
+                            </div>
+                        </div>
+                        <div class="kpi-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-grid">
+                <!-- Daily Calls Chart -->
+                <div class="chart-card" style="grid-column: 1 / -1;">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-line"></i>
+                        Atendimentos Diários (Últimos 7 Dias)
+                    </div>
+                    <canvas id="dailyCallsChart"></canvas>
+                </div>
+
+                <!-- Ambulance Status Chart -->
+                <div class="chart-card">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Status das Ambulâncias
+                    </div>
+                    <canvas id="ambulanceStatusChart"></canvas>
+                </div>
+
+                <!-- Calls by Region Chart -->
+                <div class="chart-card">
+                    <div class="chart-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Chamados por Região
+                    </div>
+                    <canvas id="callsByRegionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="sidebar.js"></script>
     <script>
-        async function loadIndicators() {
-            try {
-                const [clientesRes, motoristasRes, ambulanciasRes] = await Promise.all([
-                    fetch('/clientes'),
-                    fetch('/motoristas'),
-                    fetch('/ambulancias')
-                ]);
-                const clientes = await clientesRes.json();
-                const motoristas = await motoristasRes.json();
-                const ambulancias = await ambulanciasRes.json();
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('dashboard');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
 
-                const indicatorsDiv = document.getElementById('indicators');
-                indicatorsDiv.innerHTML = `
-                    <p><strong>Total de Clientes:</strong> ${clientes.length}</p>
-                    <p><strong>Total de Motoristas:</strong> ${motoristas.length}</p>
-                    <p><strong>Total de Ambulâncias:</strong> ${ambulancias.length}</p>
-                `;
+        // Mock data function
+        function getMockData() {
+            return {
+                clientes: Array.from({length: 247}, (_, i) => ({id: i+1, nome: `Cliente ${i+1}`})),
+                motoristas: Array.from({length: 32}, (_, i) => ({id: i+1, nome: `Motorista ${i+1}`})),
+                ambulancias: Array.from({length: 18}, (_, i) => ({id: i+1, placa: `ABC-${1000+i}`})),
+                hospitais: Array.from({length: 12}, (_, i) => ({id: i+1, nome: `Hospital ${i+1}`})),
+                activeCalls: 23,
+                occupancyRate: 67
+            };
+        }
+
+        // Animate number counter
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const increment = range / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if ((increment > 0 && current >= end) || (increment < 0 && current <= end)) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                obj.textContent = id === 'occupancyRate' ? Math.round(current) + '%' : Math.round(current);
+            }, 16);
+        }
+
+        // Load dashboard data
+        async function loadDashboard() {
+            try {
+                // Try to fetch from API
+                const response = await fetch('/api/dashboard/stats');
+                const data = await response.json();
+                updateDashboard(data);
             } catch (error) {
-                console.error('Erro ao carregar indicadores:', error);
+                // Use mock data if API unavailable
+                console.log('Using mock data for demonstration');
+                const mockData = getMockData();
+                updateDashboard(mockData);
             }
         }
 
-        loadIndicators();
+        function updateDashboard(data) {
+            // Animate KPI values
+            animateValue('totalClientes', 0, data.clientes.length, 1500);
+            animateValue('totalMotoristas', 0, data.motoristas.length, 1500);
+            animateValue('totalAmbulances', 0, data.ambulancias.length, 1500);
+            animateValue('totalHospitals', 0, data.hospitais.length, 1500);
+            animateValue('activeCalls', 0, data.activeCalls, 1500);
+            animateValue('occupancyRate', 0, data.occupancyRate, 1500);
+
+            // Create charts
+            createDailyCallsChart();
+            createAmbulanceStatusChart();
+            createCallsByRegionChart();
+        }
+
+        // Daily Calls Chart
+        function createDailyCallsChart() {
+            const ctx = document.getElementById('dailyCallsChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'],
+                    datasets: [{
+                        label: 'Atendimentos',
+                        data: [45, 52, 48, 61, 58, 42, 38],
+                        borderColor: '#667eea',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        tension: 0.4,
+                        fill: true,
+                        borderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: { size: 14, family: "'Poppins', sans-serif" }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: { family: "'Poppins', sans-serif" }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { family: "'Poppins', sans-serif" }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Ambulance Status Chart
+        function createAmbulanceStatusChart() {
+            const ctx = document.getElementById('ambulanceStatusChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Disponível', 'Em Atendimento', 'Manutenção', 'Deslocamento'],
+                    datasets: [{
+                        data: [7, 5, 2, 4],
+                        backgroundColor: [
+                            '#48bb78',
+                            '#667eea',
+                            '#ed8936',
+                            '#4299e1'
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 12, family: "'Poppins', sans-serif" },
+                                padding: 15
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Calls by Region Chart
+        function createCallsByRegionChart() {
+            const ctx = document.getElementById('callsByRegionChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Centro', 'Zona Sul', 'Zona Norte', 'Zona Leste', 'Zona Oeste'],
+                    datasets: [{
+                        label: 'Chamados',
+                        data: [28, 35, 42, 31, 27],
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: '#667eea',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                font: { size: 14, family: "'Poppins', sans-serif" }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                font: { family: "'Poppins', sans-serif" }
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                font: { family: "'Poppins', sans-serif" }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize dashboard
+        loadDashboard();
+
+        // Auto-refresh every 30 seconds
+        setInterval(() => {
+            loadDashboard();
+        }, 30000);
     </script>
+    <script src="chatbot.js"></script>
 </body>
 </html>

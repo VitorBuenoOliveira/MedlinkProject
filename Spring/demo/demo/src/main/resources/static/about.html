@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre - MediLink System</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <h1><i class="fas fa-info-circle"></i> Sobre o MediLink System</h1>
+
+            <div class="about-section">
+                <div class="card">
+                    <h2><i class="fas fa-hospital"></i> O que é MediLink?</h2>
+                    <p>
+                        MediLink é um sistema completo de gerenciamento de transporte de pacientes, desenvolvido para
+                        facilitar a coordenação entre hospitais, ambulâncias, motoristas e clientes. Nossa plataforma
+                        oferece rastreamento em tempo real, gestão de frota e relatórios detalhados.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-star"></i> Funcionalidades Principais</h2>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> Gerenciamento completo de clientes e solicitações</li>
+                        <li><i class="fas fa-check-circle"></i> Cadastro e gestão de motoristas e ambulâncias</li>
+                        <li><i class="fas fa-check-circle"></i> Rastreamento GPS em tempo real</li>
+                        <li><i class="fas fa-check-circle"></i> Sistema de agendamento inteligente</li>
+                        <li><i class="fas fa-check-circle"></i> Relatórios e análises detalhadas</li>
+                        <li><i class="fas fa-check-circle"></i> Interface responsiva e acessível</li>
+                        <li><i class="fas fa-check-circle"></i> Modo escuro e configurações de acessibilidade</li>
+                        <li><i class="fas fa-check-circle"></i> Notificações visuais para deficientes auditivos</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-users"></i> Equipe de Desenvolvimento</h2>
+                    <p>
+                        Desenvolvido com dedicação por uma equipe comprometida em melhorar o transporte de pacientes
+                        e tornar os serviços de saúde mais acessíveis e eficientes.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-code"></i> Tecnologias Utilizadas</h2>
+                    <div class="tech-stack">
+                        <span class="tech-badge"><i class="fab fa-java"></i> Java Spring Boot</span>
+                        <span class="tech-badge"><i class="fab fa-html5"></i> HTML5</span>
+                        <span class="tech-badge"><i class="fab fa-css3-alt"></i> CSS3</span>
+                        <span class="tech-badge"><i class="fab fa-js"></i> JavaScript</span>
+                        <span class="tech-badge"><i class="fas fa-database"></i> PostgreSQL</span>
+                        <span class="tech-badge"><i class="fas fa-map"></i> Google Maps API</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-envelope"></i> Suporte e Contato</h2>
+                    <p>
+                        Para dúvidas, sugestões ou suporte técnico, entre em contato:
+                    </p>
+                    <ul class="contact-list">
+                        <li><i class="fas fa-envelope"></i> Email: suporte@medilink.com</li>
+                        <li><i class="fas fa-phone"></i> Telefone: (11) 99999-9999</li>
+                        <li><i class="fas fa-globe"></i> Website: www.medilink.com.br</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h2><i class="fas fa-heart"></i> Versão</h2>
+                    <p><strong>MediLink System v2.0</strong></p>
+                    <p>Última atualização: Novembro 2025</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('about');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // Apply accessibility settings
+        const highContrast = localStorage.getItem('highContrast') === 'true';
+        const largeText = localStorage.getItem('largeText') === 'true';
+        
+        if (highContrast) {
+            document.body.classList.add('high-contrast');
+        }
+        if (largeText) {
+            document.body.classList.add('large-text');
+        }
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

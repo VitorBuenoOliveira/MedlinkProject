@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - MediLink System</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="welcome-header">
+                <h1><i class="fas fa-hospital"></i> Bem-vindo ao MediLink System</h1>
+                <p class="welcome-subtitle">Sistema de Transporte de Pacientes</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-tachometer-alt"></i>
+                    </div>
+                    <h3>Dashboard</h3>
+                    <p>Visão geral e indicadores do sistema</p>
+                    <a href="/dashboard.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Clientes</h3>
+                    <p>Gerenciar solicitações de transporte</p>
+                    <a href="/client_management.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Motoristas</h3>
+                    <p>Cadastrar e gerenciar motoristas</p>
+                    <a href="/motorista_registration.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-ambulance"></i>
+                    </div>
+                    <h3>Ambulâncias</h3>
+                    <p>Gerenciar frota de veículos</p>
+                    <a href="/ambulancia_registration.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-hospital"></i>
+                    </div>
+                    <h3>Hospitais</h3>
+                    <p>Cadastrar destinos</p>
+                    <a href="/hospital_registration.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3>Usuários</h3>
+                    <p>Gerenciar usuários do sistema</p>
+                    <a href="/usuario_registration.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Agendamento</h3>
+                    <p>Gerar e visualizar agendas</p>
+                    <a href="/scheduling.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Rastreamento Cliente</h3>
+                    <p>Acompanhar ambulância chegando</p>
+                    <a href="/cliente_track.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3>Painel Motorista</h3>
+                    <p>Navegação e rota do motorista</p>
+                    <a href="/motorista_track.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3>Geolocalização</h3>
+                    <p>Visualizar localização das ambulâncias</p>
+                    <a href="/geolocation.html" class="card-btn">Acessar</a>
+                </div>
+
+                <div class="card hover-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Relatórios</h3>
+                    <p>Estatísticas e relatórios</p>
+                    <a href="/reports.html" class="card-btn">Acessar</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('home');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // Apply accessibility settings
+        const highContrast = localStorage.getItem('highContrast') === 'true';
+        const largeText = localStorage.getItem('largeText') === 'true';
+        
+        if (highContrast) {
+            document.body.classList.add('high-contrast');
+        }
+        if (largeText) {
+            document.body.classList.add('large-text');
+        }
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

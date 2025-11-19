@@ -2,38 +2,57 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agendamento - Sistema de Transporte</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        nav { background-color: #f0f0f0; padding: 10px; margin-bottom: 20px; }
-        nav a { margin-right: 15px; text-decoration: none; color: #333; }
-        nav a:hover { text-decoration: underline; }
-        .agenda-item { border: 1px solid #ddd; padding: 10px; margin: 10px 0; border-radius: 5px; }
-        .status-pending { background-color: #fff3cd; }
-        .status-confirmed { background-color: #d1ecf1; }
-        .status-completed { background-color: #d4edda; }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot.css">
 </head>
-<body>
-    <nav>
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
-    </nav>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h1>Agendamento de Transportes</h1>
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
 
-    <button onclick="gerarAgenda()">Gerar Agenda do Dia</button>
-    <button onclick="carregarAgenda()">Carregar Agenda</button>
+    <!-- Main Content -->
+    <main class="main-content">
 
-    <h2>Agenda do Dia</h2>
-    <div id="agendaContainer">
-        <!-- Agenda items will be loaded here -->
+    
+
+    <div class="container">
+        <h1>Agendamento de Transportes 📅</h1>
+
+        <div class="action-buttons" style="margin-bottom: 20px;">
+            <button onclick="gerarAgenda()"><i class="fas fa-calendar-plus"></i> Gerar Agenda do Dia</button>
+            <button onclick="carregarAgenda()"><i class="fas fa-sync"></i> Atualizar Agenda</button>
+        </div>
+
+        <h2><i class="fas fa-clipboard-list"></i> Agenda do Dia</h2>
+        <div id="agendaContainer">
+            <p style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Carregando agenda...</p>
+        </div>
     </div>
 
     <script>
@@ -46,25 +65,27 @@
                 container.innerHTML = "";
                 
                 if (clientes.length === 0) {
-                    container.innerHTML = "<p>Nenhum transporte agendado para hoje.</p>";
+                    container.innerHTML = "<p style='text-align: center;'><i class='fas fa-inbox'></i> Nenhum transporte agendado para hoje.</p>";
                     return;
                 }
 
                 clientes.forEach(c => {
                     const statusClass = c.atendido ? 'status-completed' : 'status-pending';
+                    const statusIcon = c.atendido ? 'fas fa-check-circle' : 'fas fa-clock';
                     container.innerHTML += `
                         <div class="agenda-item ${statusClass}">
-                            <h3>${c.nome}</h3>
-                            <p><strong>Destino:</strong> ${c.destino}</p>
-                            <p><strong>Telefone:</strong> ${c.telefone}</p>
-                            <p><strong>Status:</strong> ${c.atendido ? 'Atendido' : 'Pendente'}</p>
-                            ${!c.atendido ? `<button onclick="marcarComoAtendido(${c.id})">Marcar como Atendido</button>` : ''}
+                            <h3><i class="fas fa-user"></i> ${c.nome}</h3>
+                            <p><i class="fas fa-map-marker-alt"></i> <strong>Destino:</strong> ${c.destino}</p>
+                            <p><i class="fas fa-phone"></i> <strong>Telefone:</strong> ${c.telefone}</p>
+                            <p><i class="${statusIcon}"></i> <strong>Status:</strong> ${c.atendido ? 'Atendido' : 'Pendente'}</p>
+                            ${!c.atendido ? `<button onclick="marcarComoAtendido(${c.id})"><i class="fas fa-check"></i> Marcar como Atendido</button>` : ''}
                         </div>
                     `;
                 });
             } catch (error) {
                 console.error('Erro ao carregar agenda:', error);
-                document.getElementById('agendaContainer').innerHTML = "<p>Erro ao carregar agenda.</p>";
+                document.getElementById('agendaContainer').innerHTML = 
+                    "<p style='text-align: center; color: #e53e3e;'><i class='fas fa-exclamation-triangle'></i> Erro ao carregar agenda.</p>";
             }
         }
 
@@ -74,6 +95,7 @@
                 carregarAgenda();
             } catch (error) {
                 console.error('Erro ao marcar como atendido:', error);
+                alert('Erro ao marcar como atendido');
             }
         }
 
@@ -84,5 +106,30 @@
         // Load agenda on page load
         carregarAgenda();
     </script>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('scheduling');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // Apply accessibility settings
+        const highContrast = localStorage.getItem('highContrast') === 'true';
+        const largeText = localStorage.getItem('largeText') === 'true';
+        
+        if (highContrast) {
+            document.body.classList.add('high-contrast');
+        }
+        if (largeText) {
+            document.body.classList.add('large-text');
+        }
+    </script>
+    <script src="chatbot.js"></script>
 </body>
 </html>

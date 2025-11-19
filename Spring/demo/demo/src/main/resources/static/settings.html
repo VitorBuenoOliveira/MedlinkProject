@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações - MediLink</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+<div class="container">
+        <h1><i class="fas fa-sliders-h"></i> Configurações do Sistema</h1>
+        
+        <div class="settings-grid">
+            <!-- Theme Settings -->
+            <div class="setting-card">
+                <h3><i class="fas fa-palette"></i> Tema</h3>
+                <p>Escolha entre tema claro ou escuro</p>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span id="themeLabel" style="margin-left: 15px; font-weight: 600;">Tema Claro</span>
+            </div>
+            
+            <!-- High Contrast -->
+            <div class="setting-card">
+                <h3><i class="fas fa-adjust"></i> Alto Contraste</h3>
+                <p>Aumenta o contraste para melhor visibilidade</p>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="contrastToggle" onchange="toggleContrast()">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span id="contrastLabel" style="margin-left: 15px; font-weight: 600;">Desativado</span>
+            </div>
+            
+            <!-- Large Text -->
+            <div class="setting-card">
+                <h3><i class="fas fa-text-height"></i> Texto Grande</h3>
+                <p>Aumenta o tamanho do texto para melhor leitura</p>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="textSizeToggle" onchange="toggleTextSize()">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span id="textSizeLabel" style="margin-left: 15px; font-weight: 600;">Tamanho Normal</span>
+            </div>
+            
+            <!-- Visual Notifications -->
+            <div class="setting-card">
+                <h3><i class="fas fa-bell"></i> Notificações Visuais</h3>
+                <p>Exibe notificações visuais para deficientes auditivos</p>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="visualNotifToggle" onchange="toggleVisualNotifications()" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+                <span id="visualNotifLabel" style="margin-left: 15px; font-weight: 600;">Ativado</span>
+                <button onclick="testNotification()" style="margin-top: 15px; padding: 8px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-vial"></i> Testar Notificação
+                </button>
+            </div>
+            
+            <!-- Keyboard Navigation -->
+            <div class="setting-card">
+                <h3><i class="fas fa-keyboard"></i> Navegação por Teclado</h3>
+                <p>Otimiza a navegação usando apenas o teclado</p>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="keyboardNavToggle" onchange="toggleKeyboardNav()" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+                <span id="keyboardNavLabel" style="margin-left: 15px; font-weight: 600;">Ativado</span>
+                <div style="margin-top: 15px; font-size: 0.9rem; color: #718096;">
+                    <p><strong>Atalhos:</strong></p>
+                    <p>• Tab: Navegar entre elementos</p>
+                    <p>• Enter/Space: Ativar botões</p>
+                    <p>• Esc: Fechar modais</p>
+                </div>
+            </div>
+            
+            <!-- Language -->
+            <div class="setting-card">
+                <h3><i class="fas fa-language"></i> Idioma</h3>
+                <p>Selecione o idioma do sistema</p>
+                <select id="languageSelect" onchange="changeLanguage()" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #667eea; font-size: 1rem; margin-top: 10px;">
+                    <option value="pt-BR" selected>Português (Brasil)</option>
+                    <option value="en-US">English (US)</option>
+                    <option value="es-ES">Español</option>
+                </select>
+            </div>
+        </div>
+        
+        <div style="margin-top: 40px; padding: 20px; background: rgba(102, 126, 234, 0.1); border-radius: 15px; border-left: 4px solid #667eea;">
+            <h3><i class="fas fa-info-circle"></i> Sobre Acessibilidade</h3>
+            <p>Este sistema foi desenvolvido pensando na inclusão de todos os usuários. Inclui recursos para:</p>
+            <ul>
+                <li>✓ Deficientes visuais (alto contraste, texto grande)</li>
+                <li>✓ Deficientes auditivos (notificações visuais)</li>
+                <li>✓ Mobilidade reduzida (navegação por teclado)</li>
+                <li>✓ Compatibilidade com leitores de tela</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Load saved preferences
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPreferences();
+            updateActiveMenuItem();
+        });
+        
+        function loadPreferences() {
+            // Load theme
+            const isDark = localStorage.getItem('darkTheme') === 'true';
+            if (isDark) {
+                document.body.classList.add('dark-theme');
+                document.getElementById('themeToggle').checked = true;
+                document.getElementById('themeLabel').textContent = 'Tema Escuro';
+            }
+            
+            // Load contrast
+            const isHighContrast = localStorage.getItem('highContrast') === 'true';
+            if (isHighContrast) {
+                document.body.classList.add('high-contrast');
+                document.getElementById('contrastToggle').checked = true;
+                document.getElementById('contrastLabel').textContent = 'Ativado';
+            }
+            
+            // Load text size
+            const isLargeText = localStorage.getItem('largeText') === 'true';
+            if (isLargeText) {
+                document.body.classList.add('large-text');
+                document.getElementById('textSizeToggle').checked = true;
+                document.getElementById('textSizeLabel').textContent = 'Texto Grande';
+            }
+            
+            // Load visual notifications
+            const visualNotif = localStorage.getItem('visualNotifications') !== 'false';
+            document.getElementById('visualNotifToggle').checked = visualNotif;
+            document.getElementById('visualNotifLabel').textContent = visualNotif ? 'Ativado' : 'Desativado';
+            
+            // Load keyboard nav
+            const keyboardNav = localStorage.getItem('keyboardNav') !== 'false';
+            document.getElementById('keyboardNavToggle').checked = keyboardNav;
+            document.getElementById('keyboardNavLabel').textContent = keyboardNav ? 'Ativado' : 'Desativado';
+        }
+        
+        function toggleTheme() {
+            const isDark = document.getElementById('themeToggle').checked;
+            document.body.classList.toggle('dark-theme', isDark);
+            document.getElementById('themeLabel').textContent = isDark ? 'Tema Escuro' : 'Tema Claro';
+            localStorage.setItem('darkTheme', isDark);
+            showVisualNotification('Tema alterado para ' + (isDark ? 'escuro' : 'claro'), 'success');
+        }
+        
+        function toggleContrast() {
+            const isHigh = document.getElementById('contrastToggle').checked;
+            document.body.classList.toggle('high-contrast', isHigh);
+            document.getElementById('contrastLabel').textContent = isHigh ? 'Ativado' : 'Desativado';
+            localStorage.setItem('highContrast', isHigh);
+            showVisualNotification('Alto contraste ' + (isHigh ? 'ativado' : 'desativado'), 'success');
+        }
+        
+        function toggleTextSize() {
+            const isLarge = document.getElementById('textSizeToggle').checked;
+            document.body.classList.toggle('large-text', isLarge);
+            document.getElementById('textSizeLabel').textContent = isLarge ? 'Texto Grande' : 'Tamanho Normal';
+            localStorage.setItem('largeText', isLarge);
+            showVisualNotification('Tamanho do texto alterado', 'success');
+        }
+        
+        function toggleVisualNotifications() {
+            const isEnabled = document.getElementById('visualNotifToggle').checked;
+            document.getElementById('visualNotifLabel').textContent = isEnabled ? 'Ativado' : 'Desativado';
+            localStorage.setItem('visualNotifications', isEnabled);
+        }
+        
+        function toggleKeyboardNav() {
+            const isEnabled = document.getElementById('keyboardNavToggle').checked;
+            document.getElementById('keyboardNavLabel').textContent = isEnabled ? 'Ativado' : 'Desativado';
+            localStorage.setItem('keyboardNav', isEnabled);
+            showVisualNotification('Navegação por teclado ' + (isEnabled ? 'ativada' : 'desativada'), 'success');
+        }
+        
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            localStorage.setItem('language', lang);
+            showVisualNotification('Idioma alterado (recarregue a página)', 'warning');
+        }
+        
+        function showVisualNotification(message, type = 'success') {
+            if (localStorage.getItem('visualNotifications') === 'false') return;
+            
+            const notification = document.createElement('div');
+            notification.className = `visual-notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'exclamation-triangle'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.5s ease';
+                setTimeout(() => notification.remove(), 500);
+            }, 3000);
+        }
+        
+        function testNotification() {
+            showVisualNotification('Esta é uma notificação visual de teste! 🎉', 'success');
+        }
+        
+        // Sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const body = document.body;
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            if (window.innerWidth <= 768) {
+                sidebar.classList.toggle('active');
+                if (overlay) overlay.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('collapsed');
+                body.classList.toggle('sidebar-collapsed');
+            }
+        }
+        
+        function updateActiveMenuItem() {
+            const menuLinks = document.querySelectorAll('.sidebar-nav a');
+            menuLinks.forEach(link => {
+                if (link.getAttribute('href') === '/settings.html') {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Slide in right animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('settings');
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

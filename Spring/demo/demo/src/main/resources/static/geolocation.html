@@ -2,79 +2,157 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geolocalização - Ambulâncias</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot.css">
+
     <style>
+        /* ADICIONADO — sem isso o mapa não renderiza */
         #map {
             height: 600px;
             width: 100%;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .container {
+            padding: 20px;
         }
     </style>
 </head>
-<body>
-    <nav>
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
-        <a href="/geolocation.html">Geolocalização</a>
-    </nav>
+<body class="has-sidebar">
+    
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h1>Geolocalização das Ambulâncias 🚑</h1>
+    <div id="sidebar-container"></div>
 
-    <div id="map"></div>
+    <main class="main-content">
 
-    <script>
-        // Dados fictícios de ambulâncias para exibição no mapa
-        const ambulancias = [
-            { placa: 'ABC-1234', latitude: -23.5505, longitude: -46.6333, status: 'Disponível' },
-            { placa: 'DEF-5678', latitude: -23.5515, longitude: -46.6343, status: 'Em trânsito' },
-            { placa: 'GHI-9012', latitude: -23.5525, longitude: -46.6353, status: 'Ocupada' },
-            { placa: 'JKL-3456', latitude: -23.5535, longitude: -46.6363, status: 'Disponível' },
-            { placa: 'MNO-7890', latitude: -23.5545, longitude: -46.6373, status: 'Em manutenção' }
-        ];
+        <div class="container">
+            <h1>Geolocalização das Ambulâncias 🚑</h1>
+            <div id="map"></div>
+        </div>
 
-        function initMap() {
-            const map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 12,
-                center: { lat: -23.5505, lng: -46.6333 } // Centro em São Paulo
-            });
+        <script>
+            const userPosition = { lat: -23.5505, lng: -46.6333 };
 
-            const markers = ambulancias.map(ambulancia => {
-                const marker = new google.maps.Marker({
-                    position: { lat: ambulancia.latitude, lng: ambulancia.longitude },
+            const ambulancias = [
+                { placa: 'ABC-1234', latitude: -23.5510, longitude: -46.6338, status: 'Disponível', motorista: 'João Silva', distancia: '0.8 km', tempo: '3 min' },
+                { placa: 'DEF-5678', latitude: -23.5515, longitude: -46.6343, status: 'Disponível', motorista: 'Maria Santos', distancia: '1.2 km', tempo: '5 min' },
+                { placa: 'GHI-9012', latitude: -23.5502, longitude: -46.6328, status: 'Disponível', motorista: 'Carlos Oliveira', distancia: '0.5 km', tempo: '2 min' },
+                { placa: 'JKL-3456', latitude: -23.5520, longitude: -46.6348, status: 'Em trânsito', motorista: 'Ana Costa', distancia: '1.5 km', tempo: '6 min' },
+                { placa: 'MNO-7890', latitude: -23.5498, longitude: -46.6320, status: 'Disponível', motorista: 'Pedro Souza', distancia: '0.9 km', tempo: '4 min' }
+            ];
+
+            function initMap() {
+                const map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 14,
+                    center: userPosition,
+                    styles: [{ featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] }]
+                });
+
+                const userMarker = new google.maps.Marker({
+                    position: userPosition,
                     map: map,
-                    title: `Ambulância ${ambulancia.placa}`
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 12,
+                        fillColor: '#667eea',
+                        fillOpacity: 1,
+                        strokeColor: '#ffffff',
+                        strokeWeight: 3
+                    },
+                    title: 'Você está aqui',
+                    zIndex: 1000
                 });
 
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `<strong>Placa:</strong> ${ambulancia.placa}<br><strong>Status:</strong> ${ambulancia.status}`
+                const userInfoWindow = new google.maps.InfoWindow({
+                    content: `<div style="padding: 10px;"><strong>📍 Você está aqui</strong></div>`
+                });
+                userMarker.addListener('click', () => userInfoWindow.open(map, userMarker));
+
+                const markers = ambulancias.map(ambulancia => {
+                    const iconColor = ambulancia.status === 'Disponível' ? '#10b981' : '#f59e0b';
+
+                    const marker = new google.maps.Marker({
+                        position: { lat: ambulancia.latitude, lng: ambulancia.longitude },
+                        map: map,
+                        icon: {
+                            url: `data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20">🚑</text></svg>`,
+                            scaledSize: new google.maps.Size(40, 40)
+                        },
+                        title: `Ambulância ${ambulancia.placa}`,
+                        animation: google.maps.Animation.DROP
+                    });
+
+                    const infoWindow = new google.maps.InfoWindow({
+                        content: `
+                            <div style="padding: 15px; min-width: 220px;">
+                                <h3 style="margin: 0 0 10px 0; color: #667eea;">🚑 ${ambulancia.placa}</h3>
+                                <p><strong>Status:</strong> <span style="color: ${iconColor}">${ambulancia.status}</span></p>
+                                <p><strong>Motorista:</strong> ${ambulancia.motorista}</p>
+                                <p><strong>Distância:</strong> ${ambulancia.distancia}</p>
+                                <p><strong>Tempo estimado:</strong> ${ambulancia.tempo}</p>
+                                ${ambulancia.status === 'Disponível'
+                                    ? `<button onclick="solicitarAmbulancia('${ambulancia.placa}')" style="margin-top: 10px;">Solicitar</button>`
+                                    : ''
+                                }
+                            </div>
+                        `
+                    });
+
+                    marker.addListener('click', () => infoWindow.open(map, marker));
+                    return { marker, ambulancia };
                 });
 
-                marker.addListener('click', () => {
-                    infoWindow.open(map, marker);
-                });
+                // Movimento simulado
+                setInterval(() => {
+                    markers.forEach(({ marker, ambulancia }) => {
+                        ambulancia.latitude += (Math.random() - 0.5) * 0.0005;
+                        ambulancia.longitude += (Math.random() - 0.5) * 0.0005;
+                        marker.setPosition(new google.maps.LatLng(ambulancia.latitude, ambulancia.longitude));
+                    });
+                }, 3000);
+            }
 
-                return marker;
-            });
+            function solicitarAmbulancia(placa) {
+                const a = ambulancias.find(x => x.placa === placa);
+                alert(`Ambulância ${placa} acionada! Motorista: ${a.motorista}`);
+            }
+        </script>
 
-            // Atualiza posições periodicamente (simulação)
-            setInterval(() => {
-                ambulancias.forEach((ambulancia, index) => {
-                    ambulancia.latitude += (Math.random() - 0.5) * 0.001;
-                    ambulancia.longitude += (Math.random() - 0.5) * 0.001;
-                    markers[index].setPosition(new google.maps.LatLng(ambulancia.latitude, ambulancia.longitude));
-                });
-            }, 3000);
-        }
+        <!-- IMPORTANTE → remover a chamada manual e deixar só o callback -->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSUOyjsCNjVlCDAB6UihNGwnZxE51oVP0&callback=initMap"></script>
 
-        // Inicializa o mapa
-        initMap();
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        document.getElementById('sidebar-container').innerHTML = createSidebar('geolocation');
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIz6iI0blYnCpoGhjstXvYbxdVdyHRWpo&callback=initMap"></script>
+
 </body>
 </html>

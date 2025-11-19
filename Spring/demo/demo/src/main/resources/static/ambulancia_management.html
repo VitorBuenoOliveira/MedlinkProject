@@ -1,70 +1,70 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de Ambulâncias</title>
     <link rel="stylesheet" href="styles.css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-        .status.disponivel { background: #4caf50; color: white; }
-        .status.em-transito { background: #ff9800; color: white; }
-        .status.ocupada { background: #f44336; color: white; }
-        .status.em-manutencao { background: #9e9e9e; color: white; }
-        button {
-            padding: 6px 12px;
-            margin: 2px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .remove-driver { background: #ff5722; color: white; }
-        .maintenance { background: #607d8b; color: white; }
-        .assign-driver { background: #2196f3; color: white; }
-        .message {
-            margin-top: 15px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot.css">
 </head>
-<body>
-    <h1>Gerenciamento de Ambulâncias</h1>
-    <table id="ambulanciasTable">
-        <thead>
-            <tr>
-                <th>Placa</th>
-                <th>Modelo</th>
-                <th>Capacidade</th>
-                <th>Status</th>
-                <th>Motorista</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Dados serão inseridos aqui -->
-        </tbody>
-    </table>
-    <div class="message" id="message"></div>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+    
+
+    <div class="container">
+        <h1>Gerenciamento de Ambulâncias 🚑</h1>
+        
+        <table id="ambulanciasTable">
+            <thead>
+                <tr>
+                    <th><i class="fas fa-car"></i> Placa</th>
+                    <th><i class="fas fa-ambulance"></i> Modelo</th>
+                    <th><i class="fas fa-users"></i> Capacidade</th>
+                    <th><i class="fas fa-info-circle"></i> Status</th>
+                    <th><i class="fas fa-user-tie"></i> Motorista</th>
+                    <th><i class="fas fa-cog"></i> Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 20px;">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando ambulâncias...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="message" style="margin-top: 20px; text-align: center;"></div>
+    </div>
 
     <script>
         async function fetchAmbulancias() {
@@ -74,8 +74,9 @@
                 renderTable(ambulancias);
             } catch (error) {
                 console.error('Erro ao buscar ambulâncias:', error);
-                document.getElementById('message').textContent = 'Erro ao carregar ambulâncias.';
-                document.getElementById('message').style.color = 'red';
+                document.getElementById('message').innerHTML = '<span style="color: #e53e3e;"><i class="fas fa-exclamation-triangle"></i> Erro ao carregar ambulâncias.</span>';
+                document.querySelector('#ambulanciasTable tbody').innerHTML = 
+                    '<tr><td colspan="6" style="text-align: center; color: #e53e3e;">Erro ao carregar dados</td></tr>';
             }
         }
 
@@ -83,20 +84,29 @@
             const tbody = document.querySelector('#ambulanciasTable tbody');
             tbody.innerHTML = '';
 
+            if (ambulancias.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">Nenhuma ambulância cadastrada</td></tr>';
+                return;
+            }
+
             ambulancias.forEach(ambulancia => {
                 const row = document.createElement('tr');
-
                 const statusClass = ambulancia.status.toLowerCase().replace(' ', '-');
 
                 row.innerHTML = `
                     <td>${ambulancia.placa}</td>
                     <td>${ambulancia.modelo || 'N/A'}</td>
                     <td>${ambulancia.capacidade || 'N/A'}</td>
-                    <td><span class="status ${statusClass}">${ambulancia.status}</span></td>
+                    <td><span class="status-${statusClass === 'disponível' ? 'completed' : (statusClass === 'em-uso' || statusClass === 'ocupada' ? 'pending' : 'pending')}" style="padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 0.85rem;">${ambulancia.status}</span></td>
                     <td>${ambulancia.motoristaNome || 'Não atribuído'}</td>
                     <td>
-                        ${ambulancia.motoristaId ? `<button class="remove-driver" onclick="removeDriver(${ambulancia.ambulanciaId})">Remover Motorista</button>` : `<button class="assign-driver" onclick="assignDriver(${ambulancia.ambulanciaId})">Atribuir Motorista</button>`}
-                        ${ambulancia.status !== 'Em manutenção' ? `<button class="maintenance" onclick="setMaintenance(${ambulancia.ambulanciaId})">Manutenção</button>` : ''}
+                        ${ambulancia.motoristaId ? 
+                            `<button onclick="removeDriver(${ambulancia.ambulanciaId})" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);"><i class="fas fa-user-times"></i> Remover Motorista</button>` : 
+                            `<button onclick="assignDriver(${ambulancia.ambulanciaId})" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"><i class="fas fa-user-plus"></i> Atribuir Motorista</button>`
+                        }
+                        ${ambulancia.status !== 'Em manutenção' ? 
+                            `<button onclick="setMaintenance(${ambulancia.ambulanciaId})" style="background: linear-gradient(135deg, #a8caba 0%, #5d4e6d 100%); margin-left: 5px;"><i class="fas fa-tools"></i> Manutenção</button>` : ''
+                        }
                     </td>
                 `;
 
@@ -115,13 +125,13 @@
                 });
 
                 if (response.ok) {
-                    showMessage('Motorista removido com sucesso!', 'green');
+                    showMessage('✓ Motorista removido com sucesso!', 'green');
                     fetchAmbulancias();
                 } else {
-                    showMessage('Erro ao remover motorista.', 'red');
+                    showMessage('✗ Erro ao remover motorista.', 'red');
                 }
             } catch (error) {
-                showMessage('Erro ao remover motorista.', 'red');
+                showMessage('✗ Erro ao remover motorista.', 'red');
                 console.error('Erro:', error);
             }
         }
@@ -137,13 +147,13 @@
                 });
 
                 if (response.ok) {
-                    showMessage('Ambulância colocada em manutenção!', 'green');
+                    showMessage('✓ Ambulância colocada em manutenção!', 'green');
                     fetchAmbulancias();
                 } else {
-                    showMessage('Erro ao alterar status.', 'red');
+                    showMessage('✗ Erro ao alterar status.', 'red');
                 }
             } catch (error) {
-                showMessage('Erro ao alterar status.', 'red');
+                showMessage('✗ Erro ao alterar status.', 'red');
                 console.error('Erro:', error);
             }
         }
@@ -155,13 +165,39 @@
 
         function showMessage(text, color) {
             const messageDiv = document.getElementById('message');
-            messageDiv.textContent = text;
+            messageDiv.innerHTML = text;
             messageDiv.style.color = color;
-            setTimeout(() => messageDiv.textContent = '', 5000);
+            messageDiv.style.fontWeight = 'bold';
+            setTimeout(() => messageDiv.innerHTML = '', 5000);
         }
 
         // Carrega ambulâncias ao carregar a página
         fetchAmbulancias();
     </script>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('ambulancia_management');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // Apply accessibility settings
+        const highContrast = localStorage.getItem('highContrast') === 'true';
+        const largeText = localStorage.getItem('largeText') === 'true';
+        
+        if (highContrast) {
+            document.body.classList.add('high-contrast');
+        }
+        if (largeText) {
+            document.body.classList.add('large-text');
+        }
+    </script>
+    <script src="chatbot.js"></script>
 </body>
 </html>

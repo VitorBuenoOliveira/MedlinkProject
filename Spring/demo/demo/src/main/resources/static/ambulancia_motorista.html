@@ -1,47 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Associar Motorista à Ambulância</title>
     <link rel="stylesheet" href="styles.css" />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        select, button {
-            margin-top: 5px;
-            padding: 8px;
-            width: 300px;
-            max-width: 100%;
-        }
-        .message {
-            margin-top: 15px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot.css">
 </head>
-<body>
-    <h1>Associar Motorista à Ambulância</h1>
-    <form id="associationForm">
-        <label for="ambulanciaSelect">Selecione a Ambulância:</label>
-        <select id="ambulanciaSelect" required>
-            <option value="">Carregando ambulâncias...</option>
-        </select>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <label for="motoristaSelect">Selecione o Motorista:</label>
-        <select id="motoristaSelect" required>
-            <option value="">Carregando motoristas...</option>
-        </select>
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
 
-        <button type="submit">Associar</button>
-    </form>
-    <div class="message" id="message"></div>
+    <!-- Main Content -->
+    <main class="main-content">
+
+    
+
+    <div class="container">
+        <h1>Associar Motorista à Ambulância 🚑</h1>
+        
+        <form id="associationForm">
+            <label for="ambulanciaSelect"><i class="fas fa-ambulance"></i> Selecione a Ambulância:</label>
+            <select id="ambulanciaSelect" required>
+                <option value=""><i class="fas fa-spinner fa-spin"></i> Carregando ambulâncias...</option>
+            </select>
+
+            <label for="motoristaSelect"><i class="fas fa-user-tie"></i> Selecione o Motorista:</label>
+            <select id="motoristaSelect" required>
+                <option value=""><i class="fas fa-spinner fa-spin"></i> Carregando motoristas...</option>
+            </select>
+
+            <button type="submit"><i class="fas fa-link"></i> Associar</button>
+        </form>
+        <div id="message" style="margin-top: 20px; text-align: center;"></div>
+    </div>
 
     <script>
         async function fetchAmbulancias() {
@@ -53,7 +70,7 @@
                 ambulancias.forEach(a => {
                     const option = document.createElement('option');
                     option.value = a.id;
-                    option.textContent = `${a.placa} - ${a.modelo || ''}`;
+                    option.textContent = `🚑 ${a.placa} - ${a.modelo || ''}`;
                     select.appendChild(option);
                 });
             } catch (error) {
@@ -71,7 +88,7 @@
                 motoristas.forEach(m => {
                     const option = document.createElement('option');
                     option.value = m.id;
-                    option.textContent = `${m.nome} - ${m.telefone || ''}`;
+                    option.textContent = `👤 ${m.nome} - ${m.telefone || ''}`;
                     select.appendChild(option);
                 });
             } catch (error) {
@@ -87,8 +104,7 @@
             const messageDiv = document.getElementById('message');
 
             if (!ambulanciaId || !motoristaId) {
-                messageDiv.textContent = 'Por favor, selecione ambos ambulância e motorista.';
-                messageDiv.style.color = 'red';
+                messageDiv.innerHTML = '<span style="color: #e53e3e;"><i class="fas fa-exclamation-triangle"></i> Por favor, selecione ambos ambulância e motorista.</span>';
                 return;
             }
 
@@ -102,16 +118,14 @@
                 });
 
                 if (response.ok) {
-                    messageDiv.textContent = 'Motorista associado com sucesso!';
-                    messageDiv.style.color = 'green';
+                    messageDiv.innerHTML = '<span style="color: #28a745;"><i class="fas fa-check-circle"></i> Motorista associado com sucesso!</span>';
+                    messageDiv.className = 'message-success';
                 } else {
                     const errorData = await response.json();
-                    messageDiv.textContent = `Erro: ${errorData.message || 'Falha ao associar motorista.'}`;
-                    messageDiv.style.color = 'red';
+                    messageDiv.innerHTML = `<span style="color: #e53e3e;"><i class="fas fa-times-circle"></i> Erro: ${errorData.message || 'Falha ao associar motorista.'}</span>`;
                 }
             } catch (error) {
-                messageDiv.textContent = 'Erro ao associar motorista.';
-                messageDiv.style.color = 'red';
+                messageDiv.innerHTML = '<span style="color: #e53e3e;"><i class="fas fa-times-circle"></i> Erro ao associar motorista.</span>';
                 console.error('Erro:', error);
             }
         }
@@ -122,5 +136,30 @@
         fetchAmbulancias();
         fetchMotoristas();
     </script>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('ambulancia_motorista');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // Apply accessibility settings
+        const highContrast = localStorage.getItem('highContrast') === 'true';
+        const largeText = localStorage.getItem('largeText') === 'true';
+        
+        if (highContrast) {
+            document.body.classList.add('high-contrast');
+        }
+        if (largeText) {
+            document.body.classList.add('large-text');
+        }
+    </script>
+    <script src="chatbot.js"></script>
 </body>
 </html>

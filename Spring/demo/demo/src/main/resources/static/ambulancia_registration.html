@@ -1,60 +1,91 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Ambulâncias - Sistema de Transporte</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot.css">
 </head>
-<body>
-    <nav>
-        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
-    </nav>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Admin User</span>
+                    <span class="user-email">admin@medilink.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <h1>Cadastro de Ambulâncias</h1>
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
 
-    <h2>Adicionar Ambulância</h2>
-    <form id="formAmbulancia">
-        <label for="placa">Placa:</label><br>
-        <input type="text" id="placa" name="placa" required><br><br>
-        
-        <label for="modelo">Modelo:</label><br>
-        <input type="text" id="modelo" name="modelo" required><br><br>
-        
-        <label for="capacidade">Capacidade:</label><br>
-        <input type="number" id="capacidade" name="capacidade" required><br><br>
-        
-        <label for="status">Status:</label><br>
-        <select id="status" name="status" required>
-            <option value="disponivel">Disponível</option>
-            <option value="em_uso">Em Uso</option>
-            <option value="manutencao">Manutenção</option>
-        </select><br><br>
-        
-        <button type="submit">Cadastrar</button>
-    </form>
+    <!-- Main Content -->
+    <main class="main-content">
 
-    <h2>Lista de Ambulâncias</h2>
-    <table id="tabelaAmbulancias">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Placa</th>
-                <th>Modelo</th>
-                <th>Capacidade</th>
-                <th>Status</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+    
+
+    <div class="container">
+        <h1>Cadastro de Ambulâncias 🚑</h1>
+
+        <h2><i class="fas fa-plus-circle"></i> Adicionar Ambulância</h2>
+        <form id="formAmbulancia">
+            <label for="placa"><i class="fas fa-car"></i> Placa:</label>
+            <input type="text" id="placa" name="placa" placeholder="AAA-0000" required>
+            
+            <label for="modelo"><i class="fas fa-ambulance"></i> Modelo:</label>
+            <input type="text" id="modelo" name="modelo" placeholder="Modelo da ambulância" required>
+            
+            <label for="capacidade"><i class="fas fa-users"></i> Capacidade:</label>
+            <input type="number" id="capacidade" name="capacidade" placeholder="Número de pessoas" required>
+            
+            <label for="status"><i class="fas fa-info-circle"></i> Status:</label>
+            <select id="status" name="status" required>
+                <option value="disponivel">✅ Disponível</option>
+                <option value="em_uso">🚑 Em Uso</option>
+                <option value="manutencao">🔧 Manutenção</option>
+            </select>
+            
+            <button type="submit"><i class="fas fa-save"></i> Cadastrar</button>
+        </form>
+
+        <h2><i class="fas fa-list"></i> Lista de Ambulâncias</h2>
+        <table id="tabelaAmbulancias">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th><i class="fas fa-car"></i> Placa</th>
+                    <th><i class="fas fa-ambulance"></i> Modelo</th>
+                    <th><i class="fas fa-users"></i> Capacidade</th>
+                    <th><i class="fas fa-info-circle"></i> Status</th>
+                    <th><i class="fas fa-cog"></i> Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 20px;">
+                        <i class="fas fa-spinner fa-spin"></i> Carregando ambulâncias...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
     <script>
         async function carregarAmbulancias() {
@@ -119,5 +150,30 @@
 
         carregarAmbulancias();
     </script>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('ambulancia_registration');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // Apply accessibility settings
+        const highContrast = localStorage.getItem('highContrast') === 'true';
+        const largeText = localStorage.getItem('largeText') === 'true';
+        
+        if (highContrast) {
+            document.body.classList.add('high-contrast');
+        }
+        if (largeText) {
+            document.body.classList.add('large-text');
+        }
+    </script>
+    <script src="chatbot.js"></script>
 </body>
 </html>

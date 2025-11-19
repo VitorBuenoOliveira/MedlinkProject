@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Motorista - Navegação</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .driver-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+        }
+
+        .top-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .top-bar h1 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: white;
+            text-shadow: none;
+            -webkit-text-fill-color: white;
+        }
+
+        .ambulance-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        #map {
+            height: 600px;
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .call-panel {
+            position: absolute;
+            top: 80px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 999;
+            max-width: 400px;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .call-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .patient-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .call-details h2 {
+            margin: 0 0 5px 0;
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+
+        .call-details p {
+            margin: 0;
+            color: #718096;
+            font-size: 0.85rem;
+        }
+        
+        .call-details p i {
+            font-size: 0.8rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .info-item {
+            background: rgba(102, 126, 234, 0.1);
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .info-item .label {
+            font-size: 0.75rem;
+            color: #718096;
+            margin-bottom: 5px;
+        }
+        
+        .info-item .label i {
+            font-size: 0.7rem;
+        }
+
+        .info-item .value {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .route-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+
+        .route-info .big-text {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .route-info .small-text {
+            opacity: 0.9;
+            font-size: 0.85rem;
+        }
+        
+        .route-info .small-text i {
+            font-size: 0.8rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .action-buttons button {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .action-buttons button i {
+            font-size: 0.95rem;
+        }
+
+        .btn-navigate {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #155724;
+        }
+
+        .btn-arrived {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-cancel {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: #721c24;
+        }
+
+        .action-buttons button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+        }
+
+        .bottom-stats {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 999;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card .icon {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .number {
+            font-size: 1.3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-card .label {
+            font-size: 0.75rem;
+            color: #718096;
+            margin-top: 5px;
+        }
+
+        .toggle-panel {
+            position: absolute;
+            top: 90px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 10px;
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+            z-index: 1000;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .toggle-panel:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+    <link rel="stylesheet" href="chatbot.css">
+</head>
+<body>
+    <div class="driver-container">
+        <div class="top-bar">
+            <h1><i class="fas fa-route"></i> Navegação Ativa</h1>
+            <div class="ambulance-badge" id="ambulancePlate">
+                <i class="fas fa-ambulance"></i> ABC-1234
+            </div>
+        </div>
+
+        <div id="map" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-size: 1.5rem;">
+            <div style="text-align: center;">
+                <i class="fas fa-map-marked-alt" style="font-size: 4rem; margin-bottom: 20px;"></i>
+                <h2>Mapa Temporariamente Indisponível</h2>
+                <p>Para evitar custos com APIs externas, o mapa foi removido.</p>
+            </div>
+        </div>
+
+        <div class="toggle-panel" onclick="toggleCallPanel()" title="Mostrar/Ocultar Detalhes do Chamado">
+            <i class="fas fa-info-circle"></i>
+        </div>
+
+        <div class="call-panel" id="callPanel">
+            <div class="call-header">
+                <div class="patient-icon">👤</div>
+                <div class="call-details">
+                    <h2 id="patientName">Maria Santos</h2>
+                    <p><i class="fas fa-phone"></i> <span id="patientPhone">(11) 98888-8888</span></p>
+                </div>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="label"><i class="fas fa-map-marker-alt"></i> Origem</div>
+                    <div class="value" id="origin">Rua A, 123</div>
+                </div>
+                <div class="info-item">
+                    <div class="label"><i class="fas fa-hospital"></i> Destino</div>
+                    <div class="value" id="destination">Hospital B</div>
+                </div>
+                <div class="info-item">
+                    <div class="label"><i class="fas fa-heartbeat"></i> Prioridade</div>
+                    <div class="value" id="priority">Alta</div>
+                </div>
+                <div class="info-item">
+                    <div class="label"><i class="fas fa-notes-medical"></i> Tipo</div>
+                    <div class="value" id="callType">Emergência</div>
+                </div>
+            </div>
+
+            <div class="route-info">
+                <div class="small-text"><i class="fas fa-clock"></i> Tempo até o Paciente</div>
+                <div class="big-text" id="etaToPatient">5 min</div>
+                <div class="small-text"><i class="fas fa-route"></i> <span id="distanceToPatient">2.3 km</span></div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn-navigate" onclick="startNavigation()">
+                    <i class="fas fa-directions"></i> Navegar
+                </button>
+                <button class="btn-arrived" onclick="markArrived()">
+                    <i class="fas fa-check"></i> Cheguei
+                </button>
+            </div>
+
+            <div class="action-buttons" style="margin-top: 10px;">
+                <button class="btn-cancel" onclick="callPatient()">
+                    <i class="fas fa-phone"></i> Ligar Paciente
+                </button>
+            </div>
+        </div>
+
+        <div class="bottom-stats">
+            <div class="stat-card">
+                <div class="icon">🚑</div>
+                <div class="number" id="passengers">0</div>
+                <div class="label">Passageiros</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">📍</div>
+                <div class="number" id="speed">0</div>
+                <div class="label">km/h</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">⏱️</div>
+                <div class="number" id="totalTime">00:05</div>
+                <div class="label">Em Rota</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const userPosition = { lat: -23.5505, lng: -46.6333 };
+
+        const ambulancias = [
+            { placa: 'ABC-1234', latitude: -23.5510, longitude: -46.6338, status: 'Disponível', motorista: 'João Silva', distancia: '0.8 km', tempo: '3 min' },
+            { placa: 'DEF-5678', latitude: -23.5515, longitude: -46.6343, status: 'Disponível', motorista: 'Maria Santos', distancia: '1.2 km', tempo: '5 min' },
+            { placa: 'GHI-9012', latitude: -23.5502, longitude: -46.6328, status: 'Disponível', motorista: 'Carlos Oliveira', distancia: '0.5 km', tempo: '2 min' },
+            { placa: 'JKL-3456', latitude: -23.5520, longitude: -46.6348, status: 'Em trânsito', motorista: 'Ana Costa', distancia: '1.5 km', tempo: '6 min' },
+            { placa: 'MNO-7890', latitude: -23.5498, longitude: -46.6320, status: 'Disponível', motorista: 'Pedro Souza', distancia: '0.9 km', tempo: '4 min' }
+        ];
+
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,
+                center: userPosition,
+                styles: [{ featureType: 'poi', elementType: 'labels', stylers: [{ visibility: 'off' }] }]
+            });
+
+            const userMarker = new google.maps.Marker({
+                position: userPosition,
+                map: map,
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 12,
+                    fillColor: '#667eea',
+                    fillOpacity: 1,
+                    strokeColor: '#ffffff',
+                    strokeWeight: 3
+                },
+                title: 'Você está aqui',
+                zIndex: 1000
+            });
+
+            const userInfoWindow = new google.maps.InfoWindow({
+                content: `<div style="padding: 10px;"><strong>📍 Você está aqui</strong></div>`
+            });
+            userMarker.addListener('click', () => userInfoWindow.open(map, userMarker));
+
+            const markers = ambulancias.map(ambulancia => {
+                const iconColor = ambulancia.status === 'Disponível' ? '#10b981' : '#f59e0b';
+
+                const marker = new google.maps.Marker({
+                    position: { lat: ambulancia.latitude, lng: ambulancia.longitude },
+                    map: map,
+                    icon: {
+                        url: `data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="20">🚑</text></svg>`,
+                        scaledSize: new google.maps.Size(40, 40)
+                    },
+                    title: `Ambulância ${ambulancia.placa}`,
+                    animation: google.maps.Animation.DROP
+                });
+
+                const infoWindow = new google.maps.InfoWindow({
+                    content: `
+                        <div style="padding: 15px; min-width: 220px;">
+                            <h3 style="margin: 0 0 10px 0; color: #667eea;">🚑 ${ambulancia.placa}</h3>
+                            <p><strong>Status:</strong> <span style="color: ${iconColor}">${ambulancia.status}</span></p>
+                            <p><strong>Motorista:</strong> ${ambulancia.motorista}</p>
+                            <p><strong>Distância:</strong> ${ambulancia.distancia}</p>
+                            <p><strong>Tempo estimado:</strong> ${ambulancia.tempo}</p>
+                            ${ambulancia.status === 'Disponível'
+                                ? `<button onclick="solicitarAmbulancia('${ambulancia.placa}')" style="margin-top: 10px;">Solicitar</button>`
+                                : ''
+                            }
+                        </div>
+                    `
+                });
+
+                marker.addListener('click', () => infoWindow.open(map, marker));
+                return { marker, ambulancia };
+            });
+
+            // Movimento simulado
+            setInterval(() => {
+                markers.forEach(({ marker, ambulancia }) => {
+                    ambulancia.latitude += (Math.random() - 0.5) * 0.0005;
+                    ambulancia.longitude += (Math.random() - 0.5) * 0.0005;
+                    marker.setPosition(new google.maps.LatLng(ambulancia.latitude, ambulancia.longitude));
+                });
+            }, 3000);
+        }
+
+        function solicitarAmbulancia(placa) {
+            const a = ambulancias.find(x => x.placa === placa);
+            alert(`Ambulância ${placa} acionada! Motorista: ${a.motorista}`);
+        }
+    </script>
+    <!-- IMPORTANTE → remover a chamada manual e deixar só o callback -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCSUOyjsCNjVlCDAB6UihNGwnZxE51oVP0&callback=initMap"></script>
+
+
+<script src="chatbot.js"></script>
+
+</body>
+</html>
