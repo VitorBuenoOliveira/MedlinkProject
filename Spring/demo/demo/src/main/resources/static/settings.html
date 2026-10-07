@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurações - MediLink</title>
+    <title>Configurações - MedLink</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="medlink-theme.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="chatbot.css">
 </head>
@@ -26,8 +27,8 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="user-info-small">
-                    <span class="user-name">Admin User</span>
-                    <span class="user-email">admin@medilink.com</span>
+                    <span class="user-name">Administrador</span>
+                    <span class="user-email">admin@test.com</span>
                 </div>
             </div>
         </div>
@@ -84,7 +85,7 @@
                     <span class="toggle-slider"></span>
                 </label>
                 <span id="visualNotifLabel" style="margin-left: 15px; font-weight: 600;">Ativado</span>
-                <button onclick="testNotification()" style="margin-top: 15px; padding: 8px 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
+                <button onclick="testNotification()" style="margin-top: 15px; padding: 8px 16px; background: linear-gradient(135deg, #3FA3E8 0%, #0A2645 100%); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
                     <i class="fas fa-vial"></i> Testar Notificação
                 </button>
             </div>
@@ -110,7 +111,7 @@
             <div class="setting-card">
                 <h3><i class="fas fa-language"></i> Idioma</h3>
                 <p>Selecione o idioma do sistema</p>
-                <select id="languageSelect" onchange="changeLanguage()" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #667eea; font-size: 1rem; margin-top: 10px;">
+                <select id="languageSelect" onchange="changeLanguage()" style="width: 100%; padding: 10px; border-radius: 8px; border: 2px solid #3FA3E8; font-size: 1rem; margin-top: 10px;">
                     <option value="pt-BR" selected>Português (Brasil)</option>
                     <option value="en-US">English (US)</option>
                     <option value="es-ES">Español</option>
@@ -118,7 +119,7 @@
             </div>
         </div>
         
-        <div style="margin-top: 40px; padding: 20px; background: rgba(102, 126, 234, 0.1); border-radius: 15px; border-left: 4px solid #667eea;">
+        <div style="margin-top: 40px; padding: 20px; background: rgba(63, 163, 232, 0.1); border-radius: 15px; border-left: 4px solid #3FA3E8;">
             <h3><i class="fas fa-info-circle"></i> Sobre Acessibilidade</h3>
             <p>Este sistema foi desenvolvido pensando na inclusão de todos os usuários. Inclui recursos para:</p>
             <ul>

@@ -3,217 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mapa de Ambulâncias Próximas</title>
+    <title>Mapa da frota - MedLink</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="medlink-theme.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
     <link rel="stylesheet" href="chatbot.css">
+    <style>
+        .pg-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+        .pg-head h1 { margin: 0; }
+        .pg-head p { margin: 4px 0 0; color: var(--ml-muted); }
+        .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+        .chip { border: 1.5px solid var(--ml-line); background: #fff; color: var(--ml-ink); border-radius: 999px; padding: 7px 14px; font-size: .88rem; font-weight: 700; cursor: pointer; }
+        .chip:hover { background: #F6FAFE; color: var(--ml-ink); }
+        .chip.on { background: var(--ml-navy); border-color: var(--ml-navy); color: #fff; }
+        .grid2 { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
+        #map { height: calc(100vh - 210px); min-height: 460px; border-radius: var(--ml-radius); border: 1px solid var(--ml-line); box-shadow: var(--ml-shadow); z-index: 0; }
+        .lista { display: grid; gap: 10px; max-height: calc(100vh - 210px); min-height: 460px; overflow-y: auto; padding-right: 2px; }
+        .item { background: #fff; border: 1px solid var(--ml-line); border-radius: 12px; padding: 12px 14px; cursor: pointer; box-shadow: var(--ml-shadow); }
+        .item:hover { border-color: var(--ml-blue); }
+        .item .t { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-family: 'Sora', sans-serif; font-size: .95rem; }
+        .item .s { color: var(--ml-muted); font-size: .85rem; margin-top: 4px; }
+        .pill { font-family: 'Hanken Grotesk', sans-serif; font-size: .72rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+        .pill.rota { background: rgba(63,163,232,.16); color: #1B6FAE; }
+        .pill.livre { background: rgba(31,169,113,.15); color: #12744D; }
+        .pill.manut { background: rgba(232,163,61,.2); color: #9A6412; }
+        .ml-pin { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: #fff; font-size: .9rem; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(7,26,48,.35); }
+        .ml-pin.rota { background: #3FA3E8; } .ml-pin.livre { background: #1FA971; } .ml-pin.manut { background: #E8A33D; }
+        .ml-pin.pac { background: #0A2645; } .ml-pin.feito { background: #1FA971; }
+        .leaflet-popup-content { font-family: 'Hanken Grotesk', sans-serif; margin: 12px 14px; }
+        .nota { color: var(--ml-muted); font-size: .8rem; margin-top: 10px; }
+        select.sel { padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--ml-line); background: #fff; font-family: inherit; font-size: .95rem; min-width: 260px; }
+        @media (max-width: 1000px) { .grid2 { grid-template-columns: 1fr; } #map { height: 420px; min-height: 0; } .lista { max-height: none; min-height: 0; } }
+
+    </style>
 </head>
 <body class="has-sidebar">
-    <!-- Top Header Bar -->
     <div class="top-header">
         <div class="header-left">
-            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a href="/home.html" class="home-btn">
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <a href="/home.html" class="home-btn"><i class="fas fa-home"></i><span>Home</span></a>
         </div>
         <div class="header-right">
             <div class="user-header-profile">
-                <div class="user-avatar-small">
-                    <i class="fas fa-user"></i>
-                </div>
+                <div class="user-avatar-small"><i class="fas fa-user"></i></div>
                 <div class="user-info-small">
-                    <span class="user-name">Admin User</span>
-                    <span class="user-email">admin@medilink.com</span>
+                    <span class="user-name">Administrador</span>
+                    <span class="user-email">admin@test.com</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Sidebar (injected by JavaScript) -->
     <div id="sidebar-container"></div>
 
-    <!-- Main Content -->
     <main class="main-content">
-
-    
-
-    <div class="container">
-        <h1>Mapa de Ambulâncias Próximas 🚑</h1>
-
-        <div id="map"></div>
-
-        <div id="ambulance-list">
-            <h2><i class="fas fa-ambulance"></i> Ambulâncias Próximas</h2>
-            <!-- Lista será preenchida dinamicamente -->
+        <div class="container">
+            <div class="pg-head">
+                <div>
+                    <h1>Mapa da frota</h1>
+                    <p>Posição e situação dos veículos · atualiza a cada 10 s</p>
+                </div>
+                <div class="chips" id="chips"></div>
+            </div>
+            <div class="grid2">
+                <div id="map"></div>
+                <div class="lista" id="lista"></div>
+            </div>
+            <p class="nota">Mapa: OpenStreetMap. Posições dos veículos cadastradas para demonstração.</p>
         </div>
-    </div>
-
-    <script>
-        let userLocation = { lat: -23.5505, lng: -46.6333 }; // Default São Paulo
-        let ambulancias = [];
-        let markers = [];
-        let map;
-
-        // Obtém localização do usuário
-        function getUserLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    (position) => {
-                        userLocation = {
-                            lat: position.coords.latitude,
-                            lng: position.coords.longitude
-                        };
-                        initMap();
-                        fetchAmbulancias();
-                    },
-                    (error) => {
-                        console.log('Erro ao obter localização:', error);
-                        initMap();
-                        fetchAmbulancias();
-                    }
-                );
-            } else {
-                initMap();
-                fetchAmbulancias();
-            }
-        }
-
-        async function fetchAmbulancias() {
-            try {
-                const response = await fetch('/ambulancias/combined');
-                ambulancias = await response.json();
-                // Simula ambulâncias próximas ao usuário
-                ambulancias = ambulancias.map((amb, index) => ({
-                    ...amb,
-                    latitude: userLocation.lat + (Math.random() - 0.5) * 0.01,
-                    longitude: userLocation.lng + (Math.random() - 0.5) * 0.01
-                }));
-                updateMap();
-                updateAmbulanceList();
-            } catch (error) {
-                console.error('Erro ao buscar ambulâncias:', error);
-                // Fallback para dados fictícios
-                ambulancias = [
-                    { ambulanciaId: 1, placa: 'ABC-1234', modelo: 'Fiat Ducato', capacidade: 4, status: 'Disponível', latitude: userLocation.lat + 0.002, longitude: userLocation.lng + 0.002, motoristaId: 1, motoristaNome: 'João Silva', motoristaTelefone: '(11) 99999-9999' },
-                    { ambulanciaId: 2, placa: 'DEF-5678', modelo: 'Mercedes Sprinter', capacidade: 6, status: 'Em trânsito', latitude: userLocation.lat - 0.001, longitude: userLocation.lng + 0.003, motoristaId: 2, motoristaNome: 'Maria Santos', motoristaTelefone: '(11) 88888-8888' },
-                    { ambulanciaId: 3, placa: 'GHI-9012', modelo: 'VW Crafter', capacidade: 8, status: 'Ocupada', latitude: userLocation.lat + 0.003, longitude: userLocation.lng - 0.002, motoristaId: null, motoristaNome: null, motoristaTelefone: null },
-                    { ambulanciaId: 4, placa: 'JKL-3456', modelo: 'Iveco Daily', capacidade: 5, status: 'Disponível', latitude: userLocation.lat - 0.002, longitude: userLocation.lng - 0.001, motoristaId: 3, motoristaNome: 'Pedro Oliveira', motoristaTelefone: '(11) 77777-7777' },
-                    { ambulanciaId: 5, placa: 'MNO-7890', modelo: 'Fiat Ducato', capacidade: 4, status: 'Em manutenção', latitude: userLocation.lat + 0.001, longitude: userLocation.lng + 0.004, motoristaId: 4, motoristaNome: 'Ana Costa', motoristaTelefone: '(11) 66666-6666' }
-                ];
-                updateMap();
-                updateAmbulanceList();
-            }
-        }
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: userLocation
-            });
-
-            // Marcador da localização do usuário
-            new google.maps.Marker({
-                position: userLocation,
-                map: map,
-                title: 'Sua Localização',
-                icon: {
-                    url: 'https://maps.google.com/mapfiles/kml/shapes/man.png',
-                    scaledSize: new google.maps.Size(40, 40)
-                }
-            });
-        }
-
-        function updateMap() {
-            // Remove marcadores antigos
-            markers.forEach(marker => marker.setMap(null));
-            markers = [];
-
-            ambulancias.forEach(ambulancia => {
-                const marker = new google.maps.Marker({
-                    position: { lat: ambulancia.latitude, lng: ambulancia.longitude },
-                    map: map,
-                    title: `Ambulância ${ambulancia.placa}`
-                });
-
-                const motoristaInfo = ambulancia.motoristaNome ?
-                    `<br><strong>Motorista:</strong> ${ambulancia.motoristaNome}<br><strong>Telefone:</strong> ${ambulancia.motoristaTelefone || 'N/A'}` :
-                    '<br><strong>Motorista:</strong> Não atribuído';
-
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `
-                        <div style="max-width: 300px;">
-                            <h4>Ambulância ${ambulancia.placa}</h4>
-                            <p><strong>Modelo:</strong> ${ambulancia.modelo || 'N/A'}</p>
-                            <p><strong>Capacidade:</strong> ${ambulancia.capacidade || 'N/A'} pessoas</p>
-                            <p><strong>Status:</strong> <span class="status ${ambulancia.status.toLowerCase().replace(' ', '-')}">${ambulancia.status}</span></p>
-                            ${motoristaInfo}
-                        </div>
-                    `
-                });
-
-                marker.addListener('click', () => {
-                    infoWindow.open(map, marker);
-                });
-
-                markers.push(marker);
-            });
-        }
-
-        function updateAmbulanceList() {
-            const listContainer = document.getElementById('ambulance-list');
-            listContainer.innerHTML = '<h2><i class="fas fa-ambulance"></i> Ambulâncias Próximas</h2>';
-
-            ambulancias.forEach(ambulancia => {
-                const card = document.createElement('div');
-                card.className = 'ambulance-card';
-
-                const motoristaInfo = ambulancia.motoristaNome ?
-                    `<p><i class="fas fa-user-tie"></i> <strong>Motorista:</strong> ${ambulancia.motoristaNome} - ${ambulancia.motoristaTelefone || 'N/A'}</p>` :
-                    '<p><i class="fas fa-user-slash"></i> <strong>Motorista:</strong> Não atribuído</p>';
-
-                card.innerHTML = `
-                    <h3><i class="fas fa-ambulance"></i> ${ambulancia.placa}</h3>
-                    <p><i class="fas fa-car"></i> <strong>Modelo:</strong> ${ambulancia.modelo || 'N/A'}</p>
-                    <p><i class="fas fa-users"></i> <strong>Capacidade:</strong> ${ambulancia.capacidade || 'N/A'} pessoas</p>
-                    <p><i class="fas fa-info-circle"></i> <strong>Status:</strong> <span class="status ${ambulancia.status.toLowerCase().replace(' ', '-')}">${ambulancia.status}</span></p>
-                    ${motoristaInfo}
-                `;
-
-                listContainer.appendChild(card);
-            });
-        }
-
-        // Inicia o carregamento
-        getUserLocation();
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIz6iI0blYnCpoGhjstXvYbxdVdyHRWpo&callback=getUserLocation"></script>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <script src="sidebar.js"></script>
+    <script src="medlink-map.js"></script>
     <script>
-        // Inject sidebar
         document.getElementById('sidebar-container').innerHTML = createSidebar('map');
-        
-        // Apply saved theme
-        const theme = localStorage.getItem('theme') || 'light';
-        if (theme === 'dark') {
-            document.body.classList.add('dark-theme');
+        const mapa = criarMapa('map', 13);
+        let frota = [], filtro = 'todos', marcadores = {};
+
+        function popup(v) {
+            const st = statusDe(v.status);
+            return '<b>' + escapar(v.placa) + '</b><br>' + escapar(v.modelo || '') + '<br><span class="pill ' + st.cls + '">' + st.rotulo + '</span><br>' +
+                '<i class="fas fa-user-tie"></i> ' + escapar(v.motoristaNome || 'Sem motorista') + (v.motoristaTelefone ? ' · ' + escapar(v.motoristaTelefone) : '') +
+                '<br><i class="fas fa-users"></i> ' + (v.capacidade || '-') + ' lugares';
         }
-        
-        // Apply accessibility settings
-        const highContrast = localStorage.getItem('highContrast') === 'true';
-        const largeText = localStorage.getItem('largeText') === 'true';
-        
-        if (highContrast) {
-            document.body.classList.add('high-contrast');
+        function desenhar() {
+            Object.values(marcadores).forEach(m => m.remove()); marcadores = {};
+            const visiveis = frota.filter(v => filtro === 'todos' || statusDe(v.status).cls === filtro);
+            visiveis.forEach(v => {
+                if (v.latitude == null || v.longitude == null) return;
+                marcadores[v.ambulanciaId] = L.marker([v.latitude, v.longitude], { icon: pino(statusDe(v.status).cls, 'fa-van-shuttle') })
+                    .addTo(mapa).bindPopup(popup(v));
+            });
+            document.getElementById('lista').innerHTML = visiveis.map(v => {
+                const st = statusDe(v.status);
+                return '<div class="item" onclick="foco(' + v.ambulanciaId + ')"><div class="t"><span>' + escapar(v.placa) + '</span><span class="pill ' + st.cls + '">' + st.rotulo + '</span></div>' +
+                    '<div class="s">' + escapar(v.modelo || '') + ' · ' + (v.capacidade || '-') + ' lugares</div>' +
+                    '<div class="s"><i class="fas fa-user-tie"></i> ' + escapar(v.motoristaNome || 'Sem motorista') + '</div></div>';
+            }).join('') || '<div class="item">Nenhum veículo neste filtro.</div>';
+            const conta = (c) => frota.filter(v => statusDe(v.status).cls === c).length;
+            document.getElementById('chips').innerHTML = [['todos', 'Todos', frota.length], ['rota', 'Em rota', conta('rota')], ['livre', 'Disponíveis', conta('livre')], ['manut', 'Manutenção', conta('manut')]]
+                .map(([k, r, n]) => '<button class="chip ' + (filtro === k ? 'on' : '') + '" onclick="filtrar(\'' + k + '\')">' + r + ' · ' + n + '</button>').join('');
         }
-        if (largeText) {
-            document.body.classList.add('large-text');
+        function filtrar(k) { filtro = k; desenhar(); }
+        function foco(id) { const m = marcadores[id]; if (m) { mapa.flyTo(m.getLatLng(), 15); m.openPopup(); } }
+        let primeira = true;
+        async function carregar() {
+            try {
+                frota = await fetch('/ambulancias/combined').then(r => r.json());
+                desenhar();
+                if (primeira && frota.length) { primeira = false; mapa.fitBounds(frota.filter(v => v.latitude != null).map(v => [v.latitude, v.longitude]), { padding: [50, 50], maxZoom: 14 }); }
+            } catch (e) { console.error('Falha ao carregar a frota', e); }
         }
+        carregar(); setInterval(carregar, 10000);
     </script>
     <script src="chatbot.js"></script>
 </body>

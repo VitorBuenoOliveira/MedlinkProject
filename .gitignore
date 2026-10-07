@@ -1,0 +1,6 @@
+# Build e IDEs
+target/
+.idea/
+.vscode/
+*.iml
+app.log

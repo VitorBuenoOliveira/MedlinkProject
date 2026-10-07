@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 
 @Entity
 public class Usuario {
@@ -15,6 +17,8 @@ public class Usuario {
 
     private String nome;
     private String email;
+    // a senha pode ser enviada (cadastro), mas nunca devolvida pela API
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
     private String role; // Agente, Admin, Motorista
 

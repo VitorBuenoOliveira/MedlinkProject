@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gráfico de Usuários</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="medlink-theme.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="has-sidebar">
@@ -25,8 +27,8 @@
                     <i class="fas fa-user"></i>
                 </div>
                 <div class="user-info-small">
-                    <span class="user-name">Admin User</span>
-                    <span class="user-email">admin@medilink.com</span>
+                    <span class="user-name">Administrador</span>
+                    <span class="user-email">admin@test.com</span>
                 </div>
             </div>
         </div>
@@ -61,14 +63,14 @@
                         datasets: [{
                             label: 'Quantidade de Usuários',
                             data: values,
-                            backgroundColor: 'rgba(102, 126, 234, 0.8)',
-                            borderColor: 'rgba(102, 126, 234, 1)',
+                            backgroundColor: 'rgba(63, 163, 232, 0.8)',
+                            borderColor: 'rgba(63, 163, 232, 1)',
                             borderWidth: 2
                         }]
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: true,
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: {
                                 labels: {

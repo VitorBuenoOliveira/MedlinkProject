@@ -1,165 +1,80 @@
-// Sidebar HTML Generator and Functions
+// Menu lateral do MedLink (gerado em JS e injetado em cada página)
+const MENU = [
+    { titulo: 'Visão geral', itens: [
+        ['dashboard', '/dashboard.html', 'fa-chart-pie', 'Dashboard'],
+    ]},
+    { titulo: 'Operação', itens: [
+        ['scheduling', '/scheduling.html', 'fa-calendar-check', 'Agendamento'],
+        ['map', '/map.html', 'fa-map-location-dot', 'Mapa da frota'],
+        ['cliente_track', '/cliente_track.html', 'fa-location-crosshairs', 'Rastreio do paciente'],
+        ['motorista_track', '/motorista_track.html', 'fa-route', 'Painel do motorista'],
+    ]},
+    { titulo: 'Cadastros', itens: [
+        ['client_management', '/client_management.html', 'fa-users', 'Pacientes'],
+        ['ambulancia_registration', '/ambulancia_registration.html', 'fa-van-shuttle', 'Veículos'],
+        ['motorista_registration', '/motorista_registration.html', 'fa-id-card', 'Motoristas'],
+        ['hospital_registration', '/hospital_registration.html', 'fa-hospital', 'Destinos (hospitais)'],
+        ['ambulancia_motorista', '/ambulancia_motorista.html', 'fa-link', 'Vincular motorista'],
+        ['ambulancia_management', '/ambulancia_management.html', 'fa-screwdriver-wrench', 'Gestão da frota'],
+        ['usuario_registration', '/usuario_registration.html', 'fa-user-plus', 'Usuários'],
+    ]},
+    { titulo: 'Análises', itens: [
+        ['reports', '/reports.html', 'fa-chart-column', 'Relatórios'],
+        ['grafico', '/grafico.html', 'fa-chart-line', 'Gráficos'],
+    ]},
+];
+
 function createSidebar(activePage = '') {
+    const link = ([id, href, icone, rotulo]) =>
+        `<a href="${href}" ${activePage === id ? 'class="active"' : ''}><i class="fas ${icone}"></i><span>${rotulo}</span></a>`;
+    const secoes = MENU.map(s =>
+        `<div class="nav-section"><div class="nav-section-title">${s.titulo}</div>${s.itens.map(link).join('')}</div>`).join('');
     return `
-    <!-- Sidebar Overlay for Mobile -->
     <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
-    
-    <!-- Sidebar -->
-    <aside class="sidebar collapsed" id="sidebar">
-        <!-- Sidebar Header -->
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <i class="fas fa-hospital" style="font-size: 2rem; color: #667eea;"></i>
-            <h3>MediLink</h3>
+            <svg class="ml-pulse" width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true">
+                <rect width="34" height="34" rx="9" fill="#3FA3E8"/>
+                <path d="M5 18h7l3-8 4 15 3-7h7" stroke="#071A30" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="ml-logo"><b>Med</b>Link</div>
         </div>
-        
-        <!-- Navigation Menu -->
-        <nav class="sidebar-nav">
-            <!-- Home Link -->
-            <a href="/home.html" ${activePage === 'home' ? 'class="active"' : ''}>
-                <i class="fas fa-home"></i>
-                <span>Home</span>
-            </a>
-            
-            <div class="nav-section">
-                <div class="nav-section-title">Páginas</div>
-                <a href="/dashboard.html" ${activePage === 'dashboard' ? 'class="active"' : ''}>
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-                <a href="/client_management.html" ${activePage === 'client_management' ? 'class="active"' : ''}>
-                    <i class="fas fa-users"></i>
-                    <span>Clientes</span>
-                </a>
-                <a href="/motorista_registration.html" ${activePage === 'motorista_registration' ? 'class="active"' : ''}>
-                    <i class="fas fa-user-tie"></i>
-                    <span>Motoristas</span>
-                </a>
-                <a href="/ambulancia_registration.html" ${activePage === 'ambulancia_registration' ? 'class="active"' : ''}>
-                    <i class="fas fa-ambulance"></i>
-                    <span>Ambulâncias</span>
-                </a>
-                <a href="/hospital_registration.html" ${activePage === 'hospital_registration' ? 'class="active"' : ''}>
-                    <i class="fas fa-hospital"></i>
-                    <span>Hospitais</span>
-                </a>
-                <a href="/usuario_registration.html" ${activePage === 'usuario_registration' ? 'class="active"' : ''}>
-                    <i class="fas fa-user-plus"></i>
-                    <span>Usuários</span>
-                </a>
-                <a href="/scheduling.html" ${activePage === 'scheduling' ? 'class="active"' : ''}>
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Agendamento</span>
-                </a>
-                <a href="/cliente_track.html" ${activePage === 'cliente_track' ? 'class="active"' : ''}>
-                    <i class="fas fa-map-marked-alt"></i>
-                    <span>Rastreamento Cliente</span>
-                </a>
-                <a href="/motorista_track.html" ${activePage === 'motorista_track' ? 'class="active"' : ''}>
-                    <i class="fas fa-route"></i>
-                    <span>Painel Motorista</span>
-                </a>
-                <a href="/geolocation.html" ${activePage === 'geolocation' ? 'class="active"' : ''}>
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Geolocalização</span>
-                </a>
-                <a href="/map.html" ${activePage === 'map' ? 'class="active"' : ''}>
-                    <i class="fas fa-map"></i>
-                    <span>Mapa Próximo</span>
-                </a>
-                <a href="/reports.html" ${activePage === 'reports' ? 'class="active"' : ''}>
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Relatórios</span>
-                </a>
-                <a href="/grafico.html" ${activePage === 'grafico' ? 'class="active"' : ''}>
-                    <i class="fas fa-chart-line"></i>
-                    <span>Gráficos</span>
-                </a>
-                <a href="/ambulancia_management.html" ${activePage === 'ambulancia_management' ? 'class="active"' : ''}>
-                    <i class="fas fa-cogs"></i>
-                    <span>Gestão Ambulâncias</span>
-                </a>
-                <a href="/ambulancia_motorista.html" ${activePage === 'ambulancia_motorista' ? 'class="active"' : ''}>
-                    <i class="fas fa-link"></i>
-                    <span>Vincular Motorista</span>
-                </a>
-            </div>
-        </nav>
-        
-        <!-- Sidebar Footer -->
+        <nav class="sidebar-nav">${secoes}</nav>
         <div class="sidebar-footer">
-            <a href="/settings.html" ${activePage === 'settings' ? 'class="active"' : ''}>
-                <i class="fas fa-cog"></i>
-                <span>Configurações</span>
-            </a>
-            <a href="/about.html" ${activePage === 'about' ? 'class="active"' : ''}>
-                <i class="fas fa-info-circle"></i>
-                <span>Sobre</span>
-            </a>
-            <a href="/login.html">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Sair</span>
-            </a>
+            <a href="/settings.html" ${activePage === 'settings' ? 'class="active"' : ''}><i class="fas fa-gear"></i><span>Configurações</span></a>
+            <a href="/about.html" ${activePage === 'about' ? 'class="active"' : ''}><i class="fas fa-circle-info"></i><span>Sobre</span></a>
+            <a href="/login.html"><i class="fas fa-right-from-bracket"></i><span>Sair</span></a>
         </div>
-    </aside>
-    `;
+    </aside>`;
 }
 
-// Sidebar toggle for mobile and desktop collapse
 function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const body = document.body;
     const overlay = document.querySelector('.sidebar-overlay');
-    
-    // Mobile behavior
     if (window.innerWidth <= 768) {
         sidebar.classList.toggle('active');
         if (overlay) overlay.classList.toggle('active');
-    } 
-    // Desktop collapse behavior
-    else {
+    } else {
         sidebar.classList.toggle('collapsed');
-        body.classList.toggle('sidebar-collapsed');
+        document.body.classList.toggle('sidebar-collapsed');
     }
 }
 
-// Set active menu item based on current page
 window.addEventListener('DOMContentLoaded', () => {
-    const currentPage = window.location.pathname;
-    const menuLinks = document.querySelectorAll('.sidebar-nav a');
-    
-    menuLinks.forEach(link => {
-        if (link.getAttribute('href') === currentPage) {
-            link.classList.add('active');
-        } else {
-            link.classList.remove('active');
-        }
-    });
-    
-    // Initialize sidebar as collapsed on desktop
-    const sidebar = document.getElementById('sidebar');
-    const body = document.body;
-    if (window.innerWidth > 768 && sidebar) {
-        sidebar.classList.add('collapsed');
-        body.classList.add('sidebar-collapsed');
-    }
-    
-    // Handle window resize
+    // fecha o menu no celular ao escolher uma página
+    document.querySelectorAll('.sidebar-nav a').forEach(a => a.addEventListener('click', () => {
+        if (window.innerWidth <= 768) toggleSidebar();
+    }));
     window.addEventListener('resize', () => {
         const sidebar = document.getElementById('sidebar');
-        const body = document.body;
-        
+        if (!sidebar) return;
         if (window.innerWidth > 768) {
             sidebar.classList.remove('active');
             const overlay = document.querySelector('.sidebar-overlay');
             if (overlay) overlay.classList.remove('active');
         } else {
             sidebar.classList.remove('collapsed');
-            body.classList.remove('sidebar-collapsed');
+            document.body.classList.remove('sidebar-collapsed');
         }
     });
 });
-
-// Export functions for use in pages
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { createSidebar, toggleSidebar, initializeSidebar };
-}

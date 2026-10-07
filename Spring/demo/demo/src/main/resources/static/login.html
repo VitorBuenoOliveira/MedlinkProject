@@ -3,103 +3,73 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login - MediLink Sistema de Transporte</title>
+    <title>Login - MedLink Sistema de Transporte</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="medlink-theme.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .login-container {
-            width: 100%;
-            max-width: 450px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .login-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .login-header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            animation: fadeInDown 0.8s ease;
-        }
-
-        .login-header p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1.1rem;
-            font-weight: 300;
-        }
-
-        .login-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        #loginForm {
-            animation-delay: 0.2s;
-        }
-
-        #loginForm label {
-            color: #4a5568;
-        }
-
-        #message {
-            margin-top: 20px;
-        }
-
-        .form-footer {
-            text-align: center;
-            margin-top: 20px;
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .form-footer a {
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .form-footer a:hover {
-            text-decoration: underline;
-        }
+        body { display: grid; grid-template-columns: 1.05fr 1fr; min-height: 100vh; padding: 0; background: #fff; }
+        .brand { background: var(--ml-navy); color: #EAF3FB; padding: 56px 64px; display: flex; flex-direction: column; justify-content: space-between;
+                 background-image: radial-gradient(circle at 85% 12%, rgba(63,163,232,.28), transparent 42%), radial-gradient(circle at 10% 95%, rgba(63,163,232,.16), transparent 40%); }
+        .brand .logo { display: flex; align-items: center; gap: 12px; font-family: 'Sora', sans-serif; font-weight: 800; font-size: 1.7rem; letter-spacing: -0.03em; }
+        .brand .logo b { color: var(--ml-blue); }
+        .brand h2 { font-size: 2.5rem; line-height: 1.12; letter-spacing: -0.03em; color: #fff; margin: 0 0 18px; }
+        .brand h2 em { font-style: normal; color: var(--ml-blue); }
+        .brand p.lead { color: rgba(234,243,251,.78); font-size: 1.08rem; max-width: 460px; line-height: 1.6; margin: 0; }
+        .brand ul { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 12px; color: rgba(234,243,251,.9); }
+        .brand li i { color: var(--ml-blue); width: 26px; }
+        .brand small { color: rgba(155,208,245,.6); }
+        .painel { display: grid; place-items: center; padding: 40px 28px; background: var(--ml-bg); }
+        .login-container { width: 100%; max-width: 400px; }
+        .login-container h1 { font-size: 1.7rem; margin: 0 0 6px; }
+        .login-container .sub { color: var(--ml-muted); margin: 0 0 26px; }
+        #loginForm { padding: 28px; margin: 0; max-width: none; }
+        #loginForm label { display: block; margin: 14px 0 6px; }
+        #loginForm label:first-child { margin-top: 0; }
+        #loginForm input { width: 100%; box-sizing: border-box; padding: 12px 14px; }
+        #loginForm button { width: 100%; margin-top: 22px; padding: 13px; font-size: 1rem; }
+        #message { margin-top: 16px; padding: 0; text-align: center; font-weight: 600; }
+        #message:empty { display: none; }
+        #message.message-success, #message.message-error { padding: 10px 14px; border-radius: 10px; }
+        .demo { margin-top: 18px; text-align: center; font-size: .85rem; color: var(--ml-muted); }
+        @media (max-width: 860px) { body { grid-template-columns: 1fr; } .brand { padding: 32px 24px; } .brand h2 { font-size: 1.7rem; } .brand ul, .brand small { display: none; } }
     </style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-header">
-            <div class="login-icon">🏥</div>
-            <h1>MediLink</h1>
-            <p>Sistema de Transporte de Pacientes</p>
+    <section class="brand">
+        <div class="logo">
+            <svg width="40" height="40" viewBox="0 0 34 34" fill="none" aria-hidden="true"><rect width="34" height="34" rx="9" fill="#3FA3E8"/><path d="M5 18h7l3-8 4 15 3-7h7" stroke="#071A30" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Med</b>Link</span>
         </div>
-        
-        <form id="loginForm" autocomplete="off">
-            <label for="email"><i class="fas fa-envelope"></i> Email:</label>
-            <input type="email" id="email" name="email" autocomplete="username" placeholder="seu@email.com" required />
-            
-            <label for="senha"><i class="fas fa-lock"></i> Senha:</label>
-            <input type="password" id="senha" name="senha" autocomplete="current-password" placeholder="••••••••" required />
-            
-            <button type="submit">
-                <i class="fas fa-sign-in-alt"></i> Entrar
-            </button>
-        </form>
-        
-        <p id="message"></p>
-        
-        <div class="form-footer">
-            <p>Não tem uma conta? <a href="/usuario_registration.html">Cadastre-se</a></p>
+        <div>
+            <h2>O transporte de saúde <em>chega no horário</em>, para quem mais precisa.</h2>
+            <p class="lead">Gestão do transporte sanitário eletivo: pacientes de hemodiálise, quimioterapia, fisioterapia e consultas, com rota, frota e motoristas em um só lugar.</p>
+            <ul>
+                <li><i class="fas fa-calendar-check"></i> Agenda diária gerada automaticamente</li>
+                <li><i class="fas fa-van-shuttle"></i> Frota e motoristas em tempo real</li>
+                <li><i class="fas fa-chart-pie"></i> Indicadores da operação do dia</li>
+            </ul>
         </div>
-    </div>
+        <small>Projeto MedLink · Hortolândia/SP</small>
+    </section>
+
+    <section class="painel">
+        <div class="login-container">
+            <h1>Entrar</h1>
+            <p class="sub">Acesse o painel da central de transporte.</p>
+            <form id="loginForm" autocomplete="off">
+                <label for="email"><i class="fas fa-envelope"></i> E-mail</label>
+                <input type="email" id="email" name="email" autocomplete="username" placeholder="seu@email.com" required />
+
+                <label for="senha"><i class="fas fa-lock"></i> Senha</label>
+                <input type="password" id="senha" name="senha" autocomplete="current-password" placeholder="••••••••" required />
+
+                <button type="submit"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+            </form>
+            <p id="message"></p>
+            <p class="demo">Ainda sem acesso? <a href="/usuario_registration.html">Cadastre um usuário</a></p>
+        </div>
+    </section>
 
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading"></div>

@@ -1,96 +1,69 @@
-# MedlinkProject
-Projeto Integrador: 2025
+# MedLink
 
-🚑 Sistema de Transporte de Pacientes – Resumo Simplificado
+**Gestão do transporte sanitário do SUS para prefeituras.**
 
-Imagine que existe um sistema que ajuda a organizar o transporte de pacientes em ambulâncias. Ele funciona como uma central de controle, onde é possível:
+Todo município é responsável por levar os pacientes do SUS até o tratamento: hemodiálise, quimioterapia, reabilitação, consultas e altas hospitalares. Esse é o **transporte sanitário eletivo** (Resolução CIT nº 13/2017): programado, de todo dia, feito com vans, carros, vans adaptadas e ambulâncias.
 
-Cadastrar pacientes e suas informações (nome, endereço, tratamento, acompanhante, etc.)
+> ⚠️ **O MedLink não é um sistema de urgência/emergência (SAMU).** Ele organiza o transporte agendado e recorrente de pacientes, além das altas e voltas que surgem ao longo do plantão.
 
-Gerenciar ambulâncias (placa, modelo, capacidade, localização e motorista responsável)
+O projeto nasceu da experiência de um dos integrantes na central de ambulâncias de Hortolândia/SP, onde cerca de 300 pacientes por dia são organizados com e-mail, planilha impressa e papel recortado à mão.
 
-Controlar motoristas e hospitais
+## O protótipo (Projeto Integrador 2025)
 
-Acompanhar tudo em um painel online
+Este repositório contém o **protótipo funcional** apresentado no Projeto Integrador de 2025:
 
-🛠️ O que o sistema faz?
+- Cadastro de pacientes, motoristas, veículos e hospitais (destinos)
+- Login com perfis de acesso (administrador, agente e motorista) usando JWT
+- Agenda do dia com o status de cada paciente
+- Mapa com a localização da frota
+- Painel e relatórios com indicadores
 
-Cadastro e organização de pacientes, motoristas, ambulâncias e hospitais
+**Tecnologias:** Java 22, Spring Boot 4 (milestone), Spring Security + JWT, Spring Data JPA, PostgreSQL, HTML/CSS/JavaScript.
 
-Agendamento de transportes (quem vai, para onde e quando)
+## Próximos passos (2026)
 
-Mapas com localização das ambulâncias (para saber onde estão em tempo real)
+O produto está sendo reconstruído a partir da operação real de uma central:
 
-Relatórios e estatísticas (quantos pacientes foram atendidos, número de usuários, etc.)
+1. **Triagem:** indicar o veículo certo para cada paciente (van, carro, van adaptada ou ambulância)
+2. **Planejamento:** montar as linhas fixas e encaixar os pacientes recorrentes, como os de hemodiálise
+3. **Despacho:** um painel digital para o controlador do plantão, no lugar do papel
+4. **Execução:** um app em que o motorista registra embarque, falta e quilometragem
+5. **Indicadores:** ocupação, faltas e custo por paciente, inclusive do serviço terceirizado
 
-Login com segurança (usuários precisam se autenticar para acessar o sistema)
+## Como rodar
 
-👨‍💻 Quem pode usar?
+Pré-requisitos: **Java 22+** e **Docker**.
 
-Administradores → gerenciam todo o sistema
+```bash
+cd Spring/demo/demo
 
-Agentes → registram pacientes e organizam transportes
+# 1. Banco de dados (PostgreSQL na porta 5432)
+docker compose up -d postgres
 
-Motoristas → visualizam suas ambulâncias e rotas
+# 2. Aplicação (porta 8080)
+./mvnw spring-boot:run        # no Windows: mvnw.cmd spring-boot:run
+```
 
-🎯 Para que serve?
+Abra **http://localhost:8080/login.html** e entre com um dos usuários de teste:
 
-Esse projeto é um protótipo (MVP) de um sistema que poderia ser usado por prefeituras, hospitais ou clínicas para:
+| Perfil | E-mail | Senha |
+|---|---|---|
+| Administrador | `admin@test.com` | `123456` |
+| Agente | `agente@test.com` | `123456` |
+| Motorista | `motorista@test.com` | `123456` |
 
-Garantir que pacientes cheguem ao tratamento no horário
+O arquivo `src/main/resources/data.sql` recria os dados de exemplo (todos fictícios) a cada inicialização.
 
-Evitar confusões com agendamentos e motoristas
+Os mapas usam Leaflet + OpenStreetMap (sem chave de API, mas precisam de internet). O relatório de QA, com capturas de tela e limitações, está em [`docs/qa/RELATORIO_QA.md`](docs/qa/RELATORIO_QA.md).
 
-Acompanhar o uso de ambulâncias de forma transparente
+## Limitações conhecidas
 
-Facilitar a tomada de decisão com dados e relatórios
+Por ser um protótipo acadêmico, ainda não está pronto para produção:
 
-👉 Em resumo:
-O sistema é como um “Uber de ambulâncias”, mas focado no transporte de pacientes para hospitais e clínicas, trazendo organização, eficiência e segurança.
+- as telas e a API estão liberadas sem autenticação (`permitAll`); o login só emite o token;
+- a chave do JWT e as credenciais do banco estão fixas no código e no `compose.yml`, para uso local;
+- usa uma versão milestone do Spring Boot 4.
 
+## Equipe
 
-🚑 Patient Transportation System – Simplified Overview
-
-Imagine a system that helps organize patient transportation in ambulances. It works like a control center, where you can:
-
-Register patients and their information (name, address, treatment, companion, etc.)
-
-Manage ambulances (license plate, model, capacity, location, and assigned driver)
-
-Control drivers and hospitals
-
-Monitor everything on an online dashboard
-
-🛠️ What does the system do?
-
-Registers and organizes patients, drivers, ambulances, and hospitals
-
-Schedules transport (who is going, where, and when)
-
-Provides maps with ambulance locations (to know where they are in real time)
-
-Generates reports and statistics (number of patients served, number of users, etc.)
-
-Includes secure login (users must authenticate to access the system)
-
-👨‍💻 Who can use it?
-
-Administrators → manage the entire system
-
-Agents → register patients and organize transports
-
-Drivers → view their assigned ambulances and routes
-
-🎯 What is it for?
-
-This project is an MVP (Minimum Viable Product) of a system that could be used by city governments, hospitals, or clinics to:
-
-Ensure patients arrive on time for treatments
-
-Avoid scheduling and driver assignment issues
-
-Monitor ambulance usage with transparency
-
-Support decision-making through data and reports
-
-👉 In short: The system works like an “Uber for ambulances”, but focused on patient transportation to hospitals and clinics, bringing organization, efficiency, and security.
+Mateus Alves e Vitor Bueno, Engenharia de Computação.

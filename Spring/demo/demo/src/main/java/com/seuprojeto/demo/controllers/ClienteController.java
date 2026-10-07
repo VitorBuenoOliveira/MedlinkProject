@@ -1,6 +1,8 @@
 package com.seuprojeto.demo.controllers;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,15 @@ public class ClienteController {
         return clienteRepository.findAll();
     }
 
+    /** Quantidade de pacientes por tipo de atendimento (usado no gráfico da tela de clientes). */
+    @GetMapping("/estatisticas")
+    public Map<String, Long> estatisticas() {
+        Map<String, Long> porTipo = new LinkedHashMap<>();
+        clienteRepository.findAll().forEach(c ->
+                porTipo.merge(c.getTipo() == null || c.getTipo().isBlank() ? "Sem tipo" : c.getTipo(), 1L, Long::sum));
+        return porTipo;
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> getClienteById(@PathVariable Long id) {
         Optional<Cliente> cliente = clienteRepository.findById(id);
@@ -39,8 +50,20 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<Cliente> createCliente(@RequestBody Cliente cliente) {
+        if (cliente.getNome() == null || cliente.getNome().isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
         Cliente savedCliente = clienteRepository.save(cliente);
         return ResponseEntity.ok(savedCliente);
+    }
+
+    /** Marca o paciente como atendido/embarcado (usado pelas telas de agenda e do motorista). */
+    @PutMapping("/{id}/atender")
+    public ResponseEntity<Cliente> atender(@PathVariable Long id) {
+        return clienteRepository.findById(id).map(c -> {
+            c.setAtendido(true);
+            return ResponseEntity.ok(clienteRepository.save(c));
+        }).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
