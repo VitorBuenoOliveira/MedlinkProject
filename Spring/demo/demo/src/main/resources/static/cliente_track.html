@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rastreio do paciente - MedLink</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="medlink-theme.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        .pg-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+        .pg-head h1 { margin: 0; }
+        .pg-head p { margin: 4px 0 0; color: var(--ml-muted); }
+        .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+        .chip { border: 1.5px solid var(--ml-line); background: #fff; color: var(--ml-ink); border-radius: 999px; padding: 7px 14px; font-size: .88rem; font-weight: 700; cursor: pointer; }
+        .chip:hover { background: #F6FAFE; color: var(--ml-ink); }
+        .chip.on { background: var(--ml-navy); border-color: var(--ml-navy); color: #fff; }
+        .grid2 { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
+        #map { height: calc(100vh - 210px); min-height: 460px; border-radius: var(--ml-radius); border: 1px solid var(--ml-line); box-shadow: var(--ml-shadow); z-index: 0; }
+        .lista { display: grid; gap: 10px; max-height: calc(100vh - 210px); min-height: 460px; overflow-y: auto; padding-right: 2px; }
+        .item { background: #fff; border: 1px solid var(--ml-line); border-radius: 12px; padding: 12px 14px; cursor: pointer; box-shadow: var(--ml-shadow); }
+        .item:hover { border-color: var(--ml-blue); }
+        .item .t { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-family: 'Sora', sans-serif; font-size: .95rem; }
+        .item .s { color: var(--ml-muted); font-size: .85rem; margin-top: 4px; }
+        .pill { font-family: 'Hanken Grotesk', sans-serif; font-size: .72rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+        .pill.rota { background: rgba(63,163,232,.16); color: #1B6FAE; }
+        .pill.livre { background: rgba(31,169,113,.15); color: #12744D; }
+        .pill.manut { background: rgba(232,163,61,.2); color: #9A6412; }
+        .ml-pin { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: #fff; font-size: .9rem; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(7,26,48,.35); }
+        .ml-pin.rota { background: #3FA3E8; } .ml-pin.livre { background: #1FA971; } .ml-pin.manut { background: #E8A33D; }
+        .ml-pin.pac { background: #0A2645; } .ml-pin.feito { background: #1FA971; }
+        .leaflet-popup-content { font-family: 'Hanken Grotesk', sans-serif; margin: 12px 14px; }
+        .nota { color: var(--ml-muted); font-size: .8rem; margin-top: 10px; }
+        select.sel { padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--ml-line); background: #fff; font-family: inherit; font-size: .95rem; min-width: 260px; }
+        @media (max-width: 1000px) { .grid2 { grid-template-columns: 1fr; } #map { height: 420px; min-height: 0; } .lista { max-height: none; min-height: 0; } }
+        .painel { background: #fff; border: 1px solid var(--ml-line); border-radius: var(--ml-radius); box-shadow: var(--ml-shadow); padding: 20px; }
+        .eta { font-family: 'Sora', sans-serif; font-size: 2.6rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+        .eta small { font-size: 1rem; color: var(--ml-muted); font-weight: 600; }
+        .kv { display: flex; justify-content: space-between; gap: 14px; text-align: right; padding: 9px 0; border-bottom: 1px solid var(--ml-line); font-size: .92rem; }
+        .kv span:first-child { color: var(--ml-muted); }
+        .barra { height: 8px; background: var(--ml-line); border-radius: 6px; overflow: hidden; margin: 14px 0 6px; }
+        .barra i { display: block; height: 100%; width: 0; background: var(--ml-blue); transition: width .9s linear; }
+        .etapas { display: flex; justify-content: space-between; font-size: .78rem; color: var(--ml-muted); font-weight: 700; }
+        .etapas .on { color: var(--ml-blue-dk); }
+        .painel button { width: 100%; margin-top: 14px; }
+
+    </style>
+</head>
+<body class="has-sidebar">
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <a href="/home.html" class="home-btn"><i class="fas fa-home"></i><span>Home</span></a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small"><i class="fas fa-user"></i></div>
+                <div class="user-info-small">
+                    <span class="user-name">Administrador</span>
+                    <span class="user-email">admin@test.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="pg-head">
+                <div>
+                    <h1>Rastreio do paciente</h1>
+                    <p>Acompanhe o veículo a caminho do embarque · simulação com a frota cadastrada</p>
+                </div>
+                <select class="sel" id="paciente" onchange="iniciar()"></select>
+            </div>
+            <div class="grid2">
+                <div id="map"></div>
+                <div class="painel">
+                    <div id="status" class="pill rota" style="display:inline-block">A caminho</div>
+                    <div class="eta" id="eta" style="margin-top:10px">-- <small>min</small></div>
+                    <div class="barra"><i id="prog"></i></div>
+                    <div class="etapas"><span id="e1" class="on">A caminho</span><span id="e2">Chegando</span><span id="e3">No local</span></div>
+                    <div style="margin-top:16px">
+                        <div class="kv"><span>Paciente</span><b id="kPac">-</b></div>
+                        <div class="kv"><span>Endereço</span><b id="kEnd">-</b></div>
+                        <div class="kv"><span>Destino</span><b id="kDest">-</b></div>
+                        <div class="kv"><span>Veículo</span><b id="kVei">-</b></div>
+                        <div class="kv"><span>Motorista</span><b id="kMot">-</b></div>
+                        <div class="kv"><span>Distância</span><b id="kDist">-</b></div>
+                    </div>
+                    <button onclick="iniciar()"><i class="fas fa-rotate-right"></i> Reiniciar simulação</button>
+                    <p class="nota">Posições aproximadas por bairro, apenas para demonstração.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="medlink-map.js"></script>
+    <script>
+        document.getElementById('sidebar-container').innerHTML = createSidebar('cliente_track');
+        const mapa = criarMapa('map', 14);
+        let pacientes = [], frota = [], camada = L.layerGroup().addTo(mapa), timer = null;
+
+        async function preparar() {
+            [pacientes, frota] = await Promise.all([fetch('/clientes').then(r => r.json()), fetch('/ambulancias/combined').then(r => r.json())]);
+            pacientes = pacientes.filter(c => !c.atendido && c.dataAtendimento === hoje()).sort((a, b) => (a.horarioVan || '').localeCompare(b.horarioVan || ''));
+            const sel = document.getElementById('paciente');
+            sel.innerHTML = pacientes.map(c => '<option value="' + c.id + '">' + escapar(c.horarioVan || '--') + ' · ' + escapar(c.nome) + '</option>').join('') || '<option>Nenhum paciente pendente hoje</option>';
+            if (pacientes.length) iniciar();
+        }
+        function iniciar() {
+            clearInterval(timer); camada.clearLayers();
+            const c = pacientes.find(p => String(p.id) === document.getElementById('paciente').value) || pacientes[0];
+            const rota = frota.filter(v => v.status === 'em_uso'), v = rota[(c.id || 0) % Math.max(rota.length, 1)] || frota[0];
+            if (!c || !v) return;
+            const destino = posicaoPaciente(c); let atual = [v.latitude, v.longitude];
+            const total = distKm(atual, destino);
+            const mv = L.marker(atual, { icon: pino('rota', 'fa-van-shuttle') }).addTo(camada);
+            L.marker(destino, { icon: pino('pac', 'fa-person') }).addTo(camada).bindPopup('<b>' + escapar(c.nome) + '</b><br>' + escapar(c.endereco || '') + '<br>' + escapar(c.bairro || ''));
+            const linha = L.polyline([atual, destino], { color: '#3FA3E8', weight: 4, dashArray: '8 8' }).addTo(camada);
+            mapa.fitBounds([atual, destino], { padding: [70, 70] });
+            document.getElementById('kPac').textContent = c.nome; document.getElementById('kEnd').textContent = (c.endereco || '') + (c.bairro ? ' · ' + c.bairro : '');
+            document.getElementById('kDest').textContent = c.destino || '-'; document.getElementById('kVei').textContent = v.placa;
+            document.getElementById('kMot').textContent = v.motoristaNome || '-';
+            let passo = 0; const PASSOS = 40;
+            function quadro() {
+                const k = Math.min(1, passo / PASSOS);
+                atual = [v.latitude + (destino[0] - v.latitude) * k, v.longitude + (destino[1] - v.longitude) * k];
+                mv.setLatLng(atual); linha.setLatLngs([atual, destino]);
+                const resta = distKm(atual, destino), min = Math.max(0, Math.round(resta / 30 * 60));
+                document.getElementById('eta').innerHTML = (k >= 1 ? 'Chegou' : min + ' <small>min</small>');
+                document.getElementById('kDist').textContent = resta < 1 ? Math.round(resta * 1000) + ' m' : resta.toFixed(1) + ' km';
+                document.getElementById('prog').style.width = (k * 100) + '%';
+                const etapa = k >= 1 ? 3 : (resta < Math.max(0.4, total * 0.2) ? 2 : 1);
+                ['e1', 'e2', 'e3'].forEach((id, i) => document.getElementById(id).classList.toggle('on', i + 1 <= etapa));
+                const st = document.getElementById('status'); st.className = 'pill ' + (etapa === 3 ? 'livre' : 'rota');
+                st.textContent = ['A caminho', 'Chegando', 'No local'][etapa - 1];
+                if (k >= 1) clearInterval(timer);
+                passo++;
+            }
+            quadro(); timer = setInterval(quadro, 900);
+        }
+        preparar().catch(e => console.error('Falha ao preparar o rastreio', e));
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

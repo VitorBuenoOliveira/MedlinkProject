@@ -2,79 +2,8 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Geolocalização - Ambulâncias</title>
-    <link rel="stylesheet" href="styles.css" />
-    <style>
-        #map {
-            height: 600px;
-            width: 100%;
-        }
-    </style>
+    <meta http-equiv="refresh" content="0; url=/map.html">
+    <title>Mapa da frota - MedLink</title>
 </head>
-<body>
-    <nav>
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
-        <a href="/geolocation.html">Geolocalização</a>
-    </nav>
-
-    <h1>Geolocalização das Ambulâncias 🚑</h1>
-
-    <div id="map"></div>
-
-    <script>
-        // Dados fictícios de ambulâncias para exibição no mapa
-        const ambulancias = [
-            { placa: 'ABC-1234', latitude: -23.5505, longitude: -46.6333, status: 'Disponível' },
-            { placa: 'DEF-5678', latitude: -23.5515, longitude: -46.6343, status: 'Em trânsito' },
-            { placa: 'GHI-9012', latitude: -23.5525, longitude: -46.6353, status: 'Ocupada' },
-            { placa: 'JKL-3456', latitude: -23.5535, longitude: -46.6363, status: 'Disponível' },
-            { placa: 'MNO-7890', latitude: -23.5545, longitude: -46.6373, status: 'Em manutenção' }
-        ];
-
-        function initMap() {
-            const map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 12,
-                center: { lat: -23.5505, lng: -46.6333 } // Centro em São Paulo
-            });
-
-            const markers = ambulancias.map(ambulancia => {
-                const marker = new google.maps.Marker({
-                    position: { lat: ambulancia.latitude, lng: ambulancia.longitude },
-                    map: map,
-                    title: `Ambulância ${ambulancia.placa}`
-                });
-
-                const infoWindow = new google.maps.InfoWindow({
-                    content: `<strong>Placa:</strong> ${ambulancia.placa}<br><strong>Status:</strong> ${ambulancia.status}`
-                });
-
-                marker.addListener('click', () => {
-                    infoWindow.open(map, marker);
-                });
-
-                return marker;
-            });
-
-            // Atualiza posições periodicamente (simulação)
-            setInterval(() => {
-                ambulancias.forEach((ambulancia, index) => {
-                    ambulancia.latitude += (Math.random() - 0.5) * 0.001;
-                    ambulancia.longitude += (Math.random() - 0.5) * 0.001;
-                    markers[index].setPosition(new google.maps.LatLng(ambulancia.latitude, ambulancia.longitude));
-                });
-            }, 3000);
-        }
-
-        // Inicializa o mapa
-        initMap();
-    </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIz6iI0blYnCpoGhjstXvYbxdVdyHRWpo&callback=initMap"></script>
-</body>
+<body><p>Redirecionando para o <a href="/map.html">Mapa da frota</a>…</p></body>
 </html>

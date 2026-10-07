@@ -2,97 +2,231 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard - Sistema de Transporte de Pacientes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MedLink</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="medlink-theme.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        .dash-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+        .dash-head h1 { margin: 0; }
+        .dash-head p { color: var(--ml-muted); margin-top: 4px; }
+        .live { display: inline-flex; align-items: center; gap: 8px; font-size: .85rem; font-weight: 600; color: var(--ml-muted);
+                background: #fff; border: 1px solid var(--ml-line); border-radius: 999px; padding: 7px 14px; }
+        .live::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: var(--ml-green); box-shadow: 0 0 0 0 rgba(31,169,113,.5); animation: pulso 2s infinite; }
+        @keyframes pulso { 70% { box-shadow: 0 0 0 9px rgba(31,169,113,0); } 100% { box-shadow: 0 0 0 0 rgba(31,169,113,0); } }
+
+        .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .kpi { padding: 20px 22px; position: relative; overflow: hidden; text-align: left; }
+        .kpi .rot { padding-right: 48px; }
+        .kpi .rot { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ml-muted); }
+        .kpi .val { font-family: 'Sora', sans-serif; font-weight: 800; font-size: 2.6rem; letter-spacing: -0.03em; line-height: 1.1; margin-top: 8px; color: var(--ml-ink); }
+        .kpi .val small { font-size: 1.1rem; color: var(--ml-muted); font-weight: 600; letter-spacing: 0; }
+        .kpi .sub { font-size: .85rem; color: var(--ml-muted); margin-top: 6px; }
+        .kpi .ico { position: absolute; right: 18px; top: 18px; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+                    background: rgba(63,163,232,.12); color: var(--ml-blue-dk); font-size: 1.1rem; }
+        .kpi.ok .ico { background: rgba(31,169,113,.12); color: var(--ml-green); }
+        .kpi.warn .ico { background: rgba(232,163,61,.15); color: var(--ml-amber); }
+        .kpi.hero { background: var(--ml-navy); border-color: var(--ml-navy); }
+        .kpi.hero .rot { color: var(--ml-blue-lt); }
+        .kpi.hero .val { color: #fff; }
+        .kpi.hero .sub { color: rgba(234,243,251,.7); }
+        .kpi.hero .ico { background: rgba(63,163,232,.2); color: var(--ml-blue); }
+        .bar { height: 7px; border-radius: 4px; background: #E4ECF4; margin-top: 12px; overflow: hidden; }
+        .bar > i { display: block; height: 100%; background: var(--ml-blue); border-radius: 4px; transition: width 1s ease; }
+        .kpi.hero .bar { background: rgba(255,255,255,.15); }
+
+        .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+        .box { padding: 20px 22px; }
+        .box h2 { margin: 0 0 14px; font-size: 1.05rem; display: flex; align-items: center; gap: 10px; }
+        .span-7 { grid-column: span 7; } .span-5 { grid-column: span 5; } .span-6 { grid-column: span 6; } .span-4 { grid-column: span 4; } .span-12 { grid-column: span 12; }
+        .box canvas { max-height: 270px; }
+        #proximas { overflow-x: auto; }
+        .box.compacto canvas { max-height: 215px; }
+        @media (max-width: 1000px) { .span-7, .span-5, .span-6, .span-4 { grid-column: span 12; } }
+
+        .proximas table { box-shadow: none; border: none; border-radius: 0; }
+        .proximas th { background: transparent; color: var(--ml-muted); border-bottom: 1px solid var(--ml-line); padding: 10px 12px; }
+        .proximas td { padding: 11px 12px; font-size: .93rem; }
+        .hora { font-family: 'Sora', sans-serif; font-weight: 700; color: var(--ml-blue-dk); }
+        .tag { display: inline-block; font-size: .75rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: #E8F3FC; color: var(--ml-blue-dk); }
+        .tag.alta { background: #FDECEA; color: #A5362B; }
+        .tag.cad { background: #EAF2FF; color: #2A5BD7; }
+        .vazio { color: var(--ml-muted); padding: 24px 0; text-align: center; }
+    </style>
+    <link rel="stylesheet" href="chatbot.css">
 </head>
-<body>
-    <nav>
-        <img src="medilink_logo.png" alt="MediLink Logo" class="logo" />
-        <a href="/dashboard.html">Dashboard</a>
-        <a href="/client_management.html">Clientes</a>
-        <a href="/motorista_registration.html">Motoristas</a>
-        <a href="/ambulancia_registration.html">Ambulâncias</a>
-        <a href="/hospital_registration.html">Hospitais</a>
-        <a href="/usuario_registration.html">Usuários</a>
-        <a href="/scheduling.html">Agendamento</a>
-        <a href="/reports.html">Relatórios</a>
-        <a href="/geolocation.html">Geolocalização</a>
-    </nav>
-
-    <h1>Dashboard - Sistema de Transporte de Pacientes 🚑</h1>
-
-    <div class="dashboard-grid">
-        <div class="card">
-            <h3>Clientes</h3>
-            <p>Gerenciar solicitações de transporte</p>
-            <a href="/client_management.html">Acessar</a>
+<body class="has-sidebar">
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <a href="/dashboard.html" class="home-btn"><i class="fas fa-chart-pie"></i><span>Dashboard</span></a>
         </div>
-        <div class="card">
-            <h3>Motoristas</h3>
-            <p>Cadastrar e gerenciar motoristas</p>
-            <a href="/motorista_registration.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Ambulâncias</h3>
-            <p>Gerenciar frota de veículos</p>
-            <a href="/ambulancia_registration.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Hospitais</h3>
-            <p>Cadastrar destinos</p>
-            <a href="/hospital_registration.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Usuários</h3>
-            <p>Gerenciar usuários do sistema</p>
-            <a href="/usuario_registration.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Agendamento</h3>
-            <p>Gerar e visualizar agendas</p>
-            <a href="/scheduling.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Relatórios</h3>
-            <p>Estatísticas e relatórios</p>
-            <a href="/reports.html">Acessar</a>
-        </div>
-        <div class="card">
-            <h3>Geolocalização</h3>
-            <p>Visualizar localização das ambulâncias</p>
-            <a href="/geolocation.html">Acessar</a>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small"><i class="fas fa-user"></i></div>
+                <div class="user-info-small">
+                    <span class="user-name">Administrador</span>
+                    <span class="user-email">admin@test.com</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <h2>Indicadores Rápidos</h2>
-    <div id="indicators">
-        <!-- Indicators will be loaded here -->
-    </div>
+    <div id="sidebar-container"></div>
 
+    <main class="main-content">
+        <div class="container">
+            <div class="dash-head">
+                <div>
+                    <h1>Operação de hoje</h1>
+                    <p id="subtitulo">Carregando…</p>
+                </div>
+                <span class="live" id="live">Atualizado agora</span>
+            </div>
+
+            <div class="kpis">
+                <div class="card kpi hero">
+                    <span class="ico"><i class="fas fa-users"></i></span>
+                    <div class="rot">Pacientes hoje</div>
+                    <div class="val" id="kPacientes">–</div>
+                    <div class="sub" id="kPacientesSub"></div>
+                    <div class="bar"><i id="kPacientesBar" style="width:0"></i></div>
+                </div>
+                <div class="card kpi ok">
+                    <span class="ico"><i class="fas fa-circle-check"></i></span>
+                    <div class="rot">Já embarcaram</div>
+                    <div class="val" id="kEmbarcados">–</div>
+                    <div class="sub">pacientes no veículo ou no destino</div>
+                </div>
+                <div class="card kpi warn">
+                    <span class="ico"><i class="fas fa-hourglass-half"></i></span>
+                    <div class="rot">Aguardando saída</div>
+                    <div class="val" id="kPendentes">–</div>
+                    <div class="sub">ainda não embarcaram</div>
+                </div>
+                <div class="card kpi">
+                    <span class="ico"><i class="fas fa-van-shuttle"></i></span>
+                    <div class="rot">Veículos em rota</div>
+                    <div class="val" id="kRota">–</div>
+                    <div class="sub" id="kRotaSub"></div>
+                </div>
+                <div class="card kpi">
+                    <span class="ico"><i class="fas fa-gauge-high"></i></span>
+                    <div class="rot">Ocupação da frota</div>
+                    <div class="val" id="kOcupacao">–</div>
+                    <div class="bar"><i id="kOcupacaoBar" style="width:0"></i></div>
+                </div>
+            </div>
+
+            <div class="grid">
+                <div class="card box span-7">
+                    <h2><i class="fas fa-clock"></i> Saídas por horário</h2>
+                    <canvas id="cHora"></canvas>
+                </div>
+                <div class="card box compacto span-5">
+                    <h2><i class="fas fa-stethoscope"></i> Pacientes por tipo de atendimento</h2>
+                    <canvas id="cTipo"></canvas>
+                </div>
+                <div class="card box compacto span-4">
+                    <h2><i class="fas fa-van-shuttle"></i> Situação da frota</h2>
+                    <canvas id="cFrota"></canvas>
+                </div>
+                <div class="card box compacto span-4">
+                    <h2><i class="fas fa-wheelchair-move"></i> Perfil dos pacientes</h2>
+                    <canvas id="cGrupo"></canvas>
+                </div>
+                <div class="card box span-4">
+                    <h2><i class="fas fa-hospital"></i> Destinos do dia</h2>
+                    <canvas id="cDestino"></canvas>
+                </div>
+                <div class="card box proximas span-12">
+                    <h2><i class="fas fa-list-check"></i> Próximas saídas</h2>
+                    <div id="proximas"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="sidebar.js"></script>
     <script>
-        async function loadIndicators() {
-            try {
-                const [clientesRes, motoristasRes, ambulanciasRes] = await Promise.all([
-                    fetch('/clientes'),
-                    fetch('/motoristas'),
-                    fetch('/ambulancias')
-                ]);
-                const clientes = await clientesRes.json();
-                const motoristas = await motoristasRes.json();
-                const ambulancias = await ambulanciasRes.json();
+        document.getElementById('sidebar-container').innerHTML = createSidebar('dashboard');
 
-                const indicatorsDiv = document.getElementById('indicators');
-                indicatorsDiv.innerHTML = `
-                    <p><strong>Total de Clientes:</strong> ${clientes.length}</p>
-                    <p><strong>Total de Motoristas:</strong> ${motoristas.length}</p>
-                    <p><strong>Total de Ambulâncias:</strong> ${ambulancias.length}</p>
-                `;
-            } catch (error) {
-                console.error('Erro ao carregar indicadores:', error);
-            }
+        const COR = { azul: '#3FA3E8', azulEsc: '#0A2645', verde: '#1FA971', ambar: '#E8A33D', verm: '#E5584B', cinza: '#B8C7D6', claro: '#9BD0F5' };
+        const PALETA = [COR.azul, COR.azulEsc, COR.verde, COR.ambar, COR.claro, COR.verm, COR.cinza];
+        Chart.defaults.font.family = "'Hanken Grotesk', sans-serif";
+        Chart.defaults.font.size = 13;
+        Chart.defaults.color = '#5B6F82';
+        const graficos = {};
+
+        function desenhar(id, tipo, rotulos, valores, opcoes = {}) {
+            const cores = opcoes.cores || PALETA;
+            const dados = { labels: rotulos, datasets: [{ data: valores, backgroundColor: cores, borderRadius: tipo === 'bar' ? 8 : 0, borderWidth: tipo === 'doughnut' ? 3 : 0, borderColor: '#fff', maxBarThickness: 46 }] };
+            if (graficos[id]) { graficos[id].data = dados; graficos[id].update(); return; }
+            graficos[id] = new Chart(document.getElementById(id), {
+                type: tipo, data: dados,
+                options: Object.assign({ responsive: true, animation: { duration: 900 },
+                    plugins: { legend: { display: tipo === 'doughnut', position: 'bottom', labels: { usePointStyle: true, boxWidth: 8, padding: 14 } } },
+                    cutout: tipo === 'doughnut' ? '64%' : undefined,
+                    scales: tipo === 'bar' ? { y: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#EDF2F7' }, border: { display: false } }, x: { grid: { display: false } } } : undefined
+                }, opcoes.extra || {})
+            });
         }
 
-        loadIndicators();
+        function curto(n) { return n.replace('Ambulatório de Especialidades', 'Ambulatório').replace(/^(Unidade|Centro) de /, ''); }
+
+        function contar(id, de, ate, ms = 900, sufixo = '') {
+            const el = document.getElementById(id); const ini = performance.now();
+            const passo = (t) => { const k = Math.min(1, (t - ini) / ms); el.textContent = Math.round(de + (ate - de) * (1 - Math.pow(1 - k, 3))) + sufixo; if (k < 1) requestAnimationFrame(passo); };
+            requestAnimationFrame(passo);
+        }
+        let anterior = {};
+        function numero(id, valor, sufixo = '') {
+            if (anterior[id] === valor) return;
+            contar(id, anterior[id] || 0, valor, 900, sufixo); anterior[id] = valor;
+        }
+
+        function tabela(clientes) {
+            const pend = clientes.filter(c => !c.atendido && c.dataAtendimento === new Date().toISOString().slice(0, 10))
+                .sort((a, b) => (a.horarioVan || '').localeCompare(b.horarioVan || '')).slice(0, 8);
+            const alvo = document.getElementById('proximas');
+            if (!pend.length) { alvo.innerHTML = '<div class="vazio">Nenhuma saída pendente. Todos os pacientes de hoje já embarcaram.</div>'; return; }
+            alvo.innerHTML = '<table><thead><tr><th>Saída</th><th>Paciente</th><th>Bairro</th><th>Destino</th><th>Atendimento</th><th>Prioridade</th></tr></thead><tbody>' +
+                pend.map(c => `<tr><td class="hora">${c.horarioVan || '-'}</td><td><b>${c.nome}</b></td><td>${c.bairro || ''}</td><td>${c.destino || ''}</td>
+                    <td>${c.tipo || ''}</td><td><span class="tag ${c.prioridadeSaude === 'alta' ? 'alta' : ''}">${c.prioridadeSaude || '-'}</span></td></tr>`).join('') + '</tbody></table>';
+        }
+
+        async function carregar() {
+            try {
+                const [stats, clientes] = await Promise.all([fetch('/api/dashboard/stats').then(r => r.json()), fetch('/clientes').then(r => r.json())]);
+                const dt = new Date(stats.data + 'T12:00:00');
+                document.getElementById('subtitulo').textContent = dt.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long' }) + ' · transporte sanitário eletivo';
+                numero('kPacientes', stats.pacientesHoje); numero('kEmbarcados', stats.embarcados); numero('kPendentes', stats.pendentes);
+                numero('kRota', stats.veiculosEmOperacao); numero('kOcupacao', stats.ocupacaoFrotaPct, '%');
+                document.getElementById('kPacientesSub').textContent = `${stats.embarcados} de ${stats.pacientesHoje} já embarcaram`;
+                document.getElementById('kPacientesBar').style.width = (stats.pacientesHoje ? 100 * stats.embarcados / stats.pacientesHoje : 0) + '%';
+                document.getElementById('kRotaSub').textContent = `de ${stats.veiculos} veículos · ${stats.motoristas} motoristas`;
+                document.getElementById('kOcupacaoBar').style.width = stats.ocupacaoFrotaPct + '%';
+
+                const hr = Object.entries(stats.saidasPorHora);
+                desenhar('cHora', 'bar', hr.map(e => e[0]), hr.map(e => e[1]), { cores: COR.azul });
+                desenhar('cTipo', 'doughnut', stats.porTratamento.map(i => i.rotulo), stats.porTratamento.map(i => i.total));
+                const fr = Object.entries(stats.frotaPorStatus);
+                desenhar('cFrota', 'doughnut', fr.map(e => e[0]), fr.map(e => e[1]), { cores: [COR.azul, COR.verde, COR.ambar] });
+                desenhar('cGrupo', 'doughnut', stats.porGrupo.map(i => i.rotulo), stats.porGrupo.map(i => i.total));
+                desenhar('cDestino', 'bar', stats.porDestino.map(i => curto(i.rotulo)), stats.porDestino.map(i => i.total),
+                    { cores: COR.azulEsc, extra: { indexAxis: 'y', aspectRatio: 1.15, scales: { x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#EDF2F7' }, border: { display: false } }, y: { grid: { display: false } } } } });
+                tabela(clientes);
+                document.getElementById('live').textContent = 'Atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            } catch (e) {
+                console.error('Falha ao carregar o dashboard', e);
+                document.getElementById('subtitulo').textContent = 'Não foi possível carregar os dados. Verifique se o servidor está no ar.';
+            }
+        }
+        carregar();
+        setInterval(carregar, 15000);
     </script>
+    <script src="chatbot.js"></script>
 </body>
 </html>

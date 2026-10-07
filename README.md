@@ -54,6 +54,8 @@ Abra **http://localhost:8080/login.html** e entre com um dos usuários de teste:
 
 O arquivo `src/main/resources/data.sql` recria os dados de exemplo (todos fictícios) a cada inicialização.
 
+Os mapas usam Leaflet + OpenStreetMap (sem chave de API, mas precisam de internet). O relatório de QA, com capturas de tela e limitações, está em [`docs/qa/RELATORIO_QA.md`](docs/qa/RELATORIO_QA.md).
+
 ## Limitações conhecidas
 
 Por ser um protótipo acadêmico, ainda não está pronto para produção:

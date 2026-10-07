@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - MedLink System</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="medlink-theme.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+        .tile { display: flex; align-items: center; gap: 16px; background: #fff; border: 1px solid var(--ml-line); border-radius: var(--ml-radius);
+                box-shadow: var(--ml-shadow); padding: 20px; text-decoration: none; color: var(--ml-ink); transition: transform .15s, border-color .15s; }
+        .tile:hover { transform: translateY(-2px); border-color: var(--ml-blue); }
+        .tile .ti { flex: 0 0 48px; height: 48px; border-radius: 13px; display: grid; place-items: center; background: rgba(63,163,232,.14); color: var(--ml-blue-dk); font-size: 1.2rem; }
+        .tile b { display: block; font-family: 'Sora', sans-serif; font-size: 1.02rem; }
+        .tile small { display: block; color: var(--ml-muted); margin-top: 3px; font-size: .86rem; }
+        .tile .go { margin-left: auto; color: var(--ml-blue); opacity: 0; transition: opacity .15s; }
+        .tile:hover .go { opacity: 1; }
+    </style>
+</head>
+<body class="has-sidebar">
+    <!-- Top Header Bar -->
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a href="/home.html" class="home-btn">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info-small">
+                    <span class="user-name">Administrador</span>
+                    <span class="user-email">admin@test.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar (injected by JavaScript) -->
+    <div id="sidebar-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <h1 style="margin-bottom:4px">Bem-vindo ao MedLink</h1>
+            <p class="sub" style="color:var(--ml-muted);margin:0 0 26px">Gestão do transporte sanitário eletivo · escolha por onde começar.</p>
+            <div class="tiles">
+                <a class="tile" href="/dashboard.html"><span class="ti"><i class="fas fa-chart-pie"></i></span><span><b>Dashboard</b><small>Indicadores da operação do dia</small></span><i class="fas fa-arrow-right go"></i></a>
+                <a class="tile" href="/scheduling.html"><span class="ti"><i class="fas fa-calendar-check"></i></span><span><b>Agendamento</b><small>Agenda diária de transportes</small></span><i class="fas fa-arrow-right go"></i></a>
+                <a class="tile" href="/client_management.html"><span class="ti"><i class="fas fa-users"></i></span><span><b>Pacientes</b><small>Cadastro e solicitações de transporte</small></span><i class="fas fa-arrow-right go"></i></a>
+                <a class="tile" href="/ambulancia_registration.html"><span class="ti"><i class="fas fa-van-shuttle"></i></span><span><b>Veículos</b><small>Frota cadastrada e situação</small></span><i class="fas fa-arrow-right go"></i></a>
+                <a class="tile" href="/motorista_registration.html"><span class="ti"><i class="fas fa-id-card"></i></span><span><b>Motoristas</b><small>Cadastro e vínculo com veículos</small></span><i class="fas fa-arrow-right go"></i></a>
+                <a class="tile" href="/hospital_registration.html"><span class="ti"><i class="fas fa-hospital"></i></span><span><b>Destinos</b><small>Hospitais e clínicas de tratamento</small></span><i class="fas fa-arrow-right go"></i></a>
+                <a class="tile" href="/map.html"><span class="ti"><i class="fas fa-map-location-dot"></i></span><span><b>Mapa da frota</b><small>Posição dos veículos em tempo real</small></span><i class="fas fa-arrow-right go"></i></a>
+                <a class="tile" href="/reports.html"><span class="ti"><i class="fas fa-chart-column"></i></span><span><b>Relatórios</b><small>Estatísticas e relatórios</small></span><i class="fas fa-arrow-right go"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <script src="sidebar.js"></script>
+    <script>
+        // Inject sidebar
+        document.getElementById('sidebar-container').innerHTML = createSidebar('home');
+        
+        // Apply saved theme
+        const theme = localStorage.getItem('theme') || 'light';
+        if (theme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+        
+        // Apply accessibility settings
+        const highContrast = localStorage.getItem('highContrast') === 'true';
+        const largeText = localStorage.getItem('largeText') === 'true';
+        
+        if (highContrast) {
+            document.body.classList.add('high-contrast');
+        }
+        if (largeText) {
+            document.body.classList.add('large-text');
+        }
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>

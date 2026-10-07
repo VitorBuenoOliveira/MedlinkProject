@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do motorista - MedLink</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="medlink-theme.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <style>
+        .pg-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 18px; }
+        .pg-head h1 { margin: 0; }
+        .pg-head p { margin: 4px 0 0; color: var(--ml-muted); }
+        .chips { display: flex; gap: 8px; flex-wrap: wrap; }
+        .chip { border: 1.5px solid var(--ml-line); background: #fff; color: var(--ml-ink); border-radius: 999px; padding: 7px 14px; font-size: .88rem; font-weight: 700; cursor: pointer; }
+        .chip:hover { background: #F6FAFE; color: var(--ml-ink); }
+        .chip.on { background: var(--ml-navy); border-color: var(--ml-navy); color: #fff; }
+        .grid2 { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
+        #map { height: calc(100vh - 210px); min-height: 460px; border-radius: var(--ml-radius); border: 1px solid var(--ml-line); box-shadow: var(--ml-shadow); z-index: 0; }
+        .lista { display: grid; gap: 10px; max-height: calc(100vh - 210px); min-height: 460px; overflow-y: auto; padding-right: 2px; }
+        .item { background: #fff; border: 1px solid var(--ml-line); border-radius: 12px; padding: 12px 14px; cursor: pointer; box-shadow: var(--ml-shadow); }
+        .item:hover { border-color: var(--ml-blue); }
+        .item .t { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-family: 'Sora', sans-serif; font-size: .95rem; }
+        .item .s { color: var(--ml-muted); font-size: .85rem; margin-top: 4px; }
+        .pill { font-family: 'Hanken Grotesk', sans-serif; font-size: .72rem; font-weight: 800; padding: 3px 10px; border-radius: 999px; }
+        .pill.rota { background: rgba(63,163,232,.16); color: #1B6FAE; }
+        .pill.livre { background: rgba(31,169,113,.15); color: #12744D; }
+        .pill.manut { background: rgba(232,163,61,.2); color: #9A6412; }
+        .ml-pin { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: #fff; font-size: .9rem; border: 3px solid #fff; box-shadow: 0 3px 10px rgba(7,26,48,.35); }
+        .ml-pin.rota { background: #3FA3E8; } .ml-pin.livre { background: #1FA971; } .ml-pin.manut { background: #E8A33D; }
+        .ml-pin.pac { background: #0A2645; } .ml-pin.feito { background: #1FA971; }
+        .leaflet-popup-content { font-family: 'Hanken Grotesk', sans-serif; margin: 12px 14px; }
+        .nota { color: var(--ml-muted); font-size: .8rem; margin-top: 10px; }
+        select.sel { padding: 10px 12px; border-radius: 10px; border: 1.5px solid var(--ml-line); background: #fff; font-family: inherit; font-size: .95rem; min-width: 260px; }
+        @media (max-width: 1000px) { .grid2 { grid-template-columns: 1fr; } #map { height: 420px; min-height: 0; } .lista { max-height: none; min-height: 0; } }
+        .resumo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+        .resumo div { background: #fff; border: 1px solid var(--ml-line); border-radius: 12px; padding: 10px 12px; text-align: center; }
+        .resumo b { display: block; font-family: 'Sora', sans-serif; font-size: 1.5rem; }
+        .resumo span { font-size: .75rem; color: var(--ml-muted); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; }
+        .parada { display: flex; gap: 12px; align-items: flex-start; }
+        .parada .n { flex: 0 0 30px; height: 30px; border-radius: 50%; background: var(--ml-navy); color: #fff; display: grid; place-items: center; font-weight: 800; font-size: .85rem; }
+        .parada.feito .n { background: var(--ml-green); }
+        .parada.feito { opacity: .65; }
+        .parada .b { flex: 1; min-width: 0; }
+        .parada button { margin-top: 8px; padding: 7px 12px; font-size: .82rem; }
+
+    </style>
+</head>
+<body class="has-sidebar">
+    <div class="top-header">
+        <div class="header-left">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
+            <a href="/home.html" class="home-btn"><i class="fas fa-home"></i><span>Home</span></a>
+        </div>
+        <div class="header-right">
+            <div class="user-header-profile">
+                <div class="user-avatar-small"><i class="fas fa-user"></i></div>
+                <div class="user-info-small">
+                    <span class="user-name">Administrador</span>
+                    <span class="user-email">admin@test.com</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="sidebar-container"></div>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="pg-head">
+                <div>
+                    <h1>Painel do motorista</h1>
+                    <p>Paradas do dia em ordem de horário · marque cada embarque</p>
+                </div>
+                <select class="sel" id="veiculo" onchange="montar()"></select>
+            </div>
+            <div class="grid2">
+                <div id="map"></div>
+                <div>
+                    <div class="resumo"><div><b id="rTotal">0</b><span>Paradas</span></div><div><b id="rFeitos">0</b><span>Embarcados</span></div><div><b id="rProx">--</b><span>Próxima saída</span></div></div>
+                    <div class="lista" id="lista" style="max-height: calc(100vh - 290px)"></div>
+                </div>
+            </div>
+            <p class="nota">Posições aproximadas por bairro, apenas para demonstração. O embarque é gravado no cadastro do paciente.</p>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="medlink-map.js"></script>
+    <script>
+        document.getElementById('sidebar-container').innerHTML = createSidebar('motorista_track');
+        const mapa = criarMapa('map', 13);
+        let frota = [], clientes = [], camada = L.layerGroup().addTo(mapa), primeira = true;
+
+        async function carregar() {
+            [frota, clientes] = await Promise.all([fetch('/ambulancias/combined').then(r => r.json()), fetch('/clientes').then(r => r.json())]);
+            clientes = clientes.filter(c => c.dataAtendimento === hoje()).sort((a, b) => (a.horarioVan || '').localeCompare(b.horarioVan || ''));
+            const sel = document.getElementById('veiculo'), antes = sel.value;
+            const comMot = frota.filter(v => v.motoristaNome && v.status !== 'manutencao');
+            sel.innerHTML = comMot.map(v => '<option value="' + v.ambulanciaId + '">' + escapar(v.placa) + ' · ' + escapar(v.motoristaNome) + '</option>').join('');
+            if (antes) sel.value = antes;
+            montar();
+        }
+        function montar() {
+            camada.clearLayers();
+            const v = frota.find(x => String(x.ambulanciaId) === document.getElementById('veiculo').value); if (!v) return;
+            const pend = clientes.filter(c => !c.atendido);
+            document.getElementById('rTotal').textContent = clientes.length;
+            document.getElementById('rFeitos').textContent = clientes.length - pend.length;
+            document.getElementById('rProx').textContent = pend.length ? (pend[0].horarioVan || '--') : '--';
+            const pontos = [[v.latitude, v.longitude]], rotaPts = [[v.latitude, v.longitude]];
+            L.marker(pontos[0], { icon: pino('rota', 'fa-van-shuttle') }).addTo(camada).bindPopup('<b>' + escapar(v.placa) + '</b><br>' + escapar(v.motoristaNome || ''));
+            clientes.forEach((c, i) => {
+                const pos = posicaoPaciente(c); if (!c.atendido) { pontos.push(pos); if (rotaPts.length < 5) rotaPts.push(pos); }
+                L.marker(pos, { icon: pino(c.atendido ? 'feito' : 'pac', '', String(i + 1)) }).addTo(camada)
+                    .bindPopup('<b>' + escapar(c.nome) + '</b><br>' + escapar(c.endereco || '') + '<br>Saída ' + escapar(c.horarioVan || '--'));
+            });
+            if (rotaPts.length > 1) L.polyline(rotaPts, { color: '#3FA3E8', weight: 4, opacity: .8, dashArray: '8 8' }).addTo(camada);
+            if (primeira) { primeira = false; mapa.fitBounds(pontos, { padding: [50, 50] }); }
+            document.getElementById('lista').innerHTML = clientes.map((c, i) =>
+                '<div class="item parada ' + (c.atendido ? 'feito' : '') + '"><div class="n">' + (c.atendido ? '<i class="fas fa-check"></i>' : i + 1) + '</div><div class="b">' +
+                '<div class="t"><span>' + escapar(c.nome) + '</span><span class="pill rota">' + escapar(c.horarioVan || '--') + '</span></div>' +
+                '<div class="s">' + escapar(c.endereco || '') + ' · ' + escapar(c.bairro || '') + '</div>' +
+                '<div class="s"><i class="fas fa-hospital"></i> ' + escapar(c.destino || '') + '</div>' +
+                (c.atendido ? '' : '<button onclick="embarcar(' + c.id + ')"><i class="fas fa-check"></i> Embarcou</button>') + '</div></div>').join('') || '<div class="item">Sem paradas para hoje.</div>';
+        }
+        async function embarcar(id) {
+            await fetch('/clientes/' + id + '/atender', { method: 'PUT' });
+            carregar();
+        }
+        carregar().catch(e => console.error('Falha ao carregar o painel', e));
+    </script>
+    <script src="chatbot.js"></script>
+</body>
+</html>
