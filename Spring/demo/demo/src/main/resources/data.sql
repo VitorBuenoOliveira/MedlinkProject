@@ -8,9 +8,9 @@ DELETE FROM motorista;
 DELETE FROM cliente;
 
 INSERT INTO usuario (nome, email, senha, role) VALUES
-('Admin User', 'admin@test.com', '$2a$10$8K3ds.9Xp/6Hk5qoVSkTqeS0NSuEpfFkJ8mBh9Yz1U2ZrJDcR1QyO', 'ADMIN'),
-('Agente User', 'agente@test.com', '$2a$10$8K3ds.9Xp/6Hk5qoVSkTqeS0NSuEpfFkJ8mBh9Yz1U2ZrJDcR1QyO', 'AGENTE'),
-('Motorista User', 'motorista@test.com', '$2a$10$8K3ds.9Xp/6Hk5qoVSkTqeS0NSuEpfFkJ8mBh9Yz1U2ZrJDcR1QyO', 'MOTORISTA');
+('Admin User', 'admin@test.com', '$2a$10$t5yuiQiMohmFKplKxHpDm.6hj8EMi1LuJ7VbO4VPqNevHoz/PzpK.', 'ADMIN'),
+('Agente User', 'agente@test.com', '$2a$10$t5yuiQiMohmFKplKxHpDm.6hj8EMi1LuJ7VbO4VPqNevHoz/PzpK.', 'AGENTE'),
+('Motorista User', 'motorista@test.com', '$2a$10$t5yuiQiMohmFKplKxHpDm.6hj8EMi1LuJ7VbO4VPqNevHoz/PzpK.', 'MOTORISTA');
 
 -- Default hospitals
 INSERT INTO hospital (nome, endereco, especialidades) VALUES
